@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@android:color/black"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+	<RelativeLayout 
+		android:id="@+id/main_button_container"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true">
+
+    <Button
+      android:id="@+id/pool_button"
+      android:text="Pool"
+      android:textColor="@android:color/white"
+      android:background="@drawable/rounded_corners_8dp"
+      android:drawableStart="@drawable/ic_pool_blue_dark_24dp"
+      android:backgroundTint="@color/material_blue_grey_800"
+      android:drawablePadding="16dp"
+      android:paddingStart="80dp"
+      android:paddingEnd="80dp"
+	  android:layout_marginTop="4dp"
+	  android:layout_marginBottom="4dp"
+      android:layout_width="256dp"
+      android:layout_height="wrap_content" />
+
+    <Button
+      android:id="@+id/spa_button"
+      android:text="Spa"
+      android:textColor="@android:color/white"
+      android:background="@drawable/rounded_corners_8dp"
+      android:drawableStart="@drawable/ic_hot_tub_blue_dark_24dp"
+      android:backgroundTint="@color/material_blue_grey_800"
+      android:drawablePadding="16dp"
+      android:paddingStart="80dp"
+      android:paddingEnd="80dp"
+	  android:layout_marginTop="4dp"
+	  android:layout_marginBottom="4dp"
+      android:layout_below="@id/pool_button"
+      android:layout_width="256dp"
+      android:layout_height="wrap_content" />
+
+  </RelativeLayout>
+</RelativeLayout>
