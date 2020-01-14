@@ -1,9 +1,12 @@
 ﻿
 using Android.OS;
+using Android.Support.V7.App;
+using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using eHub.Android.Listeners;
 using eHub.Common.Services;
+using System.Collections.Generic;
 using static Android.Views.View;
 
 using Fragment = Android.Support.V4.App.Fragment;
@@ -12,36 +15,32 @@ namespace eHub.Android.Fragments
 {
     public class DrawerFragment : Fragment
     {
-        Button _poolButton;
-        Button _spaButton;
-
-        readonly IPoolService _poolService;
-
-        public DrawerFragment() { }
-        public DrawerFragment(IPoolService poolService)
-        {
-            _poolService = poolService;
-        }
-
-        public override void OnCreate(Bundle savedInstanceState)
-        {
-            base.OnCreate(savedInstanceState);
-        }
+        RecyclerView _recyclerView;
+        MainMenuAdapter _adapter;
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
+            var act = Activity as AppCompatActivity;
+            var actionBar = act.SupportActionBar;
+
             //HasOptionsMenu = true;
             return inflater.Inflate(Resource.Layout.fragment_drawer, container, false);
         }
 
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
-            _poolButton = view.FindViewById<Button>(Resource.Id.pool_button);
-            _spaButton = view.FindViewById<Button>(Resource.Id.spa_button);
-
-            _poolButton.SetOnClickListener(new OnClickListener(v =>
+            var items = new List<MenuItem>
             {
-            }));
+                new MenuItem("Pool", Resource.Drawable.ic_pool_blue_grey_300_48dp),
+                new MenuItem("Spa", Resource.Drawable.ic_hot_tub_blue_grey_300_48dp)
+            };
+
+            _adapter = new MainMenuAdapter(items);
+
+            _recyclerView = view.FindViewById<RecyclerView>(Resource.Id.main_menu_recycler_view);
+            _recyclerView.SetLayoutManager(new LinearLayoutManager(Context));
+            _recyclerView.AddItemDecoration(new DividerItemDecoration(Context, LinearLayoutManager.Vertical));
+            _recyclerView.SetAdapter(_adapter);
         }
 
         /*
@@ -50,5 +49,17 @@ namespace eHub.Android.Fragments
             inflater.Inflate(Resource.Menu.main_menu, menu);
         }
         */
+    }
+
+    public class MenuItem
+    {
+        public string Label { get; }
+        public int ImageResource { get; }
+
+        public MenuItem(string label, int imageResource)
+        {
+            Label = label;
+            ImageResource = imageResource;
+        }
     }
 }

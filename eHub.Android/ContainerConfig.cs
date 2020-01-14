@@ -12,25 +12,7 @@ namespace eHub.Android
         {
             var builder = new ContainerBuilder();
 
-            builder.RegisterType<WebInterface>()
-                .As<IWebInterface>()
-                .SingleInstance();
-
-            builder.Register(ctx =>
-            {
-                var webApi = ctx.Resolve<IWebInterface>();
-                return new PoolApi(webApi);
-            })
-            .As<IPoolApi>()
-            .SingleInstance();
-
-            builder.Register(ctx =>
-            {
-                var poolApi = ctx.Resolve<IPoolApi>();
-                return new PoolService(poolApi);
-            })
-            .As<IPoolService>()
-            .SingleInstance();
+            builder.RegisterModule(new EhubModule());
 
             return builder.Build();
         }
