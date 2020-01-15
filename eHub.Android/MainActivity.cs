@@ -61,7 +61,12 @@ namespace eHub.Android
                 .Replace(Resource.Id.main_navigation_container, df, "MainMenu")
                 .Commit();
 
-            
+            var hf = new HomeFragment();
+            SupportFragmentManager
+                .BeginTransaction()
+                .Replace(Resource.Id.main_container, hf, "Home")
+                .Commit();
+
         }
 
         private void HandleBackNav()

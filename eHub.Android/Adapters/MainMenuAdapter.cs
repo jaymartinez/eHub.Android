@@ -32,14 +32,8 @@ namespace eHub.Android
 
             cell.TextView.Text = _items[position].Label;
             cell.ImageView.SetImageResource(_items[position].ImageResource);
-        }
 
-        public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
-        {
-            var inflater = LayoutInflater.From(parent.Context);
-            var cell = inflater.Inflate(Resource.Layout.fragment_main_menu_cell, parent, false);
-
-            cell.SetOnClickListener(new OnClickListener(v =>
+            cell.ItemView.SetOnClickListener(new OnClickListener(v =>
             {
                 //Activity.RunOnUiThread(() =>
                 //{
@@ -54,6 +48,12 @@ namespace eHub.Android
                 //});
 
             }));
+        }
+
+        public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
+        {
+            var inflater = LayoutInflater.From(parent.Context);
+            var cell = inflater.Inflate(Resource.Layout.fragment_main_menu_cell, parent, false);
             return new MenuCell(cell);
         }
 
