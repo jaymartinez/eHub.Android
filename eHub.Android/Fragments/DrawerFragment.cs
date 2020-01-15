@@ -31,8 +31,8 @@ namespace eHub.Android.Fragments
         {
             var items = new List<MenuItem>
             {
-                new MenuItem("Pool", Resource.Drawable.ic_pool_blue_grey_300_48dp),
-                new MenuItem("Spa", Resource.Drawable.ic_hot_tub_blue_grey_300_48dp)
+                new MenuItem("Pool", Resource.Drawable.ic_pool_blue_dark_48dp, MenuType.Pool),
+                new MenuItem("Spa", Resource.Drawable.ic_hot_tub_blue_dark_48dp, MenuType.Spa)
             };
 
             _adapter = new MainMenuAdapter(items);
@@ -55,11 +55,19 @@ namespace eHub.Android.Fragments
     {
         public string Label { get; }
         public int ImageResource { get; }
+        public MenuType MenuType { get; }
 
-        public MenuItem(string label, int imageResource)
+        public MenuItem(string label, int imageResource, MenuType menuType)
         {
             Label = label;
             ImageResource = imageResource;
+            MenuType = menuType;
         }
+    }
+
+    public enum MenuType
+    {
+        Pool,
+        Spa
     }
 }

@@ -53,13 +53,15 @@ namespace eHub.Android
             _drawerToggle.DrawerIndicatorEnabled = true;
             _drawerToggle.SyncState();
 
-            _toolbar.SetNavigationOnClickListener(new OnClickListener(v => HandleBackNav()));
+            //_toolbar.SetNavigationOnClickListener(new OnClickListener(v => HandleBackNav()));
 
-            var drawer = new DrawerFragment();
+            var df = new DrawerFragment();
             SupportFragmentManager
                 .BeginTransaction()
-                .Replace(Resource.Id.main_navigation_container, drawer, "MainMenu")
+                .Replace(Resource.Id.main_navigation_container, df, "MainMenu")
                 .Commit();
+
+            
         }
 
         private void HandleBackNav()

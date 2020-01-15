@@ -11,6 +11,7 @@ using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using eHub.Android.Fragments;
+using eHub.Android.Listeners;
 
 namespace eHub.Android
 {
@@ -37,6 +38,22 @@ namespace eHub.Android
         {
             var inflater = LayoutInflater.From(parent.Context);
             var cell = inflater.Inflate(Resource.Layout.fragment_main_menu_cell, parent, false);
+
+            cell.SetOnClickListener(new OnClickListener(v =>
+            {
+                //Activity.RunOnUiThread(() =>
+                //{
+                //    var frag = new PoolFragment();
+
+                //    Activity
+                //    .SupportFragmentManager
+                //    .BeginTransaction()
+                //    .Replace(Resource.Id.main_container, frag, "Pool")
+                //    .AddToBackStack("Pool")
+                //    .Commit();
+                //});
+
+            }));
             return new MenuCell(cell);
         }
 

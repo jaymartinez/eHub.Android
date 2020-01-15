@@ -17,8 +17,6 @@ namespace eHub.Android.Fragments
 {
     public class HomeFragment : Fragment
     {
-        Button _poolButton;
-        Button _spaButton;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -33,25 +31,6 @@ namespace eHub.Android.Fragments
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
             base.OnViewCreated(view, savedInstanceState);
-
-            _poolButton = view.FindViewById<Button>(Resource.Id.pool_button);
-            _spaButton = view.FindViewById<Button>(Resource.Id.spa_button);
-
-            _poolButton.SetOnClickListener(new OnClickListener(v =>
-            {
-                Activity.RunOnUiThread(() =>
-                {
-                    var frag = new PoolFragment();
-
-                    Activity
-                    .SupportFragmentManager
-                    .BeginTransaction()
-                    .Replace(Resource.Id.main_container, frag, "Pool")
-                    .AddToBackStack("Pool")
-                    .Commit();
-                });
-                    
-            }));
 
         }
     }
