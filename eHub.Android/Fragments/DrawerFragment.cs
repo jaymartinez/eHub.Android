@@ -1,13 +1,12 @@
 ﻿
 using Android.OS;
+using Android.Support.V4.Widget;
 using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Android.Views;
-using Android.Widget;
-using eHub.Android.Listeners;
-using eHub.Common.Services;
+using eHub.Android.Models;
+using System;
 using System.Collections.Generic;
-using static Android.Views.View;
 
 using Fragment = Android.Support.V4.App.Fragment;
 
@@ -17,6 +16,8 @@ namespace eHub.Android.Fragments
     {
         RecyclerView _recyclerView;
         MainMenuAdapter _adapter;
+
+        public WeakReference<DrawerLayout> Drawer { get; set; }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -31,11 +32,13 @@ namespace eHub.Android.Fragments
         {
             var items = new List<MenuItem>
             {
-                new MenuItem("Pool", Resource.Drawable.ic_pool_blue_dark_48dp, MenuType.Pool),
-                new MenuItem("Spa", Resource.Drawable.ic_hot_tub_blue_dark_48dp, MenuType.Spa)
+                new MenuItem("Pool", Resource.Drawable.ic_pool_blue_dark_48dp, MenuType.Pool, "pool"),
+                new MenuItem("Spa", Resource.Drawable.ic_hot_tub_blue_dark_48dp, MenuType.Spa, "spa")
             };
 
             _adapter = new MainMenuAdapter(items);
+
+            _adapter.MenuTapped = OnMenuTap;
 
             _recyclerView = view.FindViewById<RecyclerView>(Resource.Id.main_menu_recycler_view);
             _recyclerView.SetLayoutManager(new LinearLayoutManager(Context));
@@ -43,31 +46,37 @@ namespace eHub.Android.Fragments
             _recyclerView.SetAdapter(_adapter);
         }
 
-        /*
-        public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)
+
+        void OnMenuTap(MenuItem menuItem)
         {
-            inflater.Inflate(Resource.Menu.main_menu, menu);
+            if (Drawer.TryGetTarget(out var drawer))
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    drawer.CloseDrawers();
+                });
+            }
+
+            Fragment frag = null;
+            switch (menuItem.MenuType)
+            {
+                case MenuType.Pool:
+                    frag = new PoolFragment();
+                    ((MainActivity)Activity).Push(frag, menuItem.Tag);
+                    break;
+                case MenuType.Spa:
+                    break;
+            }
+
+            if (frag == null)
+                return;
+
+            //Activity
+            //    .SupportFragmentManager
+            //    .BeginTransaction()
+            //    .Replace(Resource.Id.main_container, frag, "Pool")
+            //    .AddToBackStack("Pool")
+            //    .Commit();
         }
-        */
-    }
-
-    public class MenuItem
-    {
-        public string Label { get; }
-        public int ImageResource { get; }
-        public MenuType MenuType { get; }
-
-        public MenuItem(string label, int imageResource, MenuType menuType)
-        {
-            Label = label;
-            ImageResource = imageResource;
-            MenuType = menuType;
-        }
-    }
-
-    public enum MenuType
-    {
-        Pool,
-        Spa
     }
 }
