@@ -5,6 +5,8 @@ namespace eHub.Android.Models
     {
         Pool,
         Spa,
+        Lights,
+        Climate,
         Home
     }
 }

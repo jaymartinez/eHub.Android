@@ -65,11 +65,6 @@ namespace eHub.Android
             SetRoot(new MenuItem("Home", Resource.Drawable.ic_device_hub_blue_dark_48dp, MenuType.Home, "home"));
         }
 
-        void HandleBackNav()
-        {
-            //todo
-        }
-
         public override void OnBackPressed()
         {
             if (SupportFragmentManager.BackStackEntryCount == 1)

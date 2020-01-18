@@ -61,6 +61,7 @@
     <Compile Include="Fragments\DrawerFragment.cs" />
     <Compile Include="Fragments\HomeFragment.cs" />
     <Compile Include="Fragments\PoolFragment.cs" />
+    <Compile Include="Fragments\TimePickerFragment.cs" />
     <Compile Include="Listeners\OnClickListener.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainApplication.cs" />
