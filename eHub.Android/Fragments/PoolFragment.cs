@@ -10,10 +10,8 @@ using Fragment = Android.Support.V4.App.Fragment;
 
 namespace eHub.Android.Fragments
 {
-    public class PoolFragment : Fragment, IOnTimeChangedListener
+    public class PoolFragment : Fragment
     {
-        TimePicker _startPicker;
-        TimePicker _endPicker;
         Button _saveButton;
 
         public override void OnCreate(Bundle savedInstanceState)
@@ -32,32 +30,9 @@ namespace eHub.Android.Fragments
             //_endPicker = view.FindViewById<TimePicker>(Resource.Id.picker_end_time);
             //_saveButton = view.FindViewById<Button>(Resource.Id.pool_save_button);
 
-            _startPicker.SetOnTimeChangedListener(this);
-            _endPicker.SetOnTimeChangedListener(this);
+            //_startPicker.SetOnTimeChangedListener(this);
+            //_endPicker.SetOnTimeChangedListener(this);
 
-            _saveButton.SetOnClickListener(new OnClickListener(v =>
-            {
-                var startHour = _startPicker.Hour;
-                var startMinute = _startPicker.Minute;
-
-                var endHour = _endPicker.Hour;
-                var endMinute = _endPicker.Minute;
-            }));
-
-        }
-
-        void IOnTimeChangedListener.OnTimeChanged(TimePicker view, int hourOfDay, int minute)
-        {
-            /*
-            if (view.Id == Resource.Id.picker_start_time)
-            {
-                Console.WriteLine($">>>>> Start Time: {hourOfDay} : {minute}");
-            }
-            else if (view.Id == Resource.Id.picker_end_time)
-            {
-                Console.WriteLine($">>>>> End Time: {hourOfDay} : {minute}");
-            }
-            */
         }
     }
 }
