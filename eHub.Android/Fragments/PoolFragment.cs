@@ -28,9 +28,9 @@ namespace eHub.Android.Fragments
 
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
-            _startPicker = view.FindViewById<TimePicker>(Resource.Id.picker_start_time);
-            _endPicker = view.FindViewById<TimePicker>(Resource.Id.picker_end_time);
-            _saveButton = view.FindViewById<Button>(Resource.Id.pool_save_button);
+            //_startPicker = view.FindViewById<TimePicker>(Resource.Id.picker_start_time);
+            //_endPicker = view.FindViewById<TimePicker>(Resource.Id.picker_end_time);
+            //_saveButton = view.FindViewById<Button>(Resource.Id.pool_save_button);
 
             _startPicker.SetOnTimeChangedListener(this);
             _endPicker.SetOnTimeChangedListener(this);
@@ -48,6 +48,7 @@ namespace eHub.Android.Fragments
 
         void IOnTimeChangedListener.OnTimeChanged(TimePicker view, int hourOfDay, int minute)
         {
+            /*
             if (view.Id == Resource.Id.picker_start_time)
             {
                 Console.WriteLine($">>>>> Start Time: {hourOfDay} : {minute}");
@@ -56,6 +57,7 @@ namespace eHub.Android.Fragments
             {
                 Console.WriteLine($">>>>> End Time: {hourOfDay} : {minute}");
             }
+            */
         }
     }
 }

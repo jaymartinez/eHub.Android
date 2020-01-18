@@ -49,8 +49,6 @@ namespace eHub.Android
             _drawerToggle.DrawerIndicatorEnabled = true;
             _drawerToggle.SyncState();
 
-            //_toolbar.SetNavigationOnClickListener(new OnClickListener(v => HandleBackNav()));
-
             var df = new DrawerFragment();
             df.Drawer = new WeakReference<DrawerLayout>(_drawer);
             SupportFragmentManager
@@ -82,37 +80,6 @@ namespace eHub.Android
                 }
                 else
                 {
-                    /*
-                    if (MenuPressed)
-                    {
-                        _drawer.OpenDrawer((int)GravityFlags.Start);
-                        MenuPressed = false;
-                    }
-                    else
-                    {
-                        if (_doubleBackPress)
-                        {
-                            FinishAffinity();
-                        }
-
-                        if (_currentRoot.MenuType == MenuType.Pool)
-                        {
-                            _doubleBackPress = true;
-                            //Android.Widget.Toast.MakeText(this, "Press BACK again to exit app", Android.Widget.ToastLength.Short).Show();
-                            //Android.OS.Handler handler = new Android.OS.Handler();
-                            Handler handler = new Handler();
-                            Action action = () =>
-                            {
-                                _doubleBackPress = false;
-                            };
-                            handler.PostDelayed(action, 2000);
-                        }
-                        else
-                        {
-                            SetRoot(_currentRoot);
-                        }
-                    }
-                    */
                     if (_currentRoot.MenuType == MenuType.Home)
                         return;
 
@@ -170,10 +137,6 @@ namespace eHub.Android
                 // Don't do anything if the user selects the current page.
                 if (_currentRoot != null && menuItem.MenuType == _currentRoot.MenuType)
                     return;
-
-                //ClearMainContainerFragments();
-
-                //ResetAllPageMappings();
 
                 var page = GetFragmentForType(menuItem.MenuType);
 

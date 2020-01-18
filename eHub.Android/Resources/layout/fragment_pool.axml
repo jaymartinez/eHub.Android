@@ -10,83 +10,74 @@
 		android:layout_width="match_parent" 
 		android:layout_height="match_parent">
 
-		<LinearLayout android:layout_width="match_parent" 
-			android:layout_height="wrap_content" 
-			android:orientation="vertical">
+		<RelativeLayout android:id="@+id/pool_starttime_container"
+			android:layout_width="match_parent" 
+			android:layout_height="wrap_content">
 
-			<TextView android:layout_width="match_parent" 
-				android:textColor="@android:color/holo_blue_dark"
+			<TextView 
+				android:id="@+id/start_time_label"
+				android:textColor="@color/colorPrimary"
+				android:layout_width="match_parent" 
 				android:layout_height="wrap_content" 
 				android:layout_marginLeft="16dp"
-				android:textStyle="bold"
-				android:text="Pump Start" 
-				android:textSize="18dp"
-			/>
+				android:text="Pump Start Time" 
+				android:textSize="16dp" />
 
-			<LinearLayout android:layout_width="match_parent" 
-				android:layout_height="wrap_content" 
-				android:orientation="horizontal">
+			<android.support.design.widget.FloatingActionButton
+				android:id="@+id/pool_schedule_start_fab"
+				android:layout_width="40dp"
+				android:layout_height="40dp"
+				android:layout_below="@id/start_time_label"
+				android:layout_alignParentStart="false"
+				android:layout_margin="16dp"
+				android:backgroundTint="@color/colorPrimary"
+				android:src="@drawable/ic_schedule_blue_grey_400_24dp"
+				app:fabSize="mini" />
 
-				<TimePicker
-					android:id="@+id/picker_start_time"
-					android:layout_marginLeft="16dp"
-					android:timePickerMode="spinner"
-					android:layout_width="wrap_content" 
-					android:layout_height="wrap_content" />
 
-				<ImageButton
-					android:id="@+id/pool_refresh_start_btn"
-					android:background="@color/material_grey_300"
-					android:layout_gravity="center"
-					android:layout_width="wrap_content" 
-					android:layout_height="wrap_content"
-					android:src="@drawable/ic_refresh_green_200_48dp" />
+			<View android:id="@+id/pool_separator_line"
+				android:layout_below="@id/pool_schedule_start_fab"
+				android:layout_width="match_parent" 
+				android:layout_height="2dp" 
+				android:background="@color/colorPrimary"/>
+			<!-- 
+			<TimePicker
+				android:id="@+id/picker_start_time"
+				android:layout_marginLeft="16dp"
+				android:timePickerMode="spinner"
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" />
+			-->
 
-			</LinearLayout>
 
 			<TextView
+				android:textColor="@color/colorPrimary"
 				android:layout_marginTop="16dp"
-				android:textColor="@android:color/holo_blue_dark"
-				android:textStyle="bold"
 				android:layout_marginLeft="16dp"
+				android:layout_below="@id/pool_separator_line"
 				android:layout_width="wrap_content" 
 				android:layout_height="wrap_content" 
-				android:text="Pump End"
-				android:textSize="18dp" />
+				android:text="Pump Shutoff Time"
+				android:textSize="16dp" />
 
-			<LinearLayout android:layout_width="wrap_content" 
-				android:layout_height="wrap_content" 
-				android:orientation="horizontal">
 
-				<TimePicker
-					android:layout_marginLeft="16dp"
-					android:id="@+id/picker_end_time"
-					android:timePickerMode="spinner"
-					android:layout_width="wrap_content" 
-					android:layout_height="wrap_content" />
+			<!--<TimePicker
+				android:layout_marginLeft="16dp"
+				android:id="@+id/picker_end_time"
+				android:timePickerMode="spinner"
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" />
+			-->
 
-				<ImageButton
-					android:id="@+id/pool_refresh_end_btn"
-					android:background="@color/material_grey_300"
-					android:layout_width="wrap_content" 
-					android:layout_height="wrap_content"
-					android:layout_gravity="center"
-					android:src="@drawable/ic_refresh_green_200_48dp" />
-			</LinearLayout>
-
-			<LinearLayout android:layout_width="match_parent" 
-				android:layout_marginTop="16dp"
-				android:layout_height="wrap_content" 
-				android:orientation="vertical">
-				<Button 
-					android:id="@+id/pool_save_button"
-					android:layout_gravity="center_horizontal"
-					android:backgroundTint="@color/colorPrimary"
-					android:textColor="@color/grayish"
-					android:text="Save"
-					android:layout_width="256dp" 
-					android:layout_height="56dp" />
-			</LinearLayout>
-		</LinearLayout>
+			<!--<Button 
+				android:id="@+id/pool_save_button"
+				android:layout_gravity="center_horizontal"
+				android:backgroundTint="@color/colorPrimary"
+				android:textColor="@color/grayish"
+				android:text="Save"
+				android:layout_width="256dp" 
+				android:layout_height="56dp" />
+			-->
+		</RelativeLayout>
 	</ScrollView>
 </RelativeLayout>
