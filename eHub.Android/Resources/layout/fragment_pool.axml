@@ -38,10 +38,9 @@
 			<Button
 				android:id="@+id/pool_starttime_button"
 				android:layout_width="64dp"
-				android:layout_height="24dp"
+				android:layout_height="wrap_content"
 				android:layout_marginRight="16dp"
 				android:layout_alignParentRight="true"
-				android:background="@drawable/rounded_corners_8dp"
 				android:backgroundTint="@color/colorPrimary"
 				android:textColor="@color/material_grey_100"
 				android:text="Edit" />
@@ -88,10 +87,9 @@
 			<Button
 				android:id="@+id/pool_endtime_button"
 				android:layout_width="64dp"
-				android:layout_height="24dp"
 				android:layout_marginRight="16dp"
 				android:layout_alignParentRight="true"
-				android:background="@drawable/rounded_corners_8dp"
+				android:layout_height="wrap_content"
 				android:backgroundTint="@color/colorPrimary"
 				android:textColor="@color/material_grey_100"
 				android:text="Edit" />

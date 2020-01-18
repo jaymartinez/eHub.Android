@@ -12,7 +12,7 @@ namespace eHub.Android.Fragments
 {
     public class PoolFragment : Fragment
     {
-        Button _saveButton;
+        Button _saveButton, _editBtnStart, _editBtnStop;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -26,13 +26,9 @@ namespace eHub.Android.Fragments
 
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
-            //_startPicker = view.FindViewById<TimePicker>(Resource.Id.picker_start_time);
-            //_endPicker = view.FindViewById<TimePicker>(Resource.Id.picker_end_time);
-            //_saveButton = view.FindViewById<Button>(Resource.Id.pool_save_button);
-
-            //_startPicker.SetOnTimeChangedListener(this);
-            //_endPicker.SetOnTimeChangedListener(this);
-
+            _saveButton = view.FindViewById<Button>(Resource.Id.pool_save_button);
+            _editBtnStart = view.FindViewById<Button>(Resource.Id.pool_starttime_button);
+            _editBtnStop = view.FindViewById<Button>(Resource.Id.pool_endtime_button);
         }
     }
 }
