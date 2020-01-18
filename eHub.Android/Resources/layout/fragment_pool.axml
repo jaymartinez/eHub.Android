@@ -17,23 +17,24 @@
 			android:layout_height="wrap_content" 
 			android:layout_marginLeft="16dp"
 			android:layout_marginBottom="16dp"
-			android:text="Pump Start Time" 
+			android:text="Start Time" 
 			android:textSize="24dp" />
 
 		<RelativeLayout
 			android:id="@+id/start_time_container"
 			android:layout_below="@id/start_time_label"
-			android:orientation="horizontal"
 			android:layout_width="match_parent" 
 			android:layout_height="wrap_content">
 
 			<TextView 
-				android:id="@+id/pool_endtime_text"
+				android:id="@+id/pool_starttime_text"
 				android:layout_width="wrap_content" 
 				android:layout_height="wrap_content"
 				android:layout_marginLeft="16dp"
+				android:textStyle="italic"
 				android:textColor="@color/material_grey_900"
-				android:textSize="16dp" android:text="Test" />
+				android:textSize="16dp" 
+				android:text="[not set]" />
 
 			<Button
 				android:id="@+id/pool_starttime_button"
@@ -66,13 +67,12 @@
 			android:layout_marginLeft="16dp"
 			android:layout_marginTop="24dp"
 			android:layout_marginBottom="16dp"
-			android:text="Pump Shutoff Time" 
+			android:text="Shutoff Time" 
 			android:textSize="24dp" />
 
 		<RelativeLayout
 			android:id="@+id/end_time_container"
 			android:layout_below="@id/end_time_label"
-			android:orientation="horizontal"
 			android:layout_width="match_parent" 
 			android:layout_height="wrap_content">
 
@@ -80,9 +80,11 @@
 				android:id="@+id/pool_endtime_text"
 				android:layout_width="wrap_content" 
 				android:layout_height="wrap_content"
+				android:textStyle="italic"
 				android:layout_marginLeft="16dp"
 				android:textColor="@color/material_grey_900"
-				android:textSize="16dp" android:text="Test" />
+				android:textSize="16dp" 
+				android:text="[not set]" />
 		
 			<Button
 				android:id="@+id/pool_endtime_button"
@@ -134,9 +136,10 @@
 			android:layout_alignParentBottom="true"	
 			android:backgroundTint="@color/colorPrimary"
 			android:textColor="@color/material_grey_100"
-			android:layout_width="256dp" 
+			android:layout_width="match_parent" 
+			android:layout_margin="16dp"
 			android:layout_marginBottom="16dp"
-			android:layout_height="wrap_content" />
+			android:layout_height="64dp" />
 
 	</RelativeLayout>
 </RelativeLayout>
