@@ -1,26 +1,24 @@
 ﻿using Android.App;
-using Android.OS;
-using Android.Support.V7.App;
-
-using static Android.Support.V4.App.FragmentManager;
 using Android.Content.PM;
-using Android.Views;
-using eHub.Android.Fragments;
+using Android.OS;
 using Android.Support.V4.Widget;
-
-using ActionBarDrawerToggle = Android.Support.V7.App.ActionBarDrawerToggle;
-using Toolbar = Android.Support.V7.Widget.Toolbar;
-using System;
+using Android.Support.V7.App;
+using Android.Views;
+using Autofac.Core;
+using eHub.Android.Fragments;
 using eHub.Android.Models;
-using Fragment = Android.Support.V4.App.Fragment;
-using AlertDialog = Android.Support.V7.App.AlertDialog;
+using System;
 using System.Collections.Generic;
+using static Android.Support.V4.App.FragmentManager;
+using ActionBarDrawerToggle = Android.Support.V7.App.ActionBarDrawerToggle;
+using Fragment = Android.Support.V4.App.Fragment;
+using Toolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace eHub.Android
 {
     [Activity(
-        Label = "@string/app_name", 
-        Theme = "@style/AppTheme", 
+        Label = "@string/app_name",
+        Theme = "@style/AppTheme",
         MainLauncher = true,
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : AppCompatActivity
@@ -33,8 +31,11 @@ namespace eHub.Android
         ActionBarDrawerToggle _drawerToggle;
         Dictionary<string, Fragment> _pageMappings = new Dictionary<string, Fragment>();
 
+        public static MainActivity Instance { get; private set; }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            Instance = this;
             base.OnCreate(savedInstanceState);
 
             // Set our view from the "main" layout resource
@@ -115,6 +116,20 @@ namespace eHub.Android
                 SupportFragmentManager.PopBackStackImmediate(removal.Name, PopBackStackInclusive);
             });
         }
+
+        /// <summary>
+        /// Asks the container for the type passed in and returns the instance.
+        /// </summary>
+        /// <param name="instance"></param>
+        /*
+        public static R ResolveServiceForFragment<T,R>(Fragment instance, T objType)
+        {
+            var container = MainApplication.Instance.Container;
+            var app = MainApplication.Instance;
+            //MainApplication.Cont
+            //_container.InjectProperties(instance, new ServicePropertySelector());
+        }
+        */
 
         public void SetRoot(MenuItem menuItem)
         {

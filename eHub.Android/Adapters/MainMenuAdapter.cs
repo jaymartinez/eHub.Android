@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Android.Graphics;
+using Android.Support.V4.Content;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
@@ -39,7 +41,6 @@ namespace eHub.Android
                     case MenuType.Spa:
                         break;
                 }
-
             }));
         }
 

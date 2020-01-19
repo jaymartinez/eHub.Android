@@ -14,4 +14,7 @@
     <item name="colorControlNormal">@android:color/white</item>
   </style>
 
+  <style name="timepicker_theme">
+    <item name="background">@color/colorPrimary</item>
+  </style>
 </resources>
