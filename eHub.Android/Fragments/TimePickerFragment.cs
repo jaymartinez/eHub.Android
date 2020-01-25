@@ -56,14 +56,5 @@ namespace eHub.Android.Fragments
         {
             base.OnCancel(dialog);
         }
-
-
-        /*
-        public void OnTimeSet(TimePicker view, int hourOfDay, int minute)
-        {
-            var args = new TimePickerArgs(hourOfDay, minute);
-            OnTimeSelected.Invoke(args);
-        }
-        */
     }
 }

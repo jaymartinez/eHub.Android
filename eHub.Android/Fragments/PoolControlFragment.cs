@@ -20,6 +20,7 @@ namespace eHub.Android.Fragments
     public class PoolControlFragment : Fragment
     {
         ImageView _toggleSwitch;
+        TextView _errorText;
 
         [Inject] public IPoolService PoolService { get; set; }
 
@@ -38,20 +39,26 @@ namespace eHub.Android.Fragments
         public override async void OnViewCreated(View view, Bundle savedInstanceState)
         {
             var curStatus = PinState.OFF;
-            var isConnected = true;
-
-            var ping = await PoolService.Ping();
-            if (ping.Count() > 0)
-            {
-                isConnected = false;
-            }
-
-            if (isConnected)
-            {
-                curStatus = await GetPoolStatus();
-            }
 
             _toggleSwitch = view.FindViewById<ImageView>(Resource.Id.pool_toggle_image);
+            _errorText = view.FindViewById<TextView>(Resource.Id.pool_error_text);
+
+            var loadingDialog = Dialogs.SimpleAlert(Context, "Loading...", "", "");
+            loadingDialog.Show();
+            var pinged = await PoolService.Ping();
+            loadingDialog.Hide();
+
+            if (pinged)
+            {
+                curStatus = await GetPoolStatus();
+                _errorText.Visibility = ViewStates.Invisible;
+            }
+            else
+            {
+                _errorText.Visibility = ViewStates.Visible;
+                _toggleSwitch.Visibility = ViewStates.Invisible;
+            }
+
             _toggleSwitch.SetOnClickListener(new OnClickListener(v =>
             {
                 Dialogs.Confirm(Context, "Confirm", "Are you sure?", "Yes", async (confirm) =>
