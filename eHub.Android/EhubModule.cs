@@ -10,6 +10,10 @@ namespace eHub.Android
         {
             base.Load(builder);
 
+            builder.RegisterType<EhubInjector>()
+                .SingleInstance()
+                .AutoActivate();
+
             builder.RegisterType<WebInterface>()
                .As<IWebInterface>()
                .SingleInstance();

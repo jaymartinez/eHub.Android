@@ -22,20 +22,23 @@ namespace eHub.Android.Fragments
 
         PoolSchedule _ps = new PoolSchedule { StartHour = 8, StartMinute = 30, EndHour = 2, EndMinute = 30 };
 
+        [Inject]
+        public IPoolService PoolService { get; set; }
+
         public override void OnCreate(Bundle savedInstanceState)
         {
+            EhubInjector.InjectProperties(this);
+
             //var i = MainActivity.ResolveServiceForFragment<IPoolService, PoolService>(this);
             base.OnCreate(savedInstanceState);
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            
-
             return inflater.Inflate(Resource.Layout.fragment_pool, container, false);
         }
 
-        public override void OnViewCreated(View view, Bundle savedInstanceState)
+        public override async void OnViewCreated(View view, Bundle savedInstanceState)
         {
             var act = Activity as AppCompatActivity;
             var ab = act.SupportActionBar;
@@ -47,29 +50,23 @@ namespace eHub.Android.Fragments
             _stopText = view.FindViewById<TextView>(Resource.Id.pool_endtime_text);
             _toggleSwitch = view.FindViewById<Switch>(Resource.Id.pool_onoff_switch);
 
-            WebInterface webInterface = new WebInterface();
-            PoolApi poolApi = new PoolApi(webInterface);
-            PoolService poolService = new PoolService(poolApi);
+            var loadingDialog = Dialogs.SimpleAlert(Context, "Loading...", "");
+            loadingDialog.Show();
+            var pinStatusResult = new PiPin();
+            //Task.Run(async () =>
+            //{
+                // Get current schedule
+                _ps = await PoolService.GetSchedule();
+                pinStatusResult = await PoolService.GetPinStatus(EquipmentType.PoolPump);
 
-            _toggleSwitch.SetOnClickListener(new OnClickListener(v =>
+            loadingDialog.Hide();
+
+            Activity.RunOnUiThread(() =>
             {
-                return;
-            }));
-
-            Task.Run(async () =>
-            {
-                _ps = await poolService.GetSchedule();
-                var status = await poolService.GetPinStatus(EquipmentType.PoolPump);
-
-                Activity.RunOnUiThread(() =>
-                {
-                    _startText.Text = $"{_ps.StartHour} : {_ps.StartMinute}";
-                    _stopText.Text = $"{_ps.EndHour} : {_ps.EndMinute}";
-                    _toggleSwitch.Selected = status.State == PinState.ON ? true : false;
-                });
+                _startText.Text = $"{_ps.StartHour} : {_ps.StartMinute}";
+                _stopText.Text = $"{_ps.EndHour} : {_ps.EndMinute}";
+                _toggleSwitch.Selected = pinStatusResult.State == PinState.ON ? true : false;
             });
-
-            // Get current schedule
 
             _editBtnStart.SetOnClickListener(new OnClickListener(v =>
             {
@@ -77,7 +74,7 @@ namespace eHub.Android.Fragments
                 {
                     _ps.StartHour = e.HourOfDay;
                     _ps.StartMinute = e.Minute;
-                    _startText.Text = $"{e.HourOfDay} : {e.Minute}";
+                    _startText.Text = GetTimeDisplay(e.HourOfDay, e.Minute);
                 }, _ps.StartHour, _ps.StartMinute, true);
                 d.SetTitle("Pick a Start Time");
                 d.Show();
@@ -85,21 +82,50 @@ namespace eHub.Android.Fragments
 
             _editBtnStop.SetOnClickListener(new OnClickListener(v =>
             {
-                var d = new TimePickerDialog(Context, Resource.Style.timepicker_theme, (s, e) =>
-                {
-                    _ps.EndHour = e.HourOfDay;
-                    _ps.EndMinute = e.Minute;
-                    _stopText.Text = $"{e.HourOfDay} : {e.Minute}";
-                }, _ps.StartHour, _ps.StartMinute, true);
-                d.SetTitle("Pick a Stop Time");
-                d.Show();
-
+                var dialog = TimePickerFragment.CreateInstance(_ps.StartHour, _ps.StartMinute);
+                //var d = new TimePickerDialog(Context, Resource.Style.timepicker_theme, (s, e) =>
+                //{
+                //    _ps.EndHour = e.HourOfDay;
+                //    _ps.EndMinute = e.Minute;
+                //    _stopText.Text = GetTimeDisplay(e.HourOfDay, e.Minute);
+                //}, _ps.StartHour, _ps.StartMinute, true);
+                //d.SetTitle("Pick a Stop Time");
+                //d.Show();
             }));
 
             _saveButton.SetOnClickListener(new OnClickListener(v =>
             {
                 SaveSchedule(_ps);
             }));
+
+            _toggleSwitch.SetOnClickListener(new OnClickListener(v =>
+            {
+                Dialogs.Confirm(Context, "Confirm", "Are you sure?", "Yes", async (confirm) =>
+                {
+                    if (!confirm)
+                    {
+                        _toggleSwitch.Checked = !_toggleSwitch.Checked;
+                    }
+                    else
+                    {
+                        var toggle = await PoolService.Toggle(EquipmentType.SpaLight);
+                        _toggleSwitch.Checked = toggle.State == PinState.ON;
+                    }
+                }, "No").Show();
+            }));
+        }
+
+        string GetTimeDisplay(int hour, int minute)
+        {
+            var hourDisplay = hour.ToString();
+            var minuteDisplay = minute.ToString();
+
+            if (minuteDisplay.Length == 1)
+            {
+                minuteDisplay = "0" + minuteDisplay;
+            }
+
+            return $"{hourDisplay} : {minuteDisplay}";
         }
 
         void SaveSchedule(PoolSchedule ps)
@@ -122,17 +148,15 @@ namespace eHub.Android.Fragments
             var endDateTime = new DateTime(
                 DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, ps.EndHour, ps.EndMinute, 0);
 
-            //TODO - need to get this from container
-            WebInterface webInterface = new WebInterface();
-            PoolApi poolApi = new PoolApi(webInterface);
-            PoolService poolService = new PoolService(poolApi);
+            var result = await PoolService.SetSchedule(startDateTime, endDateTime);
 
-            var result = await poolService.SetSchedule(startDateTime, endDateTime);
-
-            Activity.RunOnUiThread(() =>
+            if (result != null)
             {
-                Dialogs.SimpleAlert(Context, "Success!", "Schedule saved successfully.").Show();
-            });
+                Activity.RunOnUiThread(() =>
+                {
+                    Dialogs.SimpleAlert(Context, "Success!", "Schedule saved successfully.").Show();
+                });
+            }
         }
     }
 }

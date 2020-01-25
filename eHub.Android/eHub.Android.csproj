@@ -71,16 +71,19 @@
     <Compile Include="Fragments\HomeFragment.cs" />
     <Compile Include="Fragments\PoolFragment.cs" />
     <Compile Include="Fragments\TimePickerFragment.cs" />
+    <Compile Include="EhubInjector.cs" />
     <Compile Include="Listeners\OnClickListener.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="Adapters\MainMenuAdapter.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\MenuType.cs" />
+    <Compile Include="Models\TimePickerArgs.cs" />
     <Compile Include="Observables\MainMenuHandler.cs" />
     <Compile Include="Observables\ObservableHandler.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServicePropertySelector.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
