@@ -14,6 +14,7 @@ using DialogFragment = Android.Support.V4.App.DialogFragment;
 using static Android.App.TimePickerDialog;
 using eHub.Common.Models;
 using Newtonsoft.Json;
+using eHub.Android.Models;
 
 namespace eHub.Android.Fragments
 {
@@ -41,14 +42,14 @@ namespace eHub.Android.Fragments
 
         public override Dialog OnCreateDialog(Bundle savedInstanceState)
         {
-            var stringArgs = savedInstanceState.GetString($"{nameof(TimePickerArgs)}");
+            var stringArgs = Arguments.GetString($"{nameof(TimePickerArgs)}");
             var args = JsonConvert.DeserializeObject<TimePickerArgs>(stringArgs);
             return new TimePickerDialog(Context, this, args.Hour, args.Minute, true);
         }
 
         void IOnTimeSetListener.OnTimeSet(TimePicker view, int hourOfDay, int minute)
         {
-
+            OnTimeSelected.Invoke(new TimePickerArgs(hourOfDay, minute));
         }
 
         public override void OnCancel(IDialogInterface dialog)
@@ -64,18 +65,5 @@ namespace eHub.Android.Fragments
             OnTimeSelected.Invoke(args);
         }
         */
-    }
-
-    public class TimePickerArgs
-    {
-        public int Hour { get; }
-        
-        public int Minute { get; }
-
-        public TimePickerArgs(int hour, int minute)
-        {
-            Hour = hour;
-            Minute = minute;
-        }
     }
 }

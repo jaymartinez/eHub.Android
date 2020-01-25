@@ -1,24 +1,20 @@
-﻿using Android.App;
-using Android.OS;
+﻿using Android.OS;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
 using eHub.Android.Listeners;
-using eHub.Common.Api;
 using eHub.Common.Models;
 using eHub.Common.Services;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Fragment = Android.Support.V4.App.Fragment;
 
 namespace eHub.Android.Fragments
 {
-    public class PoolFragment : Fragment
+    public class PoolScheduleFragment : Fragment
     {
         Button _saveButton, _editBtnStart, _editBtnStop;
         TextView _startText, _stopText;
-        Switch _toggleSwitch;
 
         PoolSchedule _ps = new PoolSchedule { StartHour = 8, StartMinute = 30, EndHour = 2, EndMinute = 30 };
 
@@ -29,13 +25,12 @@ namespace eHub.Android.Fragments
         {
             EhubInjector.InjectProperties(this);
 
-            //var i = MainActivity.ResolveServiceForFragment<IPoolService, PoolService>(this);
             base.OnCreate(savedInstanceState);
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            return inflater.Inflate(Resource.Layout.fragment_pool, container, false);
+            return inflater.Inflate(Resource.Layout.fragment_pool_schedule, container, false);
         }
 
         public override async void OnViewCreated(View view, Bundle savedInstanceState)
@@ -48,7 +43,6 @@ namespace eHub.Android.Fragments
             _editBtnStop = view.FindViewById<Button>(Resource.Id.pool_endtime_button);
             _startText = view.FindViewById<TextView>(Resource.Id.pool_starttime_text);
             _stopText = view.FindViewById<TextView>(Resource.Id.pool_endtime_text);
-            _toggleSwitch = view.FindViewById<Switch>(Resource.Id.pool_onoff_switch);
 
             var loadingDialog = Dialogs.SimpleAlert(Context, "Loading...", "");
             loadingDialog.Show();
@@ -65,53 +59,38 @@ namespace eHub.Android.Fragments
             {
                 _startText.Text = $"{_ps.StartHour} : {_ps.StartMinute}";
                 _stopText.Text = $"{_ps.EndHour} : {_ps.EndMinute}";
-                _toggleSwitch.Selected = pinStatusResult.State == PinState.ON ? true : false;
             });
 
             _editBtnStart.SetOnClickListener(new OnClickListener(v =>
             {
-                var d = new TimePickerDialog(Context, Resource.Style.timepicker_theme, (s, e) =>
+                var picker = TimePickerFragment.CreateInstance(_ps.StartHour, _ps.StartMinute);
+                picker.OnTimeSelected = (args) =>
                 {
-                    _ps.StartHour = e.HourOfDay;
-                    _ps.StartMinute = e.Minute;
-                    _startText.Text = GetTimeDisplay(e.HourOfDay, e.Minute);
-                }, _ps.StartHour, _ps.StartMinute, true);
-                d.SetTitle("Pick a Start Time");
-                d.Show();
+                    _ps.StartHour = args.Hour;
+                    _ps.StartMinute = args.Minute;
+                    _startText.Text = GetTimeDisplay(args.Hour, args.Minute);
+                };
+
+                picker.Show(ChildFragmentManager, "starttime_picker");
             }));
 
             _editBtnStop.SetOnClickListener(new OnClickListener(v =>
             {
-                var dialog = TimePickerFragment.CreateInstance(_ps.StartHour, _ps.StartMinute);
-                //var d = new TimePickerDialog(Context, Resource.Style.timepicker_theme, (s, e) =>
-                //{
-                //    _ps.EndHour = e.HourOfDay;
-                //    _ps.EndMinute = e.Minute;
-                //    _stopText.Text = GetTimeDisplay(e.HourOfDay, e.Minute);
-                //}, _ps.StartHour, _ps.StartMinute, true);
-                //d.SetTitle("Pick a Stop Time");
-                //d.Show();
+                var picker = TimePickerFragment.CreateInstance(_ps.StartHour, _ps.StartMinute);
+                
+                picker.OnTimeSelected = (args) =>
+                {
+                    _ps.EndHour = args.Hour;
+                    _ps.EndMinute = args.Minute;
+                    _stopText.Text = GetTimeDisplay(args.Hour, args.Minute);
+                };
+
+                picker.Show(ChildFragmentManager, "endtime_picker");
             }));
 
             _saveButton.SetOnClickListener(new OnClickListener(v =>
             {
                 SaveSchedule(_ps);
-            }));
-
-            _toggleSwitch.SetOnClickListener(new OnClickListener(v =>
-            {
-                Dialogs.Confirm(Context, "Confirm", "Are you sure?", "Yes", async (confirm) =>
-                {
-                    if (!confirm)
-                    {
-                        _toggleSwitch.Checked = !_toggleSwitch.Checked;
-                    }
-                    else
-                    {
-                        var toggle = await PoolService.Toggle(EquipmentType.SpaLight);
-                        _toggleSwitch.Checked = toggle.State == PinState.ON;
-                    }
-                }, "No").Show();
             }));
         }
 
@@ -120,7 +99,11 @@ namespace eHub.Android.Fragments
             var hourDisplay = hour.ToString();
             var minuteDisplay = minute.ToString();
 
-            if (minuteDisplay.Length == 1)
+            if (minute == 0)
+            {
+                minuteDisplay = "00";
+            }
+            else if (minuteDisplay.Length == 1)
             {
                 minuteDisplay = "0" + minuteDisplay;
             }

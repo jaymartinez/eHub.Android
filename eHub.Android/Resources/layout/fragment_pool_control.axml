@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:background="@color/material_grey_100"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+	<RelativeLayout 
+		android:layout_centerInParent="true"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+
+		<ImageView
+			android:id="@+id/pool_toggle_image"
+			android:layout_width="80dp"
+			android:layout_height="80dp"
+			android:src="@drawable/icons8_switch_off_80"
+			android:drawablePadding="8dp"
+			android:paddingStart="16dp"
+			android:paddingEnd="16dp" />
+
+	</RelativeLayout>
+
+</RelativeLayout>

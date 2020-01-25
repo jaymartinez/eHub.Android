@@ -32,8 +32,9 @@ namespace eHub.Android.Fragments
         {
             var items = new List<MenuItem>
             {
-                new MenuItem("Pool", Resource.Drawable.ic_pool_blue_dark_48dp, MenuType.Pool, "pool"),
-                new MenuItem("Spa", Resource.Drawable.ic_hot_tub_blue_dark_48dp, MenuType.Spa, "spa")
+                new MenuItem("Pool Control", Resource.Drawable.ic_pool_blue_dark_48dp, MenuType.Pool, StringConstants.Tag_PoolControl),
+                new MenuItem("Pool Schedule", Resource.Drawable.ic_date_range_blue_dark_48dp, MenuType.PoolSchedule, StringConstants.Tag_PoolSchedule),
+                new MenuItem("Spa Control", Resource.Drawable.ic_hot_tub_blue_dark_48dp, MenuType.Spa, StringConstants.Tag_SpaControl)
             };
 
             _adapter = new MainMenuAdapter(items);
@@ -60,23 +61,17 @@ namespace eHub.Android.Fragments
             Fragment frag = null;
             switch (menuItem.MenuType)
             {
+                case MenuType.PoolSchedule:
+                    frag = new PoolScheduleFragment();
+                    ((MainActivity)Activity).Push(frag, menuItem.Tag);
+                    break;
                 case MenuType.Pool:
-                    frag = new PoolFragment();
+                    frag = new PoolControlFragment();
                     ((MainActivity)Activity).Push(frag, menuItem.Tag);
                     break;
                 case MenuType.Spa:
                     break;
             }
-
-            if (frag == null)
-                return;
-
-            //Activity
-            //    .SupportFragmentManager
-            //    .BeginTransaction()
-            //    .Replace(Resource.Id.main_container, frag, "Pool")
-            //    .AddToBackStack("Pool")
-            //    .Commit();
         }
     }
 }

@@ -181,8 +181,10 @@ namespace eHub.Android
         {
             switch (type)
             {
+                case MenuType.PoolSchedule:
+                    return new PoolScheduleFragment();
                 case MenuType.Pool:
-                    return new PoolFragment();
+                    return new PoolControlFragment();
                 case MenuType.Home:
                     return new HomeFragment();
             }
