@@ -120,14 +120,6 @@
 				android:layout_width="match_parent" 
 				android:layout_height="wrap_content" />
 
-			<TextView
-				android:id="@+id/pool_togglepump_label"
-				android:layout_marginTop="24dp"
-				android:text="On/Off Switch"
-				android:layout_below="@id/pool_include_booster_cb"
-				android:layout_width="wrap_content" 
-				android:layout_height="wrap_content" />
-
 		</RelativeLayout>
 	</RelativeLayout>
 	<RelativeLayout
@@ -140,13 +132,23 @@
 			android:id="@+id/pool_save_button"
 			android:text="Save"
 			android:layout_centerInParent="true"
-			android:layout_alignParentBottom="true"	
 			android:backgroundTint="@color/colorPrimary"
 			android:textColor="@color/material_grey_100"
 			android:layout_width="match_parent" 
 			android:layout_margin="16dp"
-			android:layout_marginBottom="16dp"
 			android:layout_height="64dp" />
+
+		<TextView 
+			android:id="@+id/pool_schedule_error_text"
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:layout_below="@id/pool_save_button"
+			android:textStyle="italic"
+			android:layout_marginLeft ="16dp"
+			android:textColor="@android:color/holo_red_dark"
+			android:textSize="12dp" 
+			android:visibility="gone"
+			android:text="Save disabled because can't connect to pool." />
 
 	</RelativeLayout>
 </RelativeLayout>

@@ -3485,17 +3485,20 @@ namespace eHub.Android
 			// aapt resource value: 0x7f0900bd
 			public const int pool_endtime_text = 2131296445;
 			
-			// aapt resource value: 0x7f0900b4
-			public const int pool_error_text = 2131296436;
-			
 			// aapt resource value: 0x7f0900c1
 			public const int pool_include_booster_cb = 2131296449;
 			
 			// aapt resource value: 0x7f0900b5
 			public const int pool_main_container = 2131296437;
 			
+			// aapt resource value: 0x7f0900b4
+			public const int pool_message_text = 2131296436;
+			
+			// aapt resource value: 0x7f0900c2
+			public const int pool_save_button = 2131296450;
+			
 			// aapt resource value: 0x7f0900c3
-			public const int pool_save_button = 2131296451;
+			public const int pool_schedule_error_text = 2131296451;
 			
 			// aapt resource value: 0x7f0900ba
 			public const int pool_separator_line = 2131296442;
@@ -3511,9 +3514,6 @@ namespace eHub.Android
 			
 			// aapt resource value: 0x7f0900b3
 			public const int pool_toggle_image = 2131296435;
-			
-			// aapt resource value: 0x7f0900c2
-			public const int pool_togglepump_label = 2131296450;
 			
 			// aapt resource value: 0x7f090006
 			public const int progress_circular = 2131296262;

@@ -14,9 +14,9 @@ namespace eHub.Android.Fragments
     public class PoolScheduleFragment : Fragment
     {
         Button _saveButton, _editBtnStart, _editBtnStop;
-        TextView _startText, _stopText;
+        TextView _startText, _stopText, _errorText;
 
-        PoolSchedule _ps = new PoolSchedule { StartHour = 8, StartMinute = 30, EndHour = 2, EndMinute = 30 };
+        PoolSchedule _ps = new PoolSchedule();
 
         [Inject]
         public IPoolService PoolService { get; set; }
@@ -43,55 +43,65 @@ namespace eHub.Android.Fragments
             _editBtnStop = view.FindViewById<Button>(Resource.Id.pool_endtime_button);
             _startText = view.FindViewById<TextView>(Resource.Id.pool_starttime_text);
             _stopText = view.FindViewById<TextView>(Resource.Id.pool_endtime_text);
+            _errorText = view.FindViewById<TextView>(Resource.Id.pool_schedule_error_text);
 
             var loadingDialog = Dialogs.SimpleAlert(Context, "Loading...", "");
             loadingDialog.Show();
-            var pinStatusResult = new PiPin();
-            //Task.Run(async () =>
-            //{
-                // Get current schedule
-                _ps = await PoolService.GetSchedule();
-                pinStatusResult = await PoolService.GetPinStatus(EquipmentType.PoolPump);
-
+            var connected = await PoolService.Ping();
+            var curSchedule = await PoolService.GetSchedule();
             loadingDialog.Hide();
 
-            Activity.RunOnUiThread(() =>
+            if (curSchedule != null)
             {
-                _startText.Text = $"{_ps.StartHour} : {_ps.StartMinute}";
-                _stopText.Text = $"{_ps.EndHour} : {_ps.EndMinute}";
-            });
-
-            _editBtnStart.SetOnClickListener(new OnClickListener(v =>
-            {
-                var picker = TimePickerFragment.CreateInstance(_ps.StartHour, _ps.StartMinute);
-                picker.OnTimeSelected = (args) =>
+                _ps = curSchedule;
+                Activity.RunOnUiThread(() =>
                 {
-                    _ps.StartHour = args.Hour;
-                    _ps.StartMinute = args.Minute;
-                    _startText.Text = GetTimeDisplay(args.Hour, args.Minute);
-                };
+                    _startText.Text = $"{curSchedule.StartHour} : {curSchedule.StartMinute}";
+                    _stopText.Text = $"{curSchedule.EndHour} : {curSchedule.EndMinute}";
+                });
+            }
 
-                picker.Show(ChildFragmentManager, "starttime_picker");
-            }));
-
-            _editBtnStop.SetOnClickListener(new OnClickListener(v =>
+            if (connected)
             {
-                var picker = TimePickerFragment.CreateInstance(_ps.StartHour, _ps.StartMinute);
-                
-                picker.OnTimeSelected = (args) =>
+                _editBtnStart.SetOnClickListener(new OnClickListener(v =>
                 {
-                    _ps.EndHour = args.Hour;
-                    _ps.EndMinute = args.Minute;
-                    _stopText.Text = GetTimeDisplay(args.Hour, args.Minute);
-                };
+                    var picker = TimePickerFragment.CreateInstance(_ps.StartHour, _ps.StartMinute);
+                    picker.OnTimeSelected = (args) =>
+                    {
+                        _ps.StartHour = args.Hour;
+                        _ps.StartMinute = args.Minute;
+                        _startText.Text = GetTimeDisplay(args.Hour, args.Minute);
+                    };
 
-                picker.Show(ChildFragmentManager, "endtime_picker");
-            }));
+                    picker.Show(ChildFragmentManager, "starttime_picker");
+                }));
 
-            _saveButton.SetOnClickListener(new OnClickListener(v =>
+                _editBtnStop.SetOnClickListener(new OnClickListener(v =>
+                {
+                    var picker = TimePickerFragment.CreateInstance(_ps.StartHour, _ps.StartMinute);
+
+                    picker.OnTimeSelected = (args) =>
+                    {
+                        _ps.EndHour = args.Hour;
+                        _ps.EndMinute = args.Minute;
+                        _stopText.Text = GetTimeDisplay(args.Hour, args.Minute);
+                    };
+
+                    picker.Show(ChildFragmentManager, "endtime_picker");
+                }));
+
+                _saveButton.SetOnClickListener(new OnClickListener(v =>
+                {
+                    SaveSchedule(_ps);
+                }));
+            }
+            else
             {
-                SaveSchedule(_ps);
-            }));
+                _editBtnStart.Enabled = false;
+                _editBtnStop.Enabled = false;
+                _saveButton.Enabled = false;
+                _errorText.Visibility = ViewStates.Visible;
+            }
         }
 
         string GetTimeDisplay(int hour, int minute)

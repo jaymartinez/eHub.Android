@@ -9,28 +9,20 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content">
 
-		<!--
-		<Button
-			android:id="@+id/pool_toggle_image"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:backgroundTint="@color/material_grey_100"
-			android:drawableStart="@drawable/icons8_switch_off_80" />
-		-->
-
 		<ImageView
 			android:id="@+id/pool_toggle_image"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
+			android:layout_marginTop="24dp"
+			android:layout_width="256dp"
+			android:layout_height="256dp"
 			android:src="@drawable/icons8_switch_off_80" />
 
 		<TextView 
-			android:id="@+id/pool_error_text"
-			android:text="Unable to communicate with pool"
+			android:id="@+id/pool_message_text"
 			android:textSize="16dp"
 			android:visibility="gone"
 			android:layout_below="@id/pool_toggle_image"
 			android:textColor="@android:color/holo_red_dark"
+			android:layout_centerHorizontal="true"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content" />
 

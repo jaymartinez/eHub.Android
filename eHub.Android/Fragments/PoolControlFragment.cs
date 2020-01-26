@@ -20,7 +20,7 @@ namespace eHub.Android.Fragments
     public class PoolControlFragment : Fragment
     {
         ImageView _toggleSwitch;
-        TextView _errorText;
+        TextView _messageText;
 
         [Inject] public IPoolService PoolService { get; set; }
 
@@ -41,7 +41,7 @@ namespace eHub.Android.Fragments
             var curStatus = PinState.OFF;
 
             _toggleSwitch = view.FindViewById<ImageView>(Resource.Id.pool_toggle_image);
-            _errorText = view.FindViewById<TextView>(Resource.Id.pool_error_text);
+            _messageText = view.FindViewById<TextView>(Resource.Id.pool_message_text);
 
             var loadingDialog = Dialogs.SimpleAlert(Context, "Loading...", "", "");
             loadingDialog.Show();
@@ -51,12 +51,13 @@ namespace eHub.Android.Fragments
             if (pinged)
             {
                 curStatus = await GetPoolStatus();
-                _errorText.Visibility = ViewStates.Invisible;
+                _messageText.Visibility = ViewStates.Gone;
             }
             else
             {
-                _errorText.Visibility = ViewStates.Visible;
-                _toggleSwitch.Visibility = ViewStates.Invisible;
+                _messageText.Visibility = ViewStates.Visible;
+                _messageText.Text = "Unable to communicate with pool";
+                _toggleSwitch.Visibility = ViewStates.Gone;
             }
 
             _toggleSwitch.SetOnClickListener(new OnClickListener(v =>
@@ -69,7 +70,7 @@ namespace eHub.Android.Fragments
                     }
                     else
                     {
-                        var toggleResult = await PoolService.Toggle(EquipmentType.SpaLight);
+                        var toggleResult = await PoolService.Toggle(Pin.SpaLight);
                         ToggleImage(toggleResult.State);
                     }
                 }, "No").Show();
@@ -79,29 +80,27 @@ namespace eHub.Android.Fragments
             ToggleImage(curStatus);
         }
 
-        void ToggleImage(PinState state)
+        void ToggleImage(int state)
         {
             switch (state)
             {
                 case PinState.ON:
                     _toggleSwitch.SetImageResource(Resource.Drawable.icons8_switch_on_80);
+                    _messageText.Text = "On";
+                    //_messageText.SetTextColor()
                     break;
                 case PinState.OFF:
                     _toggleSwitch.SetImageResource(Resource.Drawable.icons8_switch_off_80);
+                    //_messageText.SetTextColor()
                     break;
             }
             _toggleSwitch.RequestLayout();
         }
 
-        async Task<PinState> GetPoolStatus()
+        async Task<int> GetPoolStatus()
         {
-            var result = await PoolService.GetPinStatus(EquipmentType.SpaLight);
-            if (result == null)
-            {
-
-            }
-
-            return result?.State ?? PinState.OFF;
+            var result = await PoolService.GetPinStatus(Pin.SpaLight);
+            return result.State;
         }
     }
 }
