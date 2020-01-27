@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+using Android.Graphics;
+using Android.Support.V4.Content;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using eHub.Android.Fragments;
+using eHub.Android.Listeners;
+using eHub.Android.Models;
 
 namespace eHub.Android
 {
     public class MainMenuAdapter : RecyclerView.Adapter
     {
         List<MenuItem> _items;
+
+        public Action<MenuItem> MenuTapped { get; set; }
 
         public MainMenuAdapter(List<MenuItem> items)
         {
@@ -28,9 +26,25 @@ namespace eHub.Android
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             var cell = holder as MenuCell;
+            //var menuType = _items[position].MenuType;
 
             cell.TextView.Text = _items[position].Label;
             cell.ImageView.SetImageResource(_items[position].ImageResource);
+
+            cell.ItemView.SetOnClickListener(new OnClickListener(v =>
+            {
+                MenuTapped.Invoke(_items[position]);
+                /*
+                switch (menuType)
+                {
+                    case MenuType.Pool:
+                        MenuTapped.Invoke(_items[position]);
+                        break;
+                    case MenuType.Spa:
+                        break;
+                }
+                */
+            }));
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
