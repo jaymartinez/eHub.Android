@@ -17,8 +17,9 @@ using Toolbar = Android.Support.V7.Widget.Toolbar;
 namespace eHub.Android
 {
     [Activity(
+        Icon = "@drawable/icon",
         Label = "@string/app_name",
-        Theme = "@style/AppTheme",
+        Theme = "@style/splash_theme",
         MainLauncher = true,
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : AppCompatActivity
@@ -187,6 +188,8 @@ namespace eHub.Android
                     return new PoolControlFragment();
                 case MenuType.Home:
                     return new HomeFragment();
+                case MenuType.Spa:
+                    return new SpaControlFragment();
             }
 
             throw new ArgumentException("Unknown menu type");

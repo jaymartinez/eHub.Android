@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using eHub.Common.Api;
+using eHub.Common.Models;
 using eHub.Common.Services;
 
 namespace eHub.Android
@@ -14,9 +15,13 @@ namespace eHub.Android
                 .SingleInstance()
                 .AutoActivate();
 
-            builder.RegisterType<WebInterface>()
-               .As<IWebInterface>()
-               .SingleInstance();
+            builder.Register(ctx =>
+            {
+                var config = ctx.Resolve<Configuration>();
+                return new WebInterface(config);
+            })
+            .As<IWebInterface>()
+            .SingleInstance();
 
             builder.Register(ctx =>
             {

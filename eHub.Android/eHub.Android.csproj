@@ -69,6 +69,7 @@
     <Compile Include="EhubModule.cs" />
     <Compile Include="Fragments\DrawerFragment.cs" />
     <Compile Include="Fragments\HomeFragment.cs" />
+    <Compile Include="Fragments\SpaControlFragment.cs" />
     <Compile Include="Fragments\PoolControlFragment.cs" />
     <Compile Include="Fragments\PoolScheduleFragment.cs" />
     <Compile Include="Fragments\TimePickerFragment.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\MenuType.cs" />
     <Compile Include="Models\TimePickerArgs.cs" />
+    <Compile Include="Models\ToggleImageType.cs" />
     <Compile Include="Observables\MainMenuHandler.cs" />
     <Compile Include="Observables\ObservableHandler.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
@@ -88,6 +90,7 @@
     <Compile Include="StringConstants.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="appsettings.json" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Assets\AboutAssets.txt" />
@@ -402,6 +405,24 @@
     <AndroidResource Include="Resources\layout\fragment_pool_control.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\fragment_spa_control.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\icon.png">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\splash_background.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\splash_bg.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

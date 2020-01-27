@@ -29,7 +29,7 @@ namespace eHub.Android
         {
             base.OnCreate();
 
-            _container = ContainerConfig.Configure();
+            _container = new ContainerConfig().Configure();
         }
     }
 }

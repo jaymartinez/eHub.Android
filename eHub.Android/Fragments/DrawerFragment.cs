@@ -32,8 +32,8 @@ namespace eHub.Android.Fragments
         {
             var items = new List<MenuItem>
             {
-                new MenuItem("Pool Control", Resource.Drawable.ic_pool_blue_dark_48dp, MenuType.Pool, StringConstants.Tag_PoolControl),
                 new MenuItem("Pool Schedule", Resource.Drawable.ic_date_range_blue_dark_48dp, MenuType.PoolSchedule, StringConstants.Tag_PoolSchedule),
+                new MenuItem("Pool Control", Resource.Drawable.ic_pool_blue_dark_48dp, MenuType.Pool, StringConstants.Tag_PoolControl),
                 new MenuItem("Spa Control", Resource.Drawable.ic_hot_tub_blue_dark_48dp, MenuType.Spa, StringConstants.Tag_SpaControl)
             };
 
@@ -70,6 +70,8 @@ namespace eHub.Android.Fragments
                     ((MainActivity)Activity).Push(frag, menuItem.Tag);
                     break;
                 case MenuType.Spa:
+                    frag = new SpaControlFragment();
+                    ((MainActivity)Activity).Push(frag, menuItem.Tag);
                     break;
             }
         }
