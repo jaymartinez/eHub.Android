@@ -89,20 +89,10 @@ namespace eHub.Android.Fragments
 
                 }));
 
-                _lightToggleSwitch.SetOnClickListener(new OnClickListener(v =>
+                _lightToggleSwitch.SetOnClickListener(new OnClickListener(async v =>
                 {
-                    Dialogs.Confirm(Context, "Confirm", "Are you sure?", "Yes", async (confirm) =>
-                    {
-                        if (!confirm)
-                        {
-                            ToggleImage(curLightStatus, ToggleImageType.Light);
-                        }
-                        else
-                        {
-                            var toggleResult = await PoolService.Toggle(Pin.SpaLight);
-                            ToggleImage(toggleResult.State, ToggleImageType.Light);
-                        }
-                    }, "No").Show();
+                    var toggleResult = await PoolService.Toggle(Pin.SpaLight);
+                    ToggleImage(toggleResult.State, ToggleImageType.Light);
 
                 }));
 

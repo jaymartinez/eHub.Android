@@ -20,7 +20,6 @@
 			android:textSize="18dp"
 			android:textColor="@color/material_grey_800"
 			android:paddingStart="32dp"
-			android:textStyle="bold"
 			android:layout_centerVertical="true"
 			android:id="@+id/menu_label"
 			android:layout_toEndOf="@id/menu_imageview"

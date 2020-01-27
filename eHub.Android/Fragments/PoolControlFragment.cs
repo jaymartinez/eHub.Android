@@ -75,11 +75,7 @@ namespace eHub.Android.Fragments
                 {
                     Dialogs.Confirm(Context, "Confirm", "Are you sure?", "Yes", async (confirm) =>
                     {
-                        if (!confirm)
-                        {
-                            ToggleImage(curPumpStatus, ToggleImageType.Pump);
-                        }
-                        else
+                        if (confirm)
                         {
                             var toggleResult = await PoolService.Toggle(Pin.PoolPump);
                             ToggleImage(toggleResult.State, ToggleImageType.Pump);
