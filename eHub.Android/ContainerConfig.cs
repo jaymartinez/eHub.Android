@@ -33,7 +33,6 @@ namespace eHub.Android
             {
                 var config = GetConfig(stream);
 
-                //if (Uri.IsWellFormedUriString(config.Environment.ApiBaseRoute, UriKind.Absolute))
                 if (config == null || config.Environment == null || string.IsNullOrEmpty(config.Environment.ApiBaseRoute))
                 {
                     throw new Exception("config.ApiBaseRoute is not formatted correctly");
