@@ -85,7 +85,6 @@ namespace eHub.Android
             }
             else if (SupportFragmentManager.BackStackEntryCount == 0)
             {
-                // This would be in the case that we are on the login page
                 return;
             }
             else
