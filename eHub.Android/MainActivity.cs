@@ -117,20 +117,6 @@ namespace eHub.Android
             });
         }
 
-        /// <summary>
-        /// Asks the container for the type passed in and returns the instance.
-        /// </summary>
-        /// <param name="instance"></param>
-        /*
-        public static R ResolveServiceForFragment<T,R>(Fragment instance, T objType)
-        {
-            var container = MainApplication.Instance.Container;
-            var app = MainApplication.Instance;
-            //MainApplication.Cont
-            //_container.InjectProperties(instance, new ServicePropertySelector());
-        }
-        */
-
         public void SetRoot(MenuItem menuItem)
         {
             GC.Collect();
