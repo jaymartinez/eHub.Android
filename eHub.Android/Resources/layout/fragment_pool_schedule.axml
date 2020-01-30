@@ -116,7 +116,16 @@
 
 			<CheckBox
 			    android:id="@+id/pool_include_booster_cb"
+				android:visibility="gone"
 				android:text="Include booster pump (starts 5 min after pool, stops 30 min before pool shutoff)"
+				android:layout_width="match_parent" 
+				android:layout_height="wrap_content" />
+
+			<CheckBox
+			    android:id="@+id/pool_enable_cb"
+				android:layout_below="@id/pool_include_booster_cb"
+				android:layout_marginTop="16dp"
+				android:text="Enabled"
 				android:layout_width="match_parent" 
 				android:layout_height="wrap_content" />
 
