@@ -15,6 +15,7 @@ namespace eHub.Android.Fragments
     {
         Button _saveButton, _editBtnStart, _editBtnStop;
         TextView _startText, _stopText, _errorText;
+        CheckBox _enabledCb;
 
         PoolSchedule _ps = new PoolSchedule();
 
@@ -44,25 +45,26 @@ namespace eHub.Android.Fragments
             _startText = view.FindViewById<TextView>(Resource.Id.pool_starttime_text);
             _stopText = view.FindViewById<TextView>(Resource.Id.pool_endtime_text);
             _errorText = view.FindViewById<TextView>(Resource.Id.pool_schedule_error_text);
+            _enabledCb = view.FindViewById<CheckBox>(Resource.Id.pool_enable_cb);
 
             var loadingDialog = Dialogs.SimpleAlert(Context, "Loading...", "");
+
             loadingDialog.Show();
             var connected = await PoolService.Ping();
-            var curSchedule = await PoolService.GetSchedule();
-            loadingDialog.Hide();
-
-            if (curSchedule != null)
-            {
-                _ps = curSchedule;
-                Activity.RunOnUiThread(() =>
-                {
-                    _startText.Text = $"{curSchedule.StartHour} : {curSchedule.StartMinute}";
-                    _stopText.Text = $"{curSchedule.EndHour} : {curSchedule.EndMinute}";
-                });
-            }
 
             if (connected)
             {
+                var curSchedule = await PoolService.GetSchedule();
+                loadingDialog.Hide();
+
+                if (curSchedule != null)
+                {
+                    _ps = curSchedule;
+                    _startText.Text = $"{curSchedule.StartHour} : {curSchedule.StartMinute}";
+                    _stopText.Text = $"{curSchedule.EndHour} : {curSchedule.EndMinute}";
+                    _enabledCb.Checked = curSchedule.IsActive;
+                }
+
                 _editBtnStart.SetOnClickListener(new OnClickListener(v =>
                 {
                     var picker = TimePickerFragment.CreateInstance(_ps.StartHour, _ps.StartMinute);
@@ -97,6 +99,7 @@ namespace eHub.Android.Fragments
             }
             else
             {
+                loadingDialog.Hide();
                 _editBtnStart.Enabled = false;
                 _editBtnStop.Enabled = false;
                 _saveButton.Enabled = false;
@@ -141,7 +144,7 @@ namespace eHub.Android.Fragments
             var endDateTime = new DateTime(
                 DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, ps.EndHour, ps.EndMinute, 0);
 
-            var result = await PoolService.SetSchedule(startDateTime, endDateTime);
+            var result = await PoolService.SetSchedule(startDateTime, endDateTime, _enabledCb.Checked);
 
             if (result != null)
             {
