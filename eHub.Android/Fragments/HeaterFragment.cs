@@ -55,10 +55,11 @@ namespace eHub.Android.Fragments
 
                 _toggleSwitch.SetOnClickListener(new OnClickListener(async v =>
                 {
-                    var pumpStatus = await GetStatus(Pin.PoolPump);
-                    if (pumpStatus == PinState.OFF)
+                    // Make sure the pool pump is on first!
+                    var poolPumpStatus = await GetStatus(Pin.PoolPump);
+                    if (poolPumpStatus == PinState.OFF)
                     {
-                        Dialogs.SimpleAlert(Context, "Wait!", "The pool pump needs to be on first!");
+                        Dialogs.SimpleAlert(Context, "Wait!", "The pool pump needs to be on first!").Show();
                         return;
                     }
 
@@ -71,7 +72,7 @@ namespace eHub.Android.Fragments
             else
             {
                 _messageText.Visibility = ViewStates.Visible;
-                _messageText.Text = "Unable to communicate with pool";
+                _messageText.Text = "Unable to communicate with heater";
                 _toggleSwitch.Visibility = ViewStates.Gone;
             }
         }
