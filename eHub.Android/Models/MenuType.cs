@@ -9,6 +9,7 @@ namespace eHub.Android.Models
         Lights,
         LightsSchedule,
         Pool,
+        BoosterPump,
         PoolSchedule,
         Spa
     }
