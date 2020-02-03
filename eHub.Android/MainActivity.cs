@@ -93,9 +93,23 @@ namespace eHub.Android
             }
         }
 
+        public void PopToRoot()
+        {
+            if (SupportFragmentManager.BackStackEntryCount == 0)
+                return;
+
+            RunOnUiThread(() =>
+            {
+                var firstEntry = SupportFragmentManager.GetBackStackEntryAt(0);
+                SupportFragmentManager.PopBackStackImmediate(firstEntry.Id, 0);
+            });
+        }
+
         public void Push(Fragment fragment, string tag)
         {
             GC.Collect();
+            PopToRoot();
+
             RunOnUiThread(() =>
             {
                 SupportFragmentManager
