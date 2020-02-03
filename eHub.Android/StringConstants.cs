@@ -3,6 +3,8 @@ namespace eHub.Android
 {
     public static class StringConstants
     {
+        public const string Tag_Home = "home";
+        public const string Tag_Heater = "heater";
         public const string Tag_PoolControl = "pool";
         public const string Tag_SpaControl = "spa";
         public const string Tag_LightsControl = "lights";

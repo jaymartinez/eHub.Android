@@ -175,6 +175,8 @@ namespace eHub.Android
                     return new HomeFragment();
                 case MenuType.Spa:
                     return new SpaControlFragment();
+                case MenuType.Heater:
+                    return new HeaterFragment();
             }
 
             throw new ArgumentException("Unknown menu type");

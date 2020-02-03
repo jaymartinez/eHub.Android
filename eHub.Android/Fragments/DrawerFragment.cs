@@ -21,10 +21,6 @@ namespace eHub.Android.Fragments
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            var act = Activity as AppCompatActivity;
-            var actionBar = act.SupportActionBar;
-
-            //HasOptionsMenu = true;
             return inflater.Inflate(Resource.Layout.fragment_drawer, container, false);
         }
 
@@ -32,9 +28,11 @@ namespace eHub.Android.Fragments
         {
             var items = new List<MenuItem>
             {
+                new MenuItem("Home", Resource.Drawable.ic_home_blue_dark_48dp, MenuType.Home, StringConstants.Tag_Home),
                 new MenuItem("Pool Schedule", Resource.Drawable.ic_date_range_blue_dark_48dp, MenuType.PoolSchedule, StringConstants.Tag_PoolSchedule),
                 new MenuItem("Pool Control", Resource.Drawable.ic_pool_blue_dark_48dp, MenuType.Pool, StringConstants.Tag_PoolControl),
-                new MenuItem("Spa Control", Resource.Drawable.ic_hot_tub_blue_dark_48dp, MenuType.Spa, StringConstants.Tag_SpaControl)
+                new MenuItem("Spa Control", Resource.Drawable.ic_hot_tub_blue_dark_48dp, MenuType.Spa, StringConstants.Tag_SpaControl),
+                new MenuItem("Heater", Resource.Drawable.icons8_fire_48, MenuType.Heater, StringConstants.Tag_Heater)
             };
 
             _adapter = new MainMenuAdapter(items);

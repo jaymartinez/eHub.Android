@@ -3,12 +3,13 @@ namespace eHub.Android.Models
 {
     public enum MenuType
     {
-        Pool,
-        PoolSchedule,
-        Spa,
+        Climate,
+        Heater,
+        Home,
         Lights,
         LightsSchedule,
-        Climate,
-        Home
+        Pool,
+        PoolSchedule,
+        Spa
     }
 }
