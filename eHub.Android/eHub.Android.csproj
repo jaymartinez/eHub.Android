@@ -67,6 +67,7 @@
     <Compile Include="ContainerConfig.cs" />
     <Compile Include="Dialogs.cs" />
     <Compile Include="EhubModule.cs" />
+    <Compile Include="Fragments\BoosterFragment.cs" />
     <Compile Include="Fragments\DrawerFragment.cs" />
     <Compile Include="Fragments\HeaterFragment.cs" />
     <Compile Include="Fragments\HomeFragment.cs" />
@@ -487,6 +488,26 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_graphic_eq_blue_dark_48dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\fragment_booster.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_dialpad_blue_dark_48dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_dialpad_blue_dark_48dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_dialpad_blue_dark_48dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_dialpad_blue_dark_48dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_dialpad_blue_dark_48dp.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

@@ -1,4 +1,5 @@
-﻿using Android.Graphics;
+﻿using System.Threading.Tasks;
+using Android.Graphics;
 using Android.OS;
 using Android.Support.V4.Content;
 using Android.Support.V7.App;
@@ -7,12 +8,11 @@ using Android.Widget;
 using eHub.Android.Listeners;
 using eHub.Common.Models;
 using eHub.Common.Services;
-using System.Threading.Tasks;
 using Fragment = Android.Support.V4.App.Fragment;
 
 namespace eHub.Android.Fragments
 {
-    public class HeaterFragment : Fragment
+    public class BoosterFragment : Fragment
     {
         ImageView _toggleSwitch;
         TextView _messageText;
@@ -28,19 +28,19 @@ namespace eHub.Android.Fragments
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            return inflater.Inflate(Resource.Layout.fragment_heater, container, false);
+            return inflater.Inflate(Resource.Layout.fragment_booster, container, false);
         }
 
         public override async void OnViewCreated(View view, Bundle savedInstanceState)
         {
             var act = Activity as AppCompatActivity;
             var ab = act.SupportActionBar;
-            ab.Title = "Heater Control";
+            ab.Title = "Booster Pump Control";
 
-            var heaterStatus = PinState.OFF;
+            var boosterStatus = PinState.OFF;
 
-            _toggleSwitch = view.FindViewById<ImageView>(Resource.Id.heater_toggle_image);
-            _messageText = view.FindViewById<TextView>(Resource.Id.heater_message_text);
+            _toggleSwitch = view.FindViewById<ImageView>(Resource.Id.booster_toggle_image);
+            _messageText = view.FindViewById<TextView>(Resource.Id.booster_message_text);
 
             var loadingDialog = Dialogs.SimpleAlert(Context, "Loading...", "", "");
             loadingDialog.Show();
@@ -49,13 +49,13 @@ namespace eHub.Android.Fragments
 
             if (pinged)
             {
-                heaterStatus = await GetStatus(Pin.Heater);
+                boosterStatus = await GetStatus(Pin.BoosterPump);
 
                 _toggleSwitch.Visibility = ViewStates.Visible;
 
                 _toggleSwitch.SetOnClickListener(new OnClickListener(async v =>
                 {
-                    var curStatus = await GetStatus(Pin.Heater);
+                    var curStatus = await GetStatus(Pin.BoosterPump);
 
                     // Make sure the pool pump is on first!
                     var poolPumpStatus = await GetStatus(Pin.PoolPump);
@@ -65,16 +65,16 @@ namespace eHub.Android.Fragments
                         return;
                     }
 
-                    var toggleResult = await PoolService.Toggle(Pin.Heater);
+                    var toggleResult = await PoolService.Toggle(Pin.BoosterPump);
                     ToggleImage(toggleResult.State);
                 }));
 
-                ToggleImage(heaterStatus);
+                ToggleImage(boosterStatus);
             }
             else
             {
                 _messageText.Visibility = ViewStates.Visible;
-                _messageText.Text = "Unable to communicate with heater";
+                _messageText.Text = "Unable to communicate with booster pump";
                 _toggleSwitch.Visibility = ViewStates.Gone;
             }
         }

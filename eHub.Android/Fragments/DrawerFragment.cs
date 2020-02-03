@@ -32,7 +32,8 @@ namespace eHub.Android.Fragments
                 new MenuItem("Pool Schedule", Resource.Drawable.ic_date_range_blue_dark_48dp, MenuType.PoolSchedule, StringConstants.Tag_PoolSchedule),
                 new MenuItem("Pool Control", Resource.Drawable.ic_pool_blue_dark_48dp, MenuType.Pool, StringConstants.Tag_PoolControl),
                 new MenuItem("Spa Control", Resource.Drawable.ic_hot_tub_blue_dark_48dp, MenuType.Spa, StringConstants.Tag_SpaControl),
-                new MenuItem("Heater", Resource.Drawable.ic_graphic_eq_blue_dark_48dp, MenuType.Heater, StringConstants.Tag_Heater)
+                new MenuItem("Heater", Resource.Drawable.ic_graphic_eq_blue_dark_48dp, MenuType.Heater, StringConstants.Tag_Heater),
+                new MenuItem("Booster Pump", Resource.Drawable.ic_dialpad_blue_dark_48dp, MenuType.BoosterPump, StringConstants.Tag_BoosterPump)
             };
 
             _adapter = new MainMenuAdapter(items);
@@ -79,7 +80,10 @@ namespace eHub.Android.Fragments
                     frag = new HomeFragment();
                     ((MainActivity)Activity).Push(frag, menuItem.Tag);
                     break;
-
+                case MenuType.BoosterPump:
+                    frag = new BoosterFragment();
+                    ((MainActivity)Activity).Push(frag, menuItem.Tag);
+                    break;
             }
         }
     }

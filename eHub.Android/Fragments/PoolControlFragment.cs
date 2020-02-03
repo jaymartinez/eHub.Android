@@ -63,10 +63,23 @@ namespace eHub.Android.Fragments
                 _poolLabel.Visibility = ViewStates.Visible;
                 _lightLabel.Visibility = ViewStates.Visible;
 
-                _toggleSwitch.SetOnClickListener(new OnClickListener(v =>
+                _toggleSwitch.SetOnClickListener(new OnClickListener(async v =>
                 {
+                    var heaterStatus = await GetStatus(Pin.Heater);
+                    var boosterStatus = await GetStatus(Pin.BoosterPump);
+                    var spaStatus = await GetStatus(Pin.SpaPump);
+
+                    if (curPumpStatus == PinState.ON && (heaterStatus == PinState.ON
+                        || boosterStatus == PinState.ON
+                        || spaStatus == PinState.ON))
+                    {
+                        Dialogs.SimpleAlert(Context, "One of the other pumps are still on, turn those off first.", "").Show();
+                        return;
+                    }
+
                     Dialogs.Confirm(Context, "Confirm", "Are you sure?", "Yes", async (confirm) =>
                     {
+
                         if (confirm)
                         {
                             var toggleResult = await PoolService.Toggle(Pin.PoolPump);
