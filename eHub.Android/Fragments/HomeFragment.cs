@@ -1,4 +1,5 @@
 ﻿using Android.OS;
+using Android.Support.V7.App;
 using Android.Views;
 using Fragment = Android.Support.V4.App.Fragment;
 
@@ -19,8 +20,11 @@ namespace eHub.Android.Fragments
 
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
+            var act = Activity as AppCompatActivity;
+            var ab = act.SupportActionBar;
+            ab.Title = "Home";
+            
             base.OnViewCreated(view, savedInstanceState);
-
         }
     }
 }

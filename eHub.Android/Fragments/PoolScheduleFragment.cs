@@ -47,7 +47,7 @@ namespace eHub.Android.Fragments
             _errorText = view.FindViewById<TextView>(Resource.Id.pool_schedule_error_text);
             _enabledCb = view.FindViewById<CheckBox>(Resource.Id.pool_enable_cb);
 
-            var loadingDialog = Dialogs.SimpleAlert(Context, "Loading...", "");
+            var loadingDialog = Dialogs.SimpleAlert(Context, "Loading...", "", "");
 
             loadingDialog.Show();
             var connected = await PoolService.Ping();

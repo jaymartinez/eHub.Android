@@ -89,7 +89,7 @@ namespace eHub.Android
             }
             else
             {
-                Pop();
+                PopToRoot();
             }
         }
 
