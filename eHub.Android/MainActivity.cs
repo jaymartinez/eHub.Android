@@ -18,7 +18,7 @@ namespace eHub.Android
     [Activity(
         Icon = "@drawable/icon",
         Label = "@string/app_name",
-        //Theme = "@style/splash_theme",
+        Theme = "@style/splash_theme",
         MainLauncher = true,
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : AppCompatActivity
