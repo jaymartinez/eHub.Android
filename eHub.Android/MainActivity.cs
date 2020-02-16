@@ -4,7 +4,6 @@ using Android.OS;
 using Android.Support.V4.Widget;
 using Android.Support.V7.App;
 using Android.Views;
-using Autofac.Core;
 using eHub.Android.Fragments;
 using eHub.Android.Models;
 using System;
@@ -19,7 +18,7 @@ namespace eHub.Android
     [Activity(
         Icon = "@drawable/icon",
         Label = "@string/app_name",
-        Theme = "@style/splash_theme",
+        //Theme = "@style/splash_theme",
         MainLauncher = true,
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : AppCompatActivity

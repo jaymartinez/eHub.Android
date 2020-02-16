@@ -17,16 +17,20 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content">
 
-			<LinearLayout
-				android:orientation="horizontal"
+			<RelativeLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content">
 
 				<ImageView 
 					android:src="@drawable/icons8_swimming_pool_96"
+					android:layout_gravity="left"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content" />
+			</RelativeLayout>
 
+			<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
 				<TextView 
 					android:id="@+id/home_poolstatus_label"
 					android:text="Off"
@@ -37,8 +41,8 @@
 					android:layout_gravity="bottom"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content" />
-			</LinearLayout>
 
+			</RelativeLayout>
 		</RelativeLayout>
 
 		<View 

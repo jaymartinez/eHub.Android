@@ -3347,11 +3347,11 @@ namespace eHub.Android
 			// aapt resource value: 0x7f0900f2
 			public const int end_padder = 2131296498;
 			
-			// aapt resource value: 0x7f0900d2
-			public const int end_time_container = 2131296466;
+			// aapt resource value: 0x7f0900d3
+			public const int end_time_container = 2131296467;
 			
-			// aapt resource value: 0x7f0900d1
-			public const int end_time_label = 2131296465;
+			// aapt resource value: 0x7f0900d2
+			public const int end_time_label = 2131296466;
 			
 			// aapt resource value: 0x7f090046
 			public const int enterAlways = 2131296326;
@@ -3572,20 +3572,20 @@ namespace eHub.Android
 			// aapt resource value: 0x7f090058
 			public const int pin = 2131296344;
 			
-			// aapt resource value: 0x7f0900d5
-			public const int pool_bottom_container = 2131296469;
+			// aapt resource value: 0x7f0900d6
+			public const int pool_bottom_container = 2131296470;
 			
-			// aapt resource value: 0x7f0900d7
-			public const int pool_enable_cb = 2131296471;
+			// aapt resource value: 0x7f0900d8
+			public const int pool_enable_cb = 2131296472;
+			
+			// aapt resource value: 0x7f0900d5
+			public const int pool_endtime_button = 2131296469;
 			
 			// aapt resource value: 0x7f0900d4
-			public const int pool_endtime_button = 2131296468;
+			public const int pool_endtime_text = 2131296468;
 			
-			// aapt resource value: 0x7f0900d3
-			public const int pool_endtime_text = 2131296467;
-			
-			// aapt resource value: 0x7f0900d6
-			public const int pool_include_booster_cb = 2131296470;
+			// aapt resource value: 0x7f0900d7
+			public const int pool_include_booster_cb = 2131296471;
 			
 			// aapt resource value: 0x7f0900c9
 			public const int pool_light_label = 2131296457;
@@ -3605,11 +3605,11 @@ namespace eHub.Android
 			// aapt resource value: 0x7f0900c6
 			public const int pool_pump_label = 2131296454;
 			
-			// aapt resource value: 0x7f0900d8
-			public const int pool_save_button = 2131296472;
-			
 			// aapt resource value: 0x7f0900d9
-			public const int pool_schedule_error_text = 2131296473;
+			public const int pool_save_button = 2131296473;
+			
+			// aapt resource value: 0x7f0900cd
+			public const int pool_schedule_error_text = 2131296461;
 			
 			// aapt resource value: 0x7f0900b7
 			public const int pool_separator_line = 2131296439;
@@ -3623,11 +3623,11 @@ namespace eHub.Android
 			// aapt resource value: 0x7f0900c3
 			public const int pool_separator_line_4 = 2131296451;
 			
-			// aapt resource value: 0x7f0900d0
-			public const int pool_starttime_button = 2131296464;
+			// aapt resource value: 0x7f0900d1
+			public const int pool_starttime_button = 2131296465;
 			
-			// aapt resource value: 0x7f0900cf
-			public const int pool_starttime_text = 2131296463;
+			// aapt resource value: 0x7f0900d0
+			public const int pool_starttime_text = 2131296464;
 			
 			// aapt resource value: 0x7f0900c7
 			public const int pool_toggle_image = 2131296455;
@@ -3776,11 +3776,11 @@ namespace eHub.Android
 			// aapt resource value: 0x7f090056
 			public const int start = 2131296342;
 			
-			// aapt resource value: 0x7f0900ce
-			public const int start_time_container = 2131296462;
+			// aapt resource value: 0x7f0900cf
+			public const int start_time_container = 2131296463;
 			
-			// aapt resource value: 0x7f0900cd
-			public const int start_time_label = 2131296461;
+			// aapt resource value: 0x7f0900ce
+			public const int start_time_label = 2131296462;
 			
 			// aapt resource value: 0x7f0900e5
 			public const int status_bar_latest_event_content = 2131296485;
