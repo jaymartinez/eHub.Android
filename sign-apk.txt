@@ -1,0 +1,2 @@
+jarsigner.exe -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore .\pool_controller_key.keystore .\pool_controller_v21.apk pool_controller
+zipalign -f -v 4 .\pool_controller_v21.apk pool_controllerv21_zipped.apk
