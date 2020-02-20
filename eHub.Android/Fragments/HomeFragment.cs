@@ -43,6 +43,9 @@ namespace eHub.Android.Fragments
             var ab = act.SupportActionBar;
             ab.Title = "Home";
 
+            var statusLabel = view.FindViewById<TextView>(Resource.Id.home_status_label);
+            var scrollView = view.FindViewById<ScrollView>(Resource.Id.home_scroll_view);
+
             _poolStatusLbl = view.FindViewById<TextView>(Resource.Id.home_poolstatus_label);
             _boosterStatusLbl = view.FindViewById<TextView>(Resource.Id.home_boosterstatus_label);
             _heaterStatusLbl = view.FindViewById<TextView>(Resource.Id.home_heaterstatus_label);
@@ -59,7 +62,20 @@ namespace eHub.Android.Fragments
             }));
 
             loadingDialog.Show();
-            await RefreshStatuses();
+
+            if (await PoolService.Ping())
+            {
+                statusLabel.Visibility = ViewStates.Gone;
+                scrollView.Visibility = ViewStates.Visible;
+
+                await RefreshStatuses();
+            }
+            else
+            {
+                statusLabel.Visibility = ViewStates.Visible;
+                scrollView.Visibility = ViewStates.Gone;
+            }
+
             loadingDialog.Hide();
         }
 

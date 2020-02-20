@@ -25,7 +25,6 @@ namespace eHub.Android
     {
         private MenuItem _currentRoot;
         bool MenuPressed { get; set; }
-        bool _doubleBackPress = false;
         Toolbar _toolbar;
         DrawerLayout _drawer;
         ActionBarDrawerToggle _drawerToggle;
