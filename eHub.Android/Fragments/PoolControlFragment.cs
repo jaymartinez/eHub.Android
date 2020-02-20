@@ -63,6 +63,15 @@ namespace eHub.Android.Fragments
                 _poolLabel.Visibility = ViewStates.Visible;
                 _lightLabel.Visibility = ViewStates.Visible;
 
+                _lightToggleSwitch.SetOnClickListener(new OnClickListener(v =>
+                {
+                    Dialogs.SimpleAlert(
+                        Context, 
+                        "Disabled", 
+                        "Pool light is disabled from the app. You'll need to use the switch outside for now.")
+                        .Show();
+                }));
+
                 _toggleSwitch.SetOnClickListener(new OnClickListener(async v =>
                 {
                     var heaterStatus = await GetStatus(Pin.Heater);
