@@ -60,8 +60,8 @@ namespace eHub.Android.Fragments
                 if (curSchedule != null)
                 {
                     _ps = curSchedule;
-                    _startText.Text = $"{curSchedule.StartHour} : {curSchedule.StartMinute}";
-                    _stopText.Text = $"{curSchedule.EndHour} : {curSchedule.EndMinute}";
+                    _startText.Text = GetTimeDisplay(curSchedule.StartHour, curSchedule.StartMinute);
+                    _stopText.Text = GetTimeDisplay(curSchedule.EndHour, curSchedule.EndMinute);
                     _enabledCb.Checked = curSchedule.IsActive;
                 }
 
@@ -116,9 +116,9 @@ namespace eHub.Android.Fragments
             {
                 minuteDisplay = "00";
             }
-            else if (minuteDisplay.Length == 1)
+            else if (minute < 10)
             {
-                minuteDisplay = "0" + minuteDisplay;
+                minuteDisplay = "0" + minute.ToString();
             }
 
             return $"{hourDisplay} : {minuteDisplay}";

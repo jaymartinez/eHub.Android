@@ -4,7 +4,6 @@ using Android.OS;
 using Android.Support.V4.Widget;
 using Android.Support.V7.App;
 using Android.Views;
-using Autofac.Core;
 using eHub.Android.Fragments;
 using eHub.Android.Models;
 using System;
@@ -26,7 +25,6 @@ namespace eHub.Android
     {
         private MenuItem _currentRoot;
         bool MenuPressed { get; set; }
-        bool _doubleBackPress = false;
         Toolbar _toolbar;
         DrawerLayout _drawer;
         ActionBarDrawerToggle _drawerToggle;
