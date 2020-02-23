@@ -26,7 +26,6 @@ namespace eHub.Android
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             var cell = holder as MenuCell;
-            //var menuType = _items[position].MenuType;
 
             cell.TextView.Text = _items[position].Label;
             cell.ImageView.SetImageResource(_items[position].ImageResource);
@@ -34,16 +33,6 @@ namespace eHub.Android
             cell.ItemView.SetOnClickListener(new OnClickListener(v =>
             {
                 MenuTapped.Invoke(_items[position]);
-                /*
-                switch (menuType)
-                {
-                    case MenuType.Pool:
-                        MenuTapped.Invoke(_items[position]);
-                        break;
-                    case MenuType.Spa:
-                        break;
-                }
-                */
             }));
         }
 

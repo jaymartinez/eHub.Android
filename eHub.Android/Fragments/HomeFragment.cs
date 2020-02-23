@@ -54,6 +54,72 @@ namespace eHub.Android.Fragments
             _groundLightStatusBulb = view.FindViewById<ImageView>(Resource.Id.home_ground_lights_btn);
             _refreshButton = view.FindViewById<Button>(Resource.Id.home_refresh_btn);
 
+            var poolSection = view.FindViewById<LinearLayout>(Resource.Id.home_pool_section);
+            var boosterSection = view.FindViewById<LinearLayout>(Resource.Id.home_booster_section);
+            var heaterSection = view.FindViewById<LinearLayout>(Resource.Id.home_heater_section);
+
+            poolSection.SetOnClickListener(new OnClickListener(v =>
+            {
+                var frag = new PoolControlFragment();
+                ((MainActivity)Activity).Push(frag, StringConstants.Tag_PoolControl);
+            }));
+            boosterSection.SetOnClickListener(new OnClickListener(v =>
+            {
+                var frag = new BoosterFragment();
+                ((MainActivity)Activity).Push(frag, StringConstants.Tag_BoosterPump);
+            }));
+            heaterSection.SetOnClickListener(new OnClickListener(v =>
+            {
+                var frag = new HeaterFragment();
+                ((MainActivity)Activity).Push(frag, StringConstants.Tag_Heater);
+            }));
+
+            _poolLightStatusBulb.SetOnClickListener(new OnClickListener(async v =>
+            {
+                var result = await PoolService.Toggle(Pin.PoolLight);
+                if (result != null)
+                {
+                    if (result.State == PinState.ON)
+                    {
+                        _poolLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_on_48);
+                    }
+                    else
+                    {
+                        _poolLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_off_48);
+                    }
+                }
+            }));
+            _spaLightStatusBulb.SetOnClickListener(new OnClickListener(async v =>
+            {
+                var result = await PoolService.Toggle(Pin.SpaLight);
+                if (result != null)
+                {
+                    if (result.State == PinState.ON)
+                    {
+                        _spaLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_on_48);
+                    }
+                    else
+                    {
+                        _spaLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_off_48);
+                    }
+                }
+            }));
+            _groundLightStatusBulb.SetOnClickListener(new OnClickListener(async v =>
+            {
+                var result = await PoolService.Toggle(Pin.GroundLights);
+                if (result != null)
+                {
+                    if (result.State == PinState.ON)
+                    {
+                        _groundLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_on_48);
+                    }
+                    else
+                    {
+                        _groundLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_off_48);
+                    }
+                }
+            }));
+
             _refreshButton.SetOnClickListener(new OnClickListener(async v =>
             {
                 loadingDialog.Show();
