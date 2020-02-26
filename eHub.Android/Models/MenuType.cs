@@ -11,6 +11,7 @@ namespace eHub.Android.Models
         Pool,
         BoosterPump,
         PoolSchedule,
-        Spa
+        Spa,
+        About
     }
 }

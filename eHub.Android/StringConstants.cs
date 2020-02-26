@@ -11,5 +11,6 @@ namespace eHub.Android
         public const string Tag_LightsControl = "lights";
         public const string Tag_PoolSchedule = "pool_schedule";
         public const string Tag_LightsSchedule = "lights_schedule";
+        public const string Tag_About = "about";
     }
 }
