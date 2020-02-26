@@ -7,8 +7,6 @@ using Android.Widget;
 using eHub.Android.Listeners;
 using eHub.Common.Models;
 using eHub.Common.Services;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Fragment = Android.Support.V4.App.Fragment;
 

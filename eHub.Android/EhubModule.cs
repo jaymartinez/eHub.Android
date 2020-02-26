@@ -1,7 +1,9 @@
 ﻿using Autofac;
+using eHub.Android.Models;
 using eHub.Common.Api;
 using eHub.Common.Models;
 using eHub.Common.Services;
+using System.IO;
 
 namespace eHub.Android
 {
@@ -14,6 +16,12 @@ namespace eHub.Android
             builder.RegisterType<EhubInjector>()
                 .SingleInstance()
                 .AutoActivate();
+
+            builder.Register(ctx =>
+            {
+                //TODO read from manifest
+                return new AppVersion { VersionName = "1.1.0", VersionNumber = 110 }; 
+            }).As<AppVersion>();
 
             builder.Register(ctx =>
             {
