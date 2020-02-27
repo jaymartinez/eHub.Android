@@ -1,18 +1,17 @@
-﻿using Android.Graphics;
-using Android.OS;
-using Android.Support.V4.Content;
+﻿using Android.OS;
+using Android.Support.V4.Widget;
 using Android.Support.V7.App;
+using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using eHub.Android.Listeners;
-using eHub.Common.Models;
+using eHub.Android.Models;
 using eHub.Common.Services;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using Fragment = Android.Support.V4.App.Fragment;
 
 namespace eHub.Android.Fragments
 {
-    public class HomeFragment : Fragment
+    public class HomeFragment : Fragment, SwipeRefreshLayout.IOnRefreshListener
     {
         TextView _poolStatusLbl;
         TextView _spaStatusLbl;
@@ -24,6 +23,9 @@ namespace eHub.Android.Fragments
         ImageView _groundLightStatusBulb;
 
         Button _refreshButton;
+        MainMenuAdapter _adapter;
+        RecyclerView _recyclerView;
+        SwipeRefreshLayout _refreshLayout;
 
         [Inject] IPoolService PoolService { get; set; }
 
@@ -34,193 +36,96 @@ namespace eHub.Android.Fragments
             return inflater.Inflate(Resource.Layout.fragment_home, container, false);
         }
 
+        public void OnRefresh()
+        {
+            _refreshLayout.Refreshing = false;
+        }
+
+        public override void OnStop()
+        {
+            base.OnStop();
+
+            var act = Activity as AppCompatActivity;
+            var ab = act.SupportActionBar;
+            ab.Show();
+        }
+
         public override async void OnViewCreated(View view, Bundle savedInstanceState)
         {
+            var statusLabel = view.FindViewById<TextView>(Resource.Id.home_status_label);
             var loadingDialog = Dialogs.SimpleAlert(Context, "Loading...", "", "");
             var act = Activity as AppCompatActivity;
             var ab = act.SupportActionBar;
-            ab.Title = "Home";
+            ab.Hide();
 
-            var statusLabel = view.FindViewById<TextView>(Resource.Id.home_status_label);
-            var scrollView = view.FindViewById<ScrollView>(Resource.Id.home_scroll_view);
-
-            _poolStatusLbl = view.FindViewById<TextView>(Resource.Id.home_poolstatus_label);
-            _boosterStatusLbl = view.FindViewById<TextView>(Resource.Id.home_boosterstatus_label);
-            _heaterStatusLbl = view.FindViewById<TextView>(Resource.Id.home_heaterstatus_label);
-            _poolLightStatusBulb = view.FindViewById<ImageView>(Resource.Id.home_pool_light_btn);
-            _spaLightStatusBulb = view.FindViewById<ImageView>(Resource.Id.home_spa_light_btn);
-            _groundLightStatusBulb = view.FindViewById<ImageView>(Resource.Id.home_ground_lights_btn);
-            _refreshButton = view.FindViewById<Button>(Resource.Id.home_refresh_btn);
-
-            var poolSection = view.FindViewById<LinearLayout>(Resource.Id.home_pool_section);
-            var boosterSection = view.FindViewById<LinearLayout>(Resource.Id.home_booster_section);
-            var heaterSection = view.FindViewById<LinearLayout>(Resource.Id.home_heater_section);
-
-            poolSection.SetOnClickListener(new OnClickListener(v =>
-            {
-                var frag = new PoolControlFragment();
-                ((MainActivity)Activity).Push(frag, StringConstants.Tag_PoolControl);
-            }));
-            boosterSection.SetOnClickListener(new OnClickListener(v =>
-            {
-                var frag = new BoosterFragment();
-                ((MainActivity)Activity).Push(frag, StringConstants.Tag_BoosterPump);
-            }));
-            heaterSection.SetOnClickListener(new OnClickListener(v =>
-            {
-                var frag = new HeaterFragment();
-                ((MainActivity)Activity).Push(frag, StringConstants.Tag_Heater);
-            }));
-
-            _poolLightStatusBulb.SetOnClickListener(new OnClickListener(async v =>
-            {
-                var result = await PoolService.Toggle(Pin.PoolLight);
-                if (result != null)
-                {
-                    if (result.State == PinState.ON)
-                    {
-                        _poolLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_on_48);
-                    }
-                    else
-                    {
-                        _poolLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_off_48);
-                    }
-                }
-            }));
-            _spaLightStatusBulb.SetOnClickListener(new OnClickListener(async v =>
-            {
-                var result = await PoolService.Toggle(Pin.SpaLight);
-                if (result != null)
-                {
-                    if (result.State == PinState.ON)
-                    {
-                        _spaLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_on_48);
-                    }
-                    else
-                    {
-                        _spaLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_off_48);
-                    }
-                }
-            }));
-            _groundLightStatusBulb.SetOnClickListener(new OnClickListener(async v =>
-            {
-                var result = await PoolService.Toggle(Pin.GroundLights);
-                if (result != null)
-                {
-                    if (result.State == PinState.ON)
-                    {
-                        _groundLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_on_48);
-                    }
-                    else
-                    {
-                        _groundLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_off_48);
-                    }
-                }
-            }));
-
-            _refreshButton.SetOnClickListener(new OnClickListener(async v =>
-            {
-                loadingDialog.Show();
-                await RefreshStatuses();
-                loadingDialog.Hide();
-            }));
-
-            loadingDialog.Show();
-
+            //loadingDialog.Show();
             if (await PoolService.Ping())
             {
-                statusLabel.Visibility = ViewStates.Gone;
-                scrollView.Visibility = ViewStates.Visible;
-
-                await RefreshStatuses();
+                // do something
             }
             else
             {
-                statusLabel.Visibility = ViewStates.Visible;
-                scrollView.Visibility = ViewStates.Gone;
+                // do something else
             }
+            //loadingDialog.Hide();
 
-            loadingDialog.Hide();
+            var items = new List<MenuItem>
+            {
+                new MenuItem("Schedule", Resource.Drawable.ic_date_range_blue_dark_48dp, MenuType.PoolSchedule, StringConstants.Tag_PoolSchedule),
+                new MenuItem("Pool", Resource.Drawable.ic_pool_blue_dark_48dp, MenuType.Pool, StringConstants.Tag_PoolControl),
+                new MenuItem("Spa", Resource.Drawable.ic_hot_tub_blue_dark_48dp, MenuType.Spa, StringConstants.Tag_SpaControl),
+                new MenuItem("Heater", Resource.Drawable.ic_graphic_eq_blue_dark_48dp, MenuType.Heater, StringConstants.Tag_Heater),
+                new MenuItem("Booster Pump", Resource.Drawable.ic_dialpad_blue_dark_48dp, MenuType.BoosterPump, StringConstants.Tag_BoosterPump),
+                new MenuItem("About", Resource.Drawable.ic_help_outline_blue_dark_48dp, MenuType.About, StringConstants.Tag_About)
+            };
+
+            _adapter = new MainMenuAdapter(items);
+
+            _adapter.MenuTapped = OnItemTap;
+
+            _recyclerView = view.FindViewById<RecyclerView>(Resource.Id.home_recycler_view);
+            _refreshLayout = view.FindViewById<SwipeRefreshLayout>(Resource.Id.home_refresh_layout);
+
+            _refreshLayout.SetOnRefreshListener(this);
+            _recyclerView.SetLayoutManager(new LinearLayoutManager(Context));
+            _recyclerView.AddItemDecoration(new DividerItemDecoration(Context, LinearLayoutManager.Vertical));
+            _recyclerView.SetAdapter(_adapter);
         }
 
-        async Task RefreshStatuses()
+        void OnItemTap(MenuItem menuItem)
         {
-            var poolPump = await GetStatus(Pin.PoolPump);
-            var booster = await GetStatus(Pin.BoosterPump);
-            var poolLight = await GetStatus(Pin.PoolLight);
-            var spaLight = await GetStatus(Pin.SpaLight);
-            var groundLights = await GetStatus(Pin.GroundLights);
-            var heater = await GetStatus(Pin.Heater);
-
-            var offColor = new Color(
-                ContextCompat.GetColor(Context, Resource.Color.orangeHolo));
-            var onColor = new Color(
-                ContextCompat.GetColor(Context, Resource.Color.greenLabel));
-
-            if (poolPump.State == PinState.ON)
+            Fragment frag = null;
+            switch (menuItem.MenuType)
             {
-                _poolStatusLbl.SetTextColor(onColor);
-                _poolStatusLbl.Text = "On";
+                case MenuType.PoolSchedule:
+                    frag = new PoolScheduleFragment();
+                    ((MainActivity)Activity).Push(frag, menuItem.Tag);
+                    break;
+                case MenuType.Pool:
+                    frag = new PoolControlFragment();
+                    ((MainActivity)Activity).Push(frag, menuItem.Tag);
+                    break;
+                case MenuType.Spa:
+                    frag = new SpaControlFragment();
+                    ((MainActivity)Activity).Push(frag, menuItem.Tag);
+                    break;
+                case MenuType.Heater:
+                    frag = new HeaterFragment();
+                    ((MainActivity)Activity).Push(frag, menuItem.Tag);
+                    break;
+                case MenuType.Home:
+                    frag = new HomeFragment();
+                    ((MainActivity)Activity).Push(frag, menuItem.Tag);
+                    break;
+                case MenuType.BoosterPump:
+                    frag = new BoosterFragment();
+                    ((MainActivity)Activity).Push(frag, menuItem.Tag);
+                    break;
+                case MenuType.About:
+                    frag = new AboutFragment();
+                    ((MainActivity)Activity).Push(frag, menuItem.Tag);
+                    break;
             }
-            else
-            {
-                _poolStatusLbl.SetTextColor(offColor);
-                _poolStatusLbl.Text = "Off";
-            }
-
-            if (booster.State == PinState.ON)
-            {
-                _boosterStatusLbl.SetTextColor(onColor);
-                _boosterStatusLbl.Text = "On";
-            }
-            else
-            {
-                _boosterStatusLbl.SetTextColor(offColor);
-                _boosterStatusLbl.Text = "Off";
-            }
-
-            if (heater.State == PinState.ON)
-            {
-                _heaterStatusLbl.SetTextColor(onColor);
-                _heaterStatusLbl.Text = "On";
-            }
-            else
-            {
-                _heaterStatusLbl.SetTextColor(offColor);
-                _heaterStatusLbl.Text = "Off";
-            }
-
-            if (poolLight.State == PinState.ON)
-            {
-                _poolLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_on_48);
-            }
-            else
-            {
-                _poolLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_off_48);
-            }
-
-            if (spaLight.State == PinState.ON)
-            {
-                _spaLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_on_48);
-            }
-            else
-            {
-                _spaLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_off_48);
-            }
-
-            if (groundLights.State == PinState.ON)
-            {
-                _groundLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_on_48);
-            }
-            else
-            {
-                _groundLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_off_48);
-            }
-        }
-
-        async Task<PiPin> GetStatus(int pin)
-        {
-            return await PoolService.GetPinStatus(pin);
         }
     }
 }
