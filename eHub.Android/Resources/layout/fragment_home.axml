@@ -7,6 +7,7 @@
 		android:id="@+id/home_status_label"
 		android:gravity="center"
 		android:textSize="20dp"
+		android:visibility="gone"
 		android:text="Could not connect to pool!"
 		android:textColor="@android:color/holo_orange_dark"
 		android:layout_width="match_parent"
@@ -14,7 +15,6 @@
 
 	<ScrollView 
 		android:id="@+id/home_scroll_view"
-		android:visibility="gone"
 		android:layout_marginTop="48dp"
 		android:background="@color/material_grey_100"
 		android:layout_width="match_parent"
@@ -26,13 +26,24 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent">
 			<LinearLayout
-				android:id="@+id/home_pool_section"
+				android:id="@+id/home_timer_section"
 				android:orientation="horizontal"
 				android:layout_margin="24dp"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content">
-				<ImageView
-					android:src="@drawable/icons8_swimming_pool_96"
+
+
+			</LinearLayout>
+			<LinearLayout
+				android:id="@+id/home_pool_section"
+				android:layout_below="@id/home_timer_section"
+				android:orientation="horizontal"
+				android:layout_margin="16dp"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+				<TextView
+					android:text="Pool Pump"
+					android:textSize="28dp"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content" />
 				<TextView
@@ -41,7 +52,7 @@
 					android:layout_gravity="bottom"
 					android:text="Off"
 					android:textSize="28dp"
-					android:textColor="@color/material_grey_600"
+					android:textColor="@android:color/holo_orange_dark"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content" />
 			</LinearLayout>
@@ -54,14 +65,45 @@
 				android:layout_marginBottom="16dp"
 				android:background="@color/colorPrimary" />
 			<LinearLayout
-				android:id="@+id/home_booster_section"
+				android:id="@+id/home_spa_section"
 				android:layout_below="@id/pool_separator_line"
 				android:orientation="horizontal"
-				android:layout_margin="24dp"
+				android:layout_margin="16dp"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content">
-				<ImageView
-					android:src="@drawable/icons8_f1_car_96"
+				<TextView
+					android:text="Spa Pump"
+					android:textSize="28dp"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
+				<TextView
+					android:id="@+id/home_poolstatus_label"
+					android:textAlignment="textEnd"
+					android:layout_gravity="bottom"
+					android:text="Off"
+					android:textSize="28dp"
+					android:textColor="@android:color/holo_orange_dark"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content" />
+			</LinearLayout>
+			<View
+				android:id="@+id/pool_separator_line_5"
+				android:layout_below="@id/home_spa_section"
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:layout_marginRight="16dp"
+				android:layout_marginBottom="16dp"
+				android:background="@color/colorPrimary" />
+			<LinearLayout
+				android:id="@+id/home_booster_section"
+				android:layout_below="@id/pool_separator_line_5"
+				android:orientation="horizontal"
+				android:layout_margin="16dp"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+				<TextView
+					android:text="Booster Pump"
+					android:textSize="28dp"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content" />
 				<TextView
@@ -70,7 +112,7 @@
 					android:textAlignment="textEnd"
 					android:layout_gravity="bottom"
 					android:textSize="28dp"
-					android:textColor="@color/material_grey_600"
+					android:textColor="@android:color/holo_orange_dark"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content" />
 			</LinearLayout>
@@ -86,12 +128,13 @@
 			<LinearLayout
 				android:id="@+id/home_heater_section"
 				android:layout_below="@id/pool_separator_line_2"
-				android:layout_margin="24dp"
+				android:layout_margin="16dp"
 				android:orientation="horizontal"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content">
-				<ImageView
-					android:src="@drawable/icons8_heater_96"
+				<TextView
+					android:text="Heater"
+					android:textSize="28dp"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content" />
 				<TextView
@@ -99,7 +142,7 @@
 					android:text="Off"
 					android:textSize="28dp"
 					android:textAlignment="textEnd"
-					android:textColor="@color/material_grey_600"
+					android:textColor="@android:color/holo_orange_dark"
 					android:layout_gravity="bottom"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content" />

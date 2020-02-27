@@ -153,7 +153,7 @@ namespace eHub.Android.Fragments
             var heater = await GetStatus(Pin.Heater);
 
             var offColor = new Color(
-                ContextCompat.GetColor(Context, Resource.Color.material_grey_600));
+                ContextCompat.GetColor(Context, Resource.Color.orangeHolo));
             var onColor = new Color(
                 ContextCompat.GetColor(Context, Resource.Color.greenLabel));
 

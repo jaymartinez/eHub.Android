@@ -6,4 +6,5 @@
     <color name="grayish">#E5E5E5</color>
     <color name="greenLabel">#33cc33</color>
     <color name="redLabel">#cc3300</color>
+    <color name="orangeHolo">#ffff8800</color>
 </resources>
