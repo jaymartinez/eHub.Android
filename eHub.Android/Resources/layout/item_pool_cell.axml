@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+	<RelativeLayout 
+		android:id="@+id/pool_cell_label_container"
+		android:padding="16dp"
+		android:layout_width="wrap_content" 
+		android:layout_height="match_parent">
+
+		<ImageView 
+			android:id="@+id/pool_cell_image"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/ic_pool_blue_grey_300_48dp" />
+
+		<LinearLayout 
+			android:layout_toRightOf="@id/pool_cell_image"
+			android:layout_centerInParent="true"
+			android:paddingLeft="16dp"
+			android:orientation="vertical"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+
+			<TextView 
+				android:id="@+id/pool_cell_label"
+				android:text="Pool"
+				android:textSize="48dp"
+				android:textColor="@color/material_grey_800"
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" />
+
+			<TextView
+				android:id="@+id/pool_cell_status_data_lbl"
+				android:textColor="@color/greenLabel"
+				android:text="ON"
+				android:textSize="24dp"
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" />
+
+		</LinearLayout>
+	</RelativeLayout>
+
+	<RelativeLayout
+		android:padding="8dp"
+		android:layout_width="match_parent" 
+		android:layout_height="match_parent">
+
+		<LinearLayout 
+			android:orientation="vertical"
+			android:gravity="end"
+			android:background="@drawable/rounded_corners_8dp"
+			android:padding="8dp"
+			android:layout_width="match_parent" 
+			android:layout_height="wrap_content">
+
+			<LinearLayout
+				android:orientation="horizontal"
+				android:layout_width="match_parent" 
+				android:layout_height="wrap_content">
+
+				<RelativeLayout 
+					android:gravity="start"
+					android:layout_width="match_parent" 
+					android:layout_height="match_parent">
+
+					<TextView
+						android:textColor="@color/greenLabel"
+						android:text="Pump Switch"
+						android:textSize="24dp"
+						android:layout_width="wrap_content" 
+						android:layout_height="wrap_content" />
+
+				</RelativeLayout>
+
+				<RelativeLayout 
+					android:gravity="end"
+					android:layout_width="match_parent" 
+					android:layout_height="match_parent">
+
+					<Switch
+						android:id="@+id/pool_cell_pump_switch"
+						android:switchPadding="16dp"
+						android:textSize="24dp"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content" />
+
+				</RelativeLayout>
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:orientation="horizontal"
+				android:layout_width="match_parent" 
+				android:layout_height="wrap_content">
+
+				<RelativeLayout 
+					android:gravity="start"
+					android:layout_width="match_parent" 
+					android:layout_height="wrap_content">
+
+					<TextView
+						android:id="@+id/pool_cell_status_data_lbl"
+						android:textColor="@color/greenLabel"
+						android:text="ON"
+						android:textSize="24dp"
+						android:layout_width="wrap_content" 
+						android:layout_height="wrap_content" />
+
+				</RelativeLayout>
+
+				<RelativeLayout 
+					android:gravity="end"
+					android:layout_width="match_parent" 
+					android:layout_height="wrap_content">
+
+				<Switch 
+					android:id="@+id/pool_cell_light_switch"
+					android:textColor="@color/material_grey_100"
+					android:text="Light Switch"
+					android:switchPadding="16dp"
+					android:textSize="24dp"
+					android:layout_width="wrap_content" 
+					android:layout_height="wrap_content" />
+
+				</RelativeLayout>
+
+			</LinearLayout>
+
+			
+
+			</LinearLayout>
+		<LinearLayout>
+
+	</RelativeLayout>
+</LinearLayout>
