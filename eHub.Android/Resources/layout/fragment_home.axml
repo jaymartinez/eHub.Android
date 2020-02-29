@@ -56,7 +56,6 @@
 
 		<android.support.v7.widget.RecyclerView 
 			android:id="@+id/home_recycler_view"
-			android:paddingTop="64dp"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent" />
 

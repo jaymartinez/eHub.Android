@@ -77,6 +77,10 @@ namespace eHub.Android
                     var poolCell = holder as EquipmentCell;
                     poolCell.OnOffSwitch.Selected = item.PoolItem.PoolPump.State == PinState.ON;
 
+                    poolCell.LightImageView.SetOnClickListener(new OnClickListener(v =>
+                    {
+                    }));
+
                     if (item.PoolItem.PoolLight.State == PinState.ON)
                     {
                         poolCell.LightImageView.SetImageResource(Resource.Drawable.icons8_light_on_48);
@@ -142,9 +146,12 @@ namespace eHub.Android
                 case HeaterId:
                     var heaterView = inflater.Inflate(Resource.Layout.item_heater_cell, parent, false);
                     return new HeaterCell(heaterView);
+                case GroundLightsId:
+                    var glView = inflater.Inflate(Resource.Layout.item_groundlights_cell, parent, false);
+                    return new GroundLightsCell(glView);
                 case AboutId:
                     var aboutView = inflater.Inflate(Resource.Layout.item_about_cell, parent, false);
-                    return new HeaterCell(aboutView);
+                    return new AboutCell(aboutView);
             }
 
             return null;

@@ -32,15 +32,6 @@ namespace eHub.Android.Fragments
             _refreshLayout.Refreshing = false;
         }
 
-        public override void OnStop()
-        {
-            base.OnStop();
-
-            var act = Activity as AppCompatActivity;
-            var ab = act.SupportActionBar;
-            ab.Show();
-        }
-
         public override async void OnViewCreated(View view, Bundle savedInstanceState)
         {
             var statusLabel = view.FindViewById<TextView>(Resource.Id.home_status_label);
@@ -72,8 +63,7 @@ namespace eHub.Android.Fragments
                 {
                     AboutClicked = () =>
                     {
-                        var frag = new AboutFragment();
-                        ((MainActivity)Activity).Push(frag, "about_page");
+                        Dialogs.SimpleAlert(Context, "About", "Version: 1.1.1").Show();
                     }
                 };
 
