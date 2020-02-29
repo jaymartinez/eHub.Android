@@ -1,29 +1,24 @@
-﻿using Android.Graphics;
-using Android.OS;
-using Android.Support.V4.Content;
-using Android.Support.V7.App;
+﻿using Android.OS;
+using Android.Support.V4.Widget;
+using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using eHub.Android.Listeners;
+using eHub.Android.Models;
 using eHub.Common.Models;
 using eHub.Common.Services;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Fragment = Android.Support.V4.App.Fragment;
 
 namespace eHub.Android.Fragments
 {
-    public class HomeFragment : Fragment
+    public class HomeFragment : Fragment, SwipeRefreshLayout.IOnRefreshListener
     {
-        TextView _poolStatusLbl;
-        TextView _spaStatusLbl;
-        TextView _boosterStatusLbl;
-        TextView _heaterStatusLbl;
-
-        ImageView _poolLightStatusBulb; 
-        ImageView _spaLightStatusBulb; 
-        ImageView _groundLightStatusBulb;
-
-        Button _refreshButton;
+        HomeRecyclerAdapter _adapter;
+        RecyclerView _recyclerView;
+        SwipeRefreshLayout _refreshLayout;
+        ProgressBar _progressBar;
 
         [Inject] IPoolService PoolService { get; set; }
 
@@ -34,193 +29,169 @@ namespace eHub.Android.Fragments
             return inflater.Inflate(Resource.Layout.fragment_home, container, false);
         }
 
+        public async void OnRefresh()
+        {
+            await OnRefreshAsync();
+        }
+
+        async Task OnRefreshAsync()
+        {
+            _adapter.Items = await RefreshView();
+            _adapter.NotifyDataSetChanged();
+            _refreshLayout.Refreshing = false;
+        }
+
         public override async void OnViewCreated(View view, Bundle savedInstanceState)
         {
-            var loadingDialog = Dialogs.SimpleAlert(Context, "Loading...", "", "");
-            var act = Activity as AppCompatActivity;
-            var ab = act.SupportActionBar;
-            ab.Title = "Home";
-
             var statusLabel = view.FindViewById<TextView>(Resource.Id.home_status_label);
-            var scrollView = view.FindViewById<ScrollView>(Resource.Id.home_scroll_view);
 
-            _poolStatusLbl = view.FindViewById<TextView>(Resource.Id.home_poolstatus_label);
-            _boosterStatusLbl = view.FindViewById<TextView>(Resource.Id.home_boosterstatus_label);
-            _heaterStatusLbl = view.FindViewById<TextView>(Resource.Id.home_heaterstatus_label);
-            _poolLightStatusBulb = view.FindViewById<ImageView>(Resource.Id.home_pool_light_btn);
-            _spaLightStatusBulb = view.FindViewById<ImageView>(Resource.Id.home_spa_light_btn);
-            _groundLightStatusBulb = view.FindViewById<ImageView>(Resource.Id.home_ground_lights_btn);
-            _refreshButton = view.FindViewById<Button>(Resource.Id.home_refresh_btn);
+            _recyclerView = view.FindViewById<RecyclerView>(Resource.Id.home_recycler_view);
+            _refreshLayout = view.FindViewById<SwipeRefreshLayout>(Resource.Id.home_refresh_layout);
+            _progressBar = view.FindViewById<ProgressBar>(Resource.Id.home_progress_bar);
 
-            var poolSection = view.FindViewById<LinearLayout>(Resource.Id.home_pool_section);
-            var boosterSection = view.FindViewById<LinearLayout>(Resource.Id.home_booster_section);
-            var heaterSection = view.FindViewById<LinearLayout>(Resource.Id.home_heater_section);
+            _refreshLayout.SetOnRefreshListener(this);
+            _recyclerView.SetLayoutManager(new LinearLayoutManager(Context));
+            _recyclerView.AddItemDecoration(new DividerItemDecoration(Context, LinearLayoutManager.Vertical));
 
-            poolSection.SetOnClickListener(new OnClickListener(v =>
-            {
-                var frag = new PoolControlFragment();
-                ((MainActivity)Activity).Push(frag, StringConstants.Tag_PoolControl);
-            }));
-            boosterSection.SetOnClickListener(new OnClickListener(v =>
-            {
-                var frag = new BoosterFragment();
-                ((MainActivity)Activity).Push(frag, StringConstants.Tag_BoosterPump);
-            }));
-            heaterSection.SetOnClickListener(new OnClickListener(v =>
-            {
-                var frag = new HeaterFragment();
-                ((MainActivity)Activity).Push(frag, StringConstants.Tag_Heater);
-            }));
-
-            _poolLightStatusBulb.SetOnClickListener(new OnClickListener(async v =>
-            {
-                var result = await PoolService.Toggle(Pin.PoolLight);
-                if (result != null)
-                {
-                    if (result.State == PinState.ON)
-                    {
-                        _poolLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_on_48);
-                    }
-                    else
-                    {
-                        _poolLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_off_48);
-                    }
-                }
-            }));
-            _spaLightStatusBulb.SetOnClickListener(new OnClickListener(async v =>
-            {
-                var result = await PoolService.Toggle(Pin.SpaLight);
-                if (result != null)
-                {
-                    if (result.State == PinState.ON)
-                    {
-                        _spaLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_on_48);
-                    }
-                    else
-                    {
-                        _spaLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_off_48);
-                    }
-                }
-            }));
-            _groundLightStatusBulb.SetOnClickListener(new OnClickListener(async v =>
-            {
-                var result = await PoolService.Toggle(Pin.GroundLights);
-                if (result != null)
-                {
-                    if (result.State == PinState.ON)
-                    {
-                        _groundLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_on_48);
-                    }
-                    else
-                    {
-                        _groundLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_off_48);
-                    }
-                }
-            }));
-
-            _refreshButton.SetOnClickListener(new OnClickListener(async v =>
-            {
-                loadingDialog.Show();
-                await RefreshStatuses();
-                loadingDialog.Hide();
-            }));
-
-            loadingDialog.Show();
-
+            _progressBar.Visibility = ViewStates.Visible;
             if (await PoolService.Ping())
             {
                 statusLabel.Visibility = ViewStates.Gone;
-                scrollView.Visibility = ViewStates.Visible;
+                _refreshLayout.Visibility = ViewStates.Visible;
 
-                await RefreshStatuses();
+                var items = await RefreshView();
+                _adapter = new HomeRecyclerAdapter(items);
+                _recyclerView.SetAdapter(_adapter);
             }
             else
             {
                 statusLabel.Visibility = ViewStates.Visible;
-                scrollView.Visibility = ViewStates.Gone;
+                _refreshLayout.Visibility = ViewStates.Gone;
             }
 
-            loadingDialog.Hide();
+            _progressBar.Visibility = ViewStates.Gone;
         }
 
-        async Task RefreshStatuses()
+        async Task<List<HomeCellItem>> RefreshView()
         {
-            var poolPump = await GetStatus(Pin.PoolPump);
-            var booster = await GetStatus(Pin.BoosterPump);
-            var poolLight = await GetStatus(Pin.PoolLight);
-            var spaLight = await GetStatus(Pin.SpaLight);
-            var groundLights = await GetStatus(Pin.GroundLights);
-            var heater = await GetStatus(Pin.Heater);
+            var sched = await PoolService.GetSchedule();
+            var pool = await PoolService.GetPinStatus(Pin.PoolPump);
+            var poolLight = await PoolService.GetPinStatus(Pin.PoolLight);
+            var spa = await PoolService.GetPinStatus(Pin.SpaPump);
+            var spaLight = await PoolService.GetPinStatus(Pin.SpaLight);
+            var booster = await PoolService.GetPinStatus(Pin.BoosterPump);
+            var heater = await PoolService.GetPinStatus(Pin.Heater);
+            var groundLights = await PoolService.GetPinStatus(Pin.GroundLights);
 
-            var offColor = new Color(
-                ContextCompat.GetColor(Context, Resource.Color.material_grey_600));
-            var onColor = new Color(
-                ContextCompat.GetColor(Context, Resource.Color.greenLabel));
+            var aboutItem = new HomeCellItem(CellType.About)
+            {
+                AboutTapped = () =>
+                {
+                    Dialogs.SimpleAlert(Context, "About", "Version: 1.1.1").Show();
+                }
+            };
 
-            if (poolPump.State == PinState.ON)
-            {
-                _poolStatusLbl.SetTextColor(onColor);
-                _poolStatusLbl.Text = "On";
-            }
-            else
-            {
-                _poolStatusLbl.SetTextColor(offColor);
-                _poolStatusLbl.Text = "Off";
-            }
+            var poolCell = new PoolCellItem(pool, poolLight);
+            var spaCell = new SpaCellItem(spa, spaLight);
 
-            if (booster.State == PinState.ON)
+            var schedCell = new ScheduleCellItem(sched)
             {
-                _boosterStatusLbl.SetTextColor(onColor);
-                _boosterStatusLbl.Text = "On";
-            }
-            else
-            {
-                _boosterStatusLbl.SetTextColor(offColor);
-                _boosterStatusLbl.Text = "Off";
-            }
+                StartTapped = async (btn) =>
+                {
+                    var curSched = await PoolService.GetSchedule();
+                    var picker = TimePickerFragment.CreateInstance(curSched.StartHour, curSched.StartMinute);
 
-            if (heater.State == PinState.ON)
-            {
-                _heaterStatusLbl.SetTextColor(onColor);
-                _heaterStatusLbl.Text = "On";
-            }
-            else
-            {
-                _heaterStatusLbl.SetTextColor(offColor);
-                _heaterStatusLbl.Text = "Off";
-            }
+                    picker.OnTimeSelected = async (args) =>
+                    {
+                        var time = new TimeSpan(args.Hour, args.Minute, 0);
+                        Activity.RunOnUiThread(() =>
+                        {
+                            btn.Text = time.ToString(@"%h\:mm");
+                        });
 
-            if (poolLight.State == PinState.ON)
-            {
-                _poolLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_on_48);
-            }
-            else
-            {
-                _poolLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_off_48);
-            }
+                        var ps = new PoolSchedule
+                        {
+                            StartHour = args.Hour,
+                            StartMinute = args.Minute,
+                            EndHour = curSched.EndHour,
+                            EndMinute = curSched.EndMinute,
+                            IsActive = curSched.IsActive
+                        };
 
-            if (spaLight.State == PinState.ON)
-            {
-                _spaLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_on_48);
-            }
-            else
-            {
-                _spaLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_off_48);
-            }
+                        await SaveScheduleAsync(ps);
+                    };
 
-            if (groundLights.State == PinState.ON)
+                    picker.Show(ChildFragmentManager, "starttime_picker");
+                },
+                EndTapped = async (btn) =>
+                {
+                    var curSched = await PoolService.GetSchedule();
+                    var picker = TimePickerFragment.CreateInstance(curSched.EndHour, curSched.EndMinute);
+
+                    picker.OnTimeSelected = async (args) =>
+                    {
+                        var time = new TimeSpan(args.Hour, args.Minute, 0);
+                        Activity.RunOnUiThread(() =>
+                        {
+                            btn.Text = time.ToString(@"%h\:mm");
+                        });
+
+                        var ps = new PoolSchedule
+                        {
+                            StartHour = curSched.StartHour,
+                            StartMinute = curSched.StartMinute,
+                            EndHour = args.Hour,
+                            EndMinute = args.Minute,
+                            IsActive = curSched.IsActive
+                        };
+
+                        await SaveScheduleAsync(ps);
+                    };
+
+                    picker.Show(ChildFragmentManager, "endtime_picker");
+                },
+                EnabledCheckboxTapped = async (cb) =>
+                {
+                    var curSched = await PoolService.GetSchedule();
+
+                    var ps = new PoolSchedule
+                    {
+                        StartHour = curSched.StartHour,
+                        StartMinute = curSched.StartMinute,
+                        EndHour = curSched.EndHour,
+                        EndMinute = curSched.EndMinute,
+                        IsActive = cb.Checked
+                    };
+
+                    await SaveScheduleAsync(ps);
+                } 
+            };
+
+            return new List<HomeCellItem>(7)
             {
-                _groundLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_on_48);
-            }
-            else
-            {
-                _groundLightStatusBulb.SetImageResource(Resource.Drawable.icons8_light_off_48);
-            }
+                new HomeCellItem(schedCell, CellType.Schedule),
+                new HomeCellItem(poolCell, CellType.Pool),
+                new HomeCellItem(spaCell, CellType.Spa),
+                new HomeCellItem(booster, CellType.Booster),
+                new HomeCellItem(heater, CellType.Heater),
+                new HomeCellItem(groundLights, CellType.GroundLights),
+                aboutItem
+            };
         }
 
-        async Task<PiPin> GetStatus(int pin)
+        async Task SaveScheduleAsync(PoolSchedule ps)
         {
-            return await PoolService.GetPinStatus(pin);
+            var startDateTime = new DateTime(
+                DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, ps.StartHour, ps.StartMinute, 0);
+            var endDateTime = new DateTime(
+                DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, ps.EndHour, ps.EndMinute, 0);
+
+            var result = await PoolService.SetSchedule(startDateTime, endDateTime, ps.IsActive);
+
+            if (result != null)
+            {
+                Toast.MakeText(Context, "Schedule Saved", ToastLength.Short).Show();
+            }
         }
     }
 }

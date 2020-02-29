@@ -39,7 +39,7 @@ namespace eHub.Android
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
             var inflater = LayoutInflater.From(parent.Context);
-            var cell = inflater.Inflate(Resource.Layout.fragment_main_menu_cell, parent, false);
+            var cell = inflater.Inflate(Resource.Layout.item_main_menu_cell, parent, false);
             return new MenuCell(cell);
         }
 
