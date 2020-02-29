@@ -11,7 +11,11 @@ namespace eHub.Android.Models
         public CellType CellTypeObj { get; }
         public PiPin SingleSwitchItem { get; }
 
-        public Action AboutClicked { get; set; }
+        public Action AboutTapped { get; set; }
+
+        public Action StartButtonTapped { get; set; }
+        public Action EndButtonTapped { get; set; }
+        public Action EnabledCheckboxTapped { get; set; }
 
         public HomeCellItem(CellType cellType)
         {
@@ -47,6 +51,8 @@ namespace eHub.Android.Models
     {
         public PiPin SpaPump { get; }
         public PiPin SpaLight { get; }
+        public Action SpaLightTapped { get; set; }
+        public Action SpaSwitchTapped { get; set; }
 
         public SpaCellItem(PiPin spaPump, PiPin spaLight)
         {
@@ -59,6 +65,8 @@ namespace eHub.Android.Models
     {
         public PiPin PoolPump { get; }
         public PiPin PoolLight { get; }
+        public Action PoolLightTapped { get; set; }
+        public Action PoolSwitchTapped { get; set; }
 
         public PoolCellItem(PiPin poolPump, PiPin poolLight)
         {

@@ -8,6 +8,7 @@ using eHub.Android.Fragments;
 using eHub.Android.Listeners;
 using eHub.Android.Models;
 using eHub.Common.Models;
+using eHub.Common.Services;
 
 namespace eHub.Android
 {
@@ -25,8 +26,12 @@ namespace eHub.Android
 
         List<HomeCellItem> _items;
 
+        [Inject] IPoolService PoolService { get; set; }
+
         public HomeRecyclerAdapter(List<HomeCellItem> items)
         {
+            EhubInjector.InjectProperties(this);
+
             _mainUiHandler = new Handler(Looper.MainLooper);
             _items = items;
         }
@@ -95,6 +100,11 @@ namespace eHub.Android
                     var spaCell = holder as EquipmentCell;
                     spaCell.OnOffSwitch.Selected = item.SpaItem.SpaPump.State == PinState.ON;
 
+                    spaCell.LightImageView.SetOnClickListener(new OnClickListener(async v =>
+                    {
+                        var st = await PoolService.Toggle(Pin.SpaLight);
+                    }));
+
                     if (item.SpaItem.SpaLight.State == PinState.ON)
                     {
                         spaCell.LightImageView.SetImageResource(Resource.Drawable.icons8_light_on_48);
@@ -110,6 +120,9 @@ namespace eHub.Android
                 case CellType.Heater:
                     var eqmtCell = holder as EquipmentCell;
                     eqmtCell.OnOffSwitch.Selected = item.SingleSwitchItem.State == PinState.ON;
+                    if (item.SingleSwitchItem.PinNumber == Pin.GroundLights)
+                    {
+                    }
                     break;
 
                 case CellType.About:
@@ -118,7 +131,7 @@ namespace eHub.Android
                     {
                         _mainUiHandler.Post(() =>
                         {
-                            item.AboutClicked.Invoke();
+                            item.AboutTapped.Invoke();
                         });
                     }));
                     break;

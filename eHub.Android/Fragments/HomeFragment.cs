@@ -61,7 +61,7 @@ namespace eHub.Android.Fragments
 
                 var aboutItem = new HomeCellItem(CellType.About)
                 {
-                    AboutClicked = () =>
+                    AboutTapped = () =>
                     {
                         Dialogs.SimpleAlert(Context, "About", "Version: 1.1.1").Show();
                     }
