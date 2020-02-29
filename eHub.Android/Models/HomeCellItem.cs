@@ -14,10 +14,6 @@ namespace eHub.Android.Models
 
         public Action AboutTapped { get; set; }
 
-        public Action StartButtonTapped { get; set; }
-        public Action EndButtonTapped { get; set; }
-        public Action EnabledCheckboxTapped { get; set; }
-
         public HomeCellItem(CellType cellType)
         {
             CellTypeObj = cellType;
@@ -53,6 +49,7 @@ namespace eHub.Android.Models
         public PoolSchedule Schedule { get; }
         public Action<Button> StartTapped { get; set; }
         public Action<Button> EndTapped { get; set; }
+        public Action<CheckBox> EnabledCheckboxTapped { get; set; }
 
         public ScheduleCellItem(PoolSchedule schedule)
         {

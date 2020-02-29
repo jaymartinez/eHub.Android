@@ -87,7 +87,9 @@
     <Compile Include="Fragments\PoolScheduleFragment.cs" />
     <Compile Include="Fragments\TimePickerFragment.cs" />
     <Compile Include="EhubInjector.cs" />
+    <Compile Include="Listeners\OnCheckChangedListener.cs" />
     <Compile Include="Listeners\OnClickListener.cs" />
+    <Compile Include="Listeners\OnDragListener.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="Adapters\MainMenuAdapter.cs" />

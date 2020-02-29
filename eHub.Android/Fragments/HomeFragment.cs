@@ -51,7 +51,7 @@ namespace eHub.Android.Fragments
 
             _refreshLayout.SetOnRefreshListener(this);
             _recyclerView.SetLayoutManager(new LinearLayoutManager(Context));
-            _recyclerView.AddItemDecoration(new DividerItemDecoration(Context, LinearLayoutManager.Horizontal));
+            _recyclerView.AddItemDecoration(new DividerItemDecoration(Context, LinearLayoutManager.Vertical));
 
             _progressBar.Visibility = ViewStates.Visible;
             if (await PoolService.Ping())
@@ -96,14 +96,10 @@ namespace eHub.Android.Fragments
 
             var schedCell = new ScheduleCellItem(sched)
             {
-                StartTapped = (btn) =>
+                StartTapped = async (btn) =>
                 {
-                    var curStartHour = sched.StartHour;
-                    var curStartMin = sched.StartMinute;
-                    var curEndHour = sched.EndHour;
-                    var curEndMin = sched.EndMinute;
-
-                    var picker = TimePickerFragment.CreateInstance(curStartHour, curStartMin);
+                    var curSched = await PoolService.GetSchedule();
+                    var picker = TimePickerFragment.CreateInstance(curSched.StartHour, curSched.StartMinute);
 
                     picker.OnTimeSelected = async (args) =>
                     {
@@ -117,8 +113,9 @@ namespace eHub.Android.Fragments
                         {
                             StartHour = args.Hour,
                             StartMinute = args.Minute,
-                            EndHour = curEndHour,
-                            EndMinute = curEndMin
+                            EndHour = curSched.EndHour,
+                            EndMinute = curSched.EndMinute,
+                            IsActive = curSched.IsActive
                         };
 
                         await SaveScheduleAsync(ps);
@@ -126,14 +123,10 @@ namespace eHub.Android.Fragments
 
                     picker.Show(ChildFragmentManager, "starttime_picker");
                 },
-                EndTapped = (btn) =>
+                EndTapped = async (btn) =>
                 {
-                    var curStartHour = sched.StartHour;
-                    var curStartMin = sched.StartMinute;
-                    var curEndHour = sched.EndHour;
-                    var curEndMin = sched.EndMinute;
-
-                    var picker = TimePickerFragment.CreateInstance(curEndHour, curEndMin);
+                    var curSched = await PoolService.GetSchedule();
+                    var picker = TimePickerFragment.CreateInstance(curSched.EndHour, curSched.EndMinute);
 
                     picker.OnTimeSelected = async (args) =>
                     {
@@ -145,17 +138,33 @@ namespace eHub.Android.Fragments
 
                         var ps = new PoolSchedule
                         {
-                            StartHour = curStartHour,
-                            StartMinute = curStartMin,
+                            StartHour = curSched.StartHour,
+                            StartMinute = curSched.StartMinute,
                             EndHour = args.Hour,
-                            EndMinute = args.Minute
+                            EndMinute = args.Minute,
+                            IsActive = curSched.IsActive
                         };
 
                         await SaveScheduleAsync(ps);
                     };
 
                     picker.Show(ChildFragmentManager, "endtime_picker");
-                }
+                },
+                EnabledCheckboxTapped = async (cb) =>
+                {
+                    var curSched = await PoolService.GetSchedule();
+
+                    var ps = new PoolSchedule
+                    {
+                        StartHour = curSched.StartHour,
+                        StartMinute = curSched.StartMinute,
+                        EndHour = curSched.EndHour,
+                        EndMinute = curSched.EndMinute,
+                        IsActive = cb.Checked
+                    };
+
+                    await SaveScheduleAsync(ps);
+                } 
             };
 
             return new List<HomeCellItem>(7)
@@ -181,7 +190,7 @@ namespace eHub.Android.Fragments
 
             if (result != null)
             {
-                Toast.MakeText(Context, "Schedule Saved", ToastLength.Short);
+                Toast.MakeText(Context, "Schedule Saved", ToastLength.Short).Show();
             }
         }
     }
