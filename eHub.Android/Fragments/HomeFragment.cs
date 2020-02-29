@@ -87,7 +87,7 @@ namespace eHub.Android.Fragments
             {
                 AboutTapped = () =>
                 {
-                    Dialogs.SimpleAlert(Context, "About", "Version: 1.1.1").Show();
+                    Dialogs.SimpleAlert(Context, "About", "Version: 1.2.0").Show();
                 }
             };
 
