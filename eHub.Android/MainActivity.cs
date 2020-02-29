@@ -23,13 +23,6 @@ namespace eHub.Android
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : AppCompatActivity
     {
-        private MenuItem _currentRoot;
-        bool MenuPressed { get; set; }
-        Toolbar _toolbar;
-        DrawerLayout _drawer;
-        ActionBarDrawerToggle _drawerToggle;
-        Dictionary<string, Fragment> _pageMappings = new Dictionary<string, Fragment>();
-
         public static MainActivity Instance { get; private set; }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -56,19 +49,12 @@ namespace eHub.Android
                 .Replace(Resource.Id.main_container, hf, "home")
                 .Commit();
 
-            SetRoot(new MenuItem("Home", Resource.Drawable.ic_device_hub_blue_dark_48dp, MenuType.Home, "home"));
+            //SetRoot(new MenuItem("Home", Resource.Drawable.ic_device_hub_blue_dark_48dp, MenuType.Home, "home"));
         }
 
         public override void OnBackPressed()
         {
-            if (SupportFragmentManager.BackStackEntryCount == 1)
-            {
-                if (_currentRoot.MenuType == MenuType.Home)
-                    return;
-
-                SetRoot(new MenuItem("Home", Resource.Drawable.ic_device_hub_blue_dark_48dp, MenuType.Home, "home"));
-            }
-            else if (SupportFragmentManager.BackStackEntryCount == 0)
+            if (SupportFragmentManager.BackStackEntryCount == 0)
             {
                 return;
             }
@@ -120,36 +106,34 @@ namespace eHub.Android
         {
             GC.Collect();
 
-            RunOnUiThread(() =>
-            {
-                SupportActionBar.Show();
+            //RunOnUiThread(() =>
+            //{
+            //    if (menuItem == null)
+            //        menuItem = new MenuItem("Home", Resource.Drawable.ic_pool_blue_dark_48dp, MenuType.Pool, "pool");
 
-                if (menuItem == null)
-                    menuItem = new MenuItem("Home", Resource.Drawable.ic_pool_blue_dark_48dp, MenuType.Pool, "pool");
+            //    // Don't do anything if the user selects the current page.
+            //    if (_currentRoot != null && menuItem.MenuType == _currentRoot.MenuType)
+            //        return;
 
-                // Don't do anything if the user selects the current page.
-                if (_currentRoot != null && menuItem.MenuType == _currentRoot.MenuType)
-                    return;
+            //    var page = GetFragmentForType(menuItem.MenuType);
 
-                var page = GetFragmentForType(menuItem.MenuType);
+            //    if (SupportFragmentManager.BackStackEntryCount > 0 && _currentRoot != null)
+            //    {
+            //        SupportFragmentManager.PopBackStackImmediate(_currentRoot.Tag, PopBackStackInclusive);
+            //    }
 
-                if (SupportFragmentManager.BackStackEntryCount > 0 && _currentRoot != null)
-                {
-                    SupportFragmentManager.PopBackStackImmediate(_currentRoot.Tag, PopBackStackInclusive);
-                }
+            //    SupportFragmentManager.ExecutePendingTransactions();
 
-                SupportFragmentManager.ExecutePendingTransactions();
+            //    var tx = SupportFragmentManager
+            //        .BeginTransaction()
+            //        .SetTransition((int)FragmentTransit.FragmentOpen);
 
-                var tx = SupportFragmentManager
-                    .BeginTransaction()
-                    .SetTransition((int)FragmentTransit.FragmentOpen);
+            //    tx.Replace(Resource.Id.main_container, page, menuItem.Tag)
+            //      .AddToBackStack(menuItem.Tag)
+            //      .Commit();
 
-                tx.Replace(Resource.Id.main_container, page, menuItem.Tag)
-                  .AddToBackStack(menuItem.Tag)
-                  .Commit();
-
-                _currentRoot = menuItem;
-            });
+            //    _currentRoot = menuItem;
+            //});
         }
 
         Fragment GetFragmentForType(MenuType type)

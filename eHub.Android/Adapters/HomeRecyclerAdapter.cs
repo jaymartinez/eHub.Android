@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Android.OS;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
@@ -20,10 +21,13 @@ namespace eHub.Android
         const int GroundLightsId = 6;
         const int AboutId = 7;
 
+        readonly Handler _mainUiHandler;
+
         List<HomeCellItem> _items;
 
         public HomeRecyclerAdapter(List<HomeCellItem> items)
         {
+            _mainUiHandler = new Handler(Looper.MainLooper);
             _items = items;
         }
 
@@ -108,7 +112,10 @@ namespace eHub.Android
                     var aboutCell = holder as AboutCell;
                     aboutCell.ItemView.SetOnClickListener(new OnClickListener(v =>
                     {
-                        item.AboutClicked.Invoke();
+                        _mainUiHandler.Post(() =>
+                        {
+                            item.AboutClicked.Invoke();
+                        });
                     }));
                     break;
             }

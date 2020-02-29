@@ -55,7 +55,6 @@ namespace eHub.Android.Fragments
                 _refreshLayout.SetOnRefreshListener(this);
                 _recyclerView.SetLayoutManager(new LinearLayoutManager(Context));
                 _recyclerView.AddItemDecoration(new DividerItemDecoration(Context, LinearLayoutManager.Horizontal));
-                _recyclerView.SetAdapter(_adapter);
 
                 statusLabel.Visibility = ViewStates.Gone;
                 _refreshLayout.Visibility = ViewStates.Visible;
@@ -93,6 +92,7 @@ namespace eHub.Android.Fragments
                 };
 
                 _adapter = new HomeRecyclerAdapter(items);
+                _recyclerView.SetAdapter(_adapter);
             }
             else
             {
