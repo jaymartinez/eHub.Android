@@ -9,10 +9,7 @@
 	app:theme="@style/AppTheme"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
-    <include
-        layout="@layout/activity_bar_main"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent" />
+    
     <FrameLayout
         android:id="@+id/main_navigation_container"
         android:layout_height="match_parent"

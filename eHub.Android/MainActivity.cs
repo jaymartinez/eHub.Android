@@ -40,21 +40,15 @@ namespace eHub.Android
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.activity_main);
 
-            _toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
-            SetSupportActionBar(_toolbar);
+            //_toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
+            //SetSupportActionBar(_toolbar);
 
-            _drawer = FindViewById<DrawerLayout>(Resource.Id.main_drawer_layout);
-            _drawerToggle = new ActionBarDrawerToggle(this, _drawer, _toolbar, Resource.String.openDrawer, Resource.String.closeDrawer);
-            _drawer.AddDrawerListener(_drawerToggle);
-            _drawerToggle.DrawerIndicatorEnabled = true;
-            _drawerToggle.SyncState();
+            //_drawer = FindViewById<DrawerLayout>(Resource.Id.main_drawer_layout);
+            //_drawerToggle = new ActionBarDrawerToggle(this, _drawer, _toolbar, Resource.String.openDrawer, Resource.String.closeDrawer);
+            //_drawer.AddDrawerListener(_drawerToggle);
+            //_drawerToggle.DrawerIndicatorEnabled = true;
+            //_drawerToggle.SyncState();
 
-            var df = new DrawerFragment();
-            df.Drawer = new WeakReference<DrawerLayout>(_drawer);
-            SupportFragmentManager
-                .BeginTransaction()
-                .Replace(Resource.Id.main_navigation_container, df, "MainMenu")
-                .Commit();
 
             var hf = new HomeFragment();
             SupportFragmentManager
@@ -69,17 +63,10 @@ namespace eHub.Android
         {
             if (SupportFragmentManager.BackStackEntryCount == 1)
             {
-                if (_drawer.IsDrawerOpen((int)GravityFlags.Start))
-                {
-                    _drawer.CloseDrawers();
-                }
-                else
-                {
-                    if (_currentRoot.MenuType == MenuType.Home)
-                        return;
+                if (_currentRoot.MenuType == MenuType.Home)
+                    return;
 
-                    SetRoot(new MenuItem("Home", Resource.Drawable.ic_device_hub_blue_dark_48dp, MenuType.Home, "home"));
-                }
+                SetRoot(new MenuItem("Home", Resource.Drawable.ic_device_hub_blue_dark_48dp, MenuType.Home, "home"));
             }
             else if (SupportFragmentManager.BackStackEntryCount == 0)
             {
@@ -135,8 +122,6 @@ namespace eHub.Android
 
             RunOnUiThread(() =>
             {
-                _drawer.SetDrawerLockMode(DrawerLayout.LockModeUnlocked);
-                _drawer.CloseDrawers();
                 SupportActionBar.Show();
 
                 if (menuItem == null)
@@ -167,14 +152,6 @@ namespace eHub.Android
             });
         }
 
-        void StorePageMapping(string name, Fragment page)
-        {
-            if (_pageMappings.ContainsKey(name))
-                _pageMappings[name] = page;
-            else
-                _pageMappings.Add(name, page);
-        }
-
         Fragment GetFragmentForType(MenuType type)
         {
             switch (type)
@@ -189,6 +166,8 @@ namespace eHub.Android
                     return new SpaControlFragment();
                 case MenuType.Heater:
                     return new HeaterFragment();
+                case MenuType.BoosterPump:
+                    return new BoosterFragment();
             }
 
             throw new ArgumentException("Unknown menu type");

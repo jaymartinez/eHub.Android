@@ -73,6 +73,7 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adapters\HomeRecyclerAdapter.cs" />
     <Compile Include="ContainerConfig.cs" />
     <Compile Include="Dialogs.cs" />
     <Compile Include="EhubModule.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="MainApplication.cs" />
     <Compile Include="Adapters\MainMenuAdapter.cs" />
     <Compile Include="Models\AppVersion.cs" />
+    <Compile Include="Models\HomeCellItem.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\MenuType.cs" />
     <Compile Include="Models\TimePickerArgs.cs" />
@@ -606,6 +608,61 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\item_pool_cell.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\item_spa_cell.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_dialpad_blue_grey_300_48dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_dialpad_blue_grey_300_48dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_dialpad_blue_grey_300_48dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_dialpad_blue_grey_300_48dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_dialpad_blue_grey_300_48dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\item_booster_cell.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\item_heater_cell.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_graphic_eq_blue_grey_300_48dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_graphic_eq_blue_grey_300_48dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_graphic_eq_blue_grey_300_48dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_graphic_eq_blue_grey_300_48dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_graphic_eq_blue_grey_300_48dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\item_groundlights_cell.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\item_about_cell.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
