@@ -104,7 +104,7 @@ namespace eHub.Android
                     var poolCell = holder as EquipmentCell;
                     poolCell.OnOffSwitch.Checked = item.PoolItem.PoolPump.State == PinState.ON;
 
-                    SetOnOffLabelColor(poolCell.StatusTextView, item.PoolItem.PoolPump.State);
+                    SetOnOffLabelColor(poolCell.StatusTextView, item.PoolItem.PoolPump.State, true);
 
                     // Set light tap listener
                     poolCell.LightImageView.SetOnClickListener(new OnClickListener(async v =>
@@ -122,18 +122,24 @@ namespace eHub.Android
                         var boosterStatus = await GetStatus(Pin.BoosterPump);
                         var spaStatus = await GetStatus(Pin.SpaPump);
                         var curPoolState = await GetStatus(Pin.PoolPump);
-                        var onOffStr = curPoolState == 1 ? "off" : "on";
+                        var onOffStr = curPoolState == PinState.ON  ? "off" : "on";
+
+                        if (curPoolState == PinState.ON && v.Checked
+                            || curPoolState == PinState.OFF && !v.Checked)
+                        {
+                            return;
+                        }
 
                         if (curPoolState == PinState.ON && (heaterStatus == PinState.ON
-                        || boosterStatus == PinState.ON
-                        || spaStatus == PinState.ON))
+                            || boosterStatus == PinState.ON
+                            || spaStatus == PinState.ON))
                         {
                             Dialogs.SimpleAlert(v.Context, 
                                 "One of the other pumps are still on, turn those off first.", "").Show();
                             return;
                         }
 
-                        var d = Dialogs.Confirm(poolCell.ItemView.Context,
+                        Dialogs.Confirm(poolCell.ItemView.Context,
                             "Are You Sure?",
                             $"Are you sure you want to turn it {onOffStr}?",
                             "Yes", async (confirmed) =>
@@ -143,15 +149,14 @@ namespace eHub.Android
                                     var poolToggle = await PoolService.Toggle(Pin.PoolPump);
                                     if (poolToggle != null)
                                     {
-                                        SetOnOffLabelColor(poolCell.StatusTextView, poolToggle.State);
-
-                                        _mainUiHandler.Post(() =>
-                                        {
-                                            poolCell.OnOffSwitch.Checked = poolToggle.State == PinState.ON;
-                                        });
+                                        SetOnOffLabelColor(poolCell.StatusTextView, poolToggle.State, true);
                                     }
                                 }
-                            }, "No");
+                                else
+                                {
+                                    v.Checked = curPoolState == PinState.ON ? true : false;
+                                }
+                            }, "No").Show();
                     }));
 
                     // Initial state
@@ -162,7 +167,7 @@ namespace eHub.Android
                     var spaCell = holder as EquipmentCell;
                     spaCell.OnOffSwitch.Checked = item.SpaItem.SpaPump.State == PinState.ON;
 
-                    SetOnOffLabelColor(spaCell.StatusTextView, item.SpaItem.SpaPump.State);
+                    SetOnOffLabelColor(spaCell.StatusTextView, item.SpaItem.SpaPump.State, true);
 
                     spaCell.LightImageView.SetOnClickListener(new OnClickListener(async v =>
                     {
@@ -178,12 +183,7 @@ namespace eHub.Android
                         var spaToggle = await PoolService.Toggle(Pin.SpaPump);
                         if (spaToggle != null)
                         {
-                            SetOnOffLabelColor(spaCell.StatusTextView, spaToggle.State);
-
-                            _mainUiHandler.Post(() =>
-                            {
-                                spaCell.OnOffSwitch.Checked = spaToggle.State == PinState.ON;
-                            });
+                            SetOnOffLabelColor(spaCell.StatusTextView, spaToggle.State, true);
                         }
                     }));
 
@@ -198,7 +198,7 @@ namespace eHub.Android
                     var checkPool = item.CellTypeObj == CellType.Booster || item.CellTypeObj == CellType.Heater;
                     eqmtCell.OnOffSwitch.Checked = item.SingleSwitchItem.State == PinState.ON;
 
-                    SetOnOffLabelColor(eqmtCell.StatusTextView, item.SingleSwitchItem.State);
+                    SetOnOffLabelColor(eqmtCell.StatusTextView, item.SingleSwitchItem.State, false);
 
                     eqmtCell.OnOffSwitch.SetOnCheckedChangeListener(new OnCheckChangedListener(async (v, r) =>
                     {
@@ -211,6 +211,7 @@ namespace eHub.Android
                             if (curStatus == PinState.OFF && poolPumpStatus == PinState.OFF)
                             {
                                 Dialogs.SimpleAlert(v.Context, "Wait!", "The pool pump needs to be on first!").Show();
+                                v.Checked = false;
                                 return;
                             }
                         }
@@ -218,12 +219,7 @@ namespace eHub.Android
                         var toggle = await PoolService.Toggle(item.SingleSwitchItem.PinNumber);
                         if (toggle != null)
                         {
-                            SetOnOffLabelColor(eqmtCell.StatusTextView, toggle.State);
-
-                            _mainUiHandler.Post(() =>
-                            {
-                                eqmtCell.OnOffSwitch.Checked = toggle.State == PinState.ON;
-                            });
+                            SetOnOffLabelColor(eqmtCell.StatusTextView, toggle.State, false);
                         }
                     }));
                     break;
@@ -241,18 +237,13 @@ namespace eHub.Android
             }
         }
 
-        async Task HandlePoolSwitch()
-        {
-
-        }
-
         async Task<int> GetStatus(int pin)
         {
             var result = await PoolService.GetPinStatus(pin);
             return result.State;
         }
 
-        void SetOnOffLabelColor(TextView v, int state)
+        void SetOnOffLabelColor(TextView v, int state, bool spaOrPool)
         {
             var offColor = new Color(
                 ContextCompat.GetColor(v.Context, Resource.Color.redLabel));
@@ -263,12 +254,12 @@ namespace eHub.Android
             {
                 if (state == PinState.ON)
                 {
-                    v.Text = "ON";
+                    v.Text = spaOrPool ? "PUMP ON" : "ON";
                     v.SetTextColor(onColor);
                 }
                 else
                 {
-                    v.Text = "OFF";
+                    v.Text = spaOrPool ? "PUMP OFF" : "OFF";
                     v.SetTextColor(offColor);
                 }
             });

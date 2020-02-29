@@ -172,24 +172,6 @@ namespace eHub.Android
                 .Create();
         }
 
-        public static ProgressDialog IndeterminateProgress(Context ctx, string message, string title = null)
-        {
-            var progressSpinner = new ProgressDialog(ctx)
-            {
-                Indeterminate = true
-            };
-            progressSpinner.SetCancelable(false);
-            progressSpinner.SetCanceledOnTouchOutside(false);
-            progressSpinner.SetMessage(message);
-
-            if (!string.IsNullOrWhiteSpace(title))
-            {
-                progressSpinner.SetTitle(title);
-            }
-
-            return progressSpinner;
-        }
-
         public static DatePickerDialog PickDate(Context ctx, DateTime localDate, Action<DateTime> onDateSelected)
         {
             return new DatePickerDialog(ctx, (s, e) => onDateSelected(e.Date), localDate.Year, localDate.Month - 1, localDate.Day);
