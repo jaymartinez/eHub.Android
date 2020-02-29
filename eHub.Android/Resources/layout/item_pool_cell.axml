@@ -36,8 +36,8 @@
 			<TextView
 				android:id="@+id/pool_cell_status_data_lbl"
 				android:textColor="@color/redLabel"
-				android:text="OFF"
-				android:textSize="24dp"
+				android:textSize="16dp"
+				android:text="PUMP OFF"
 				android:layout_width="wrap_content" 
 				android:layout_height="wrap_content" />
 
