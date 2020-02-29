@@ -7,4 +7,6 @@
     <color name="greenLabel">#33cc33</color>
     <color name="redLabel">#cc3300</color>
     <color name="orangeHolo">#ffff8800</color>
+    <color name="lightblue">#abcee0</color>
+    <color name="silver">#768f9c</color>
 </resources>

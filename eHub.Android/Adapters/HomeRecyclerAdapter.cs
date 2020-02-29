@@ -4,7 +4,6 @@ using Android.OS;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using eHub.Android.Fragments;
 using eHub.Android.Listeners;
 using eHub.Android.Models;
 using eHub.Common.Models;

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout 
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:padding="4dp"
-	android:background="@drawable/rounded_corners_32dp"
+	android:padding="8dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -30,14 +29,14 @@
 				android:id="@+id/booster_cell_label"
 				android:text="Booster Pump"
 				android:textSize="32dp"
-				android:textColor="@color/material_grey_300"
+				android:textColor="@color/material_grey_800"
 				android:layout_width="wrap_content" 
 				android:layout_height="wrap_content" />
 
 			<TextView
 				android:id="@+id/booster_cell_status_data_lbl"
-				android:textColor="@color/greenLabel"
-				android:text="ON"
+				android:textColor="@color/redLabel"
+				android:text="OFF"
 				android:textSize="24dp"
 				android:layout_width="wrap_content" 
 				android:layout_height="wrap_content" />
@@ -55,7 +54,7 @@
 		<Switch
 			android:id="@+id/booster_cell_onoff_switch"
 			android:layout_alignParentStart="true"
-			android:textColor="@color/material_grey_300"
+			android:textColor="@color/material_grey_800"
 			android:text="On/Off"
 			android:switchPadding="16dp"
 			android:textSize="18dp"
