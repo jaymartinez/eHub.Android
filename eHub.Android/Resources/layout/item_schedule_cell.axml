@@ -53,7 +53,7 @@
 			android:background="@drawable/rounded_corners_8dp"
 			android:text="8:30 am"
 			android:textColor="@color/material_grey_300"
-			android:padding="8"
+			android:padding="8dp"
 			android:textSize="32dp"
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content" />
@@ -73,7 +73,7 @@
 			android:layout_toRightOf="@id/schedule_cell_dash"
 			android:textColor="@color/material_grey_300"
 			android:background="@drawable/rounded_corners_8dp"
-			android:padding="8"
+			android:padding="8dp"
 			android:text="2:30 pm"
 			android:textSize="32dp"
 			android:layout_width="wrap_content" 
