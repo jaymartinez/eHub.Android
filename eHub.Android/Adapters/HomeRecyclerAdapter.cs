@@ -116,14 +116,6 @@ namespace eHub.Android
                         }
                     }));
 
-                    poolCell.OnOffSwitch.SetOnDragListener(new OnDragListener(async (v, r) =>
-                    {
-                        if (r.Action == DragAction.Ended)
-                        {
-
-                        }
-                    }));
-
                     poolCell.OnOffSwitch.SetOnCheckedChangeListener(new OnCheckChangedListener(async (v, r) =>
                     {
                         var heaterStatus = await GetStatus(Pin.Heater);
