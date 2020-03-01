@@ -22,6 +22,7 @@ namespace eHub.Android.Fragments
         TextView _statusLabel;
 
         [Inject] IPoolService PoolService { get; set; }
+        [Inject] AppVersion AppVersion { get; set; }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -100,7 +101,7 @@ namespace eHub.Android.Fragments
             {
                 AboutTapped = () =>
                 {
-                    Dialogs.SimpleAlert(Context, "About", "Version: 1.2.0").Show();
+                    Dialogs.SimpleAlert(Context, "About", $"Version: {AppVersion.VersionName}").Show();
                 }
             };
 

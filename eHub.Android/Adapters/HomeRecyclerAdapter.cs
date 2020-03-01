@@ -4,11 +4,9 @@ using System.Threading.Tasks;
 using Android.Graphics;
 using Android.OS;
 using Android.Support.V4.Content;
-using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using eHub.Android.Fragments;
 using eHub.Android.Listeners;
 using eHub.Android.Models;
 using eHub.Common.Models;
@@ -134,8 +132,8 @@ namespace eHub.Android
                             || boosterStatus == PinState.ON
                             || spaStatus == PinState.ON))
                         {
-                            Dialogs.SimpleAlert(v.Context, 
-                                "One of the other pumps are still on, turn those off first.", "").Show();
+                            Toast.MakeText(v.Context, "One of the other pumps are still on, turn those off first!", 
+                                ToastLength.Short).Show();
                             return;
                         }
 
@@ -210,7 +208,8 @@ namespace eHub.Android
                             var poolPumpStatus = await GetStatus(Pin.PoolPump);
                             if (curStatus == PinState.OFF && poolPumpStatus == PinState.OFF)
                             {
-                                Dialogs.SimpleAlert(v.Context, "Wait!", "The pool pump needs to be on first!").Show();
+                                Toast.MakeText(v.Context, "Wait! The pool pump needs to be on first!", 
+                                    ToastLength.Short).Show();
                                 v.Checked = false;
                                 return;
                             }
