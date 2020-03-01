@@ -2,6 +2,7 @@
 <LinearLayout 
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:padding="8dp"
+	android:background="@drawable/rounded_corners_8dp"
 	android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -30,13 +31,13 @@
 				android:id="@+id/schedule_cell_label"
 				android:text="Timer Control"
 				android:textSize="32dp"
-				android:textColor="@color/material_grey_800"
+				android:textColor="@color/material_grey_300"
 				android:layout_width="wrap_content" 
 				android:layout_height="wrap_content" />
 
 			<CheckBox 
 				android:id="@+id/schedule_enabled_cb"
-				android:textColor="@color/material_grey_800"
+				android:textColor="@color/material_grey_300"
 				android:text="Enabled (leave unchecked if running pool manually)"
 				android:layout_width="wrap_content" 
 				android:layout_height="wrap_content" />
@@ -52,18 +53,16 @@
 
 		<Button
 			android:id="@+id/schedule_cell_begin_btn"
-			android:background="@drawable/rounded_corners_8dp"
 			android:text="8:30 am"
-			android:textColor="@color/material_grey_300"
 			android:padding="8dp"
-			android:textSize="32dp"
+			android:textSize="28dp"
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content" />
 
 		<TextView
 			android:id="@+id/schedule_cell_dash"
 			android:layout_toRightOf="@id/schedule_cell_begin_btn"
-			android:textColor="@color/material_grey_800"
+			android:textColor="@color/material_grey_300"
 			android:layout_centerVertical="true"
 			android:text=" to "
 			android:textSize="24dp"
@@ -73,11 +72,9 @@
 		<Button
 			android:id="@+id/schedule_cell_end_btn"
 			android:layout_toRightOf="@id/schedule_cell_dash"
-			android:textColor="@color/material_grey_300"
-			android:background="@drawable/rounded_corners_8dp"
 			android:padding="8dp"
 			android:text="2:30 pm"
-			android:textSize="32dp"
+			android:textSize="28dp"
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content" />
 
