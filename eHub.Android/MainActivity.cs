@@ -1,17 +1,12 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using Android.Support.V4.Widget;
 using Android.Support.V7.App;
-using Android.Views;
+using Android.Widget;
 using eHub.Android.Fragments;
-using eHub.Android.Models;
 using System;
-using System.Collections.Generic;
 using static Android.Support.V4.App.FragmentManager;
-using ActionBarDrawerToggle = Android.Support.V7.App.ActionBarDrawerToggle;
 using Fragment = Android.Support.V4.App.Fragment;
-using Toolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace eHub.Android
 {
@@ -23,6 +18,8 @@ namespace eHub.Android
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : AppCompatActivity
     {
+        bool _doubleBackPress;
+
         public static MainActivity Instance { get; private set; }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -33,35 +30,29 @@ namespace eHub.Android
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.activity_main);
 
-            //_toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
-            //SetSupportActionBar(_toolbar);
-
-            //_drawer = FindViewById<DrawerLayout>(Resource.Id.main_drawer_layout);
-            //_drawerToggle = new ActionBarDrawerToggle(this, _drawer, _toolbar, Resource.String.openDrawer, Resource.String.closeDrawer);
-            //_drawer.AddDrawerListener(_drawerToggle);
-            //_drawerToggle.DrawerIndicatorEnabled = true;
-            //_drawerToggle.SyncState();
-
-
             var hf = new HomeFragment();
             SupportFragmentManager
                 .BeginTransaction()
                 .Replace(Resource.Id.main_container, hf, "home")
                 .Commit();
-
-            //SetRoot(new MenuItem("Home", Resource.Drawable.ic_device_hub_blue_dark_48dp, MenuType.Home, "home"));
         }
 
         public override void OnBackPressed()
         {
-            if (SupportFragmentManager.BackStackEntryCount == 0)
+            if (_doubleBackPress)
             {
-                return;
+                FinishAffinity();
             }
-            else
+
+            _doubleBackPress = true;
+            Toast.MakeText(this, "Press BACK again to exit app", ToastLength.Short).Show();
+
+            var handler = new Handler();
+            Action action = () =>
             {
-                PopToRoot();
-            }
+                _doubleBackPress = false;
+            };
+            handler.PostDelayed(action, 2000);
         }
 
         public void PopToRoot()
@@ -100,61 +91,6 @@ namespace eHub.Android
             {
                 SupportFragmentManager.PopBackStackImmediate(removal.Name, PopBackStackInclusive);
             });
-        }
-
-        public void SetRoot(MenuItem menuItem)
-        {
-            GC.Collect();
-
-            //RunOnUiThread(() =>
-            //{
-            //    if (menuItem == null)
-            //        menuItem = new MenuItem("Home", Resource.Drawable.ic_pool_blue_dark_48dp, MenuType.Pool, "pool");
-
-            //    // Don't do anything if the user selects the current page.
-            //    if (_currentRoot != null && menuItem.MenuType == _currentRoot.MenuType)
-            //        return;
-
-            //    var page = GetFragmentForType(menuItem.MenuType);
-
-            //    if (SupportFragmentManager.BackStackEntryCount > 0 && _currentRoot != null)
-            //    {
-            //        SupportFragmentManager.PopBackStackImmediate(_currentRoot.Tag, PopBackStackInclusive);
-            //    }
-
-            //    SupportFragmentManager.ExecutePendingTransactions();
-
-            //    var tx = SupportFragmentManager
-            //        .BeginTransaction()
-            //        .SetTransition((int)FragmentTransit.FragmentOpen);
-
-            //    tx.Replace(Resource.Id.main_container, page, menuItem.Tag)
-            //      .AddToBackStack(menuItem.Tag)
-            //      .Commit();
-
-            //    _currentRoot = menuItem;
-            //});
-        }
-
-        Fragment GetFragmentForType(MenuType type)
-        {
-            switch (type)
-            {
-                case MenuType.PoolSchedule:
-                    return new PoolScheduleFragment();
-                case MenuType.Pool:
-                    return new PoolControlFragment();
-                case MenuType.Home:
-                    return new HomeFragment();
-                case MenuType.Spa:
-                    return new SpaControlFragment();
-                case MenuType.Heater:
-                    return new HeaterFragment();
-                case MenuType.BoosterPump:
-                    return new BoosterFragment();
-            }
-
-            throw new ArgumentException("Unknown menu type");
         }
     }
 }
