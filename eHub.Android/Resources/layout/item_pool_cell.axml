@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout 
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:padding="4dp"
+	android:padding="8dp"
+	android:background="@drawable/rounded_corners_8dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -29,13 +30,13 @@
 				android:id="@+id/pool_cell_label"
 				android:text="Pool"
 				android:textSize="32dp"
-				android:textColor="@color/material_grey_800"
+				android:textColor="@color/material_grey_300"
 				android:layout_width="wrap_content" 
 				android:layout_height="wrap_content" />
 
 			<TextView
 				android:id="@+id/pool_cell_status_data_lbl"
-				android:textColor="@color/redLabel"
+				android:textColor="@color/orangeHolo"
 				android:textSize="16dp"
 				android:text="PUMP OFF"
 				android:layout_width="wrap_content" 
@@ -55,6 +56,7 @@
 			android:id="@+id/pool_cell_onoff_switch"
 			android:layout_centerInParent="true"
 			android:layout_alignParentStart="true"
+				android:textColor="@color/material_grey_300"
 			android:text="On/Off"
 			android:switchPadding="8dp"
 			android:textSize="18dp"

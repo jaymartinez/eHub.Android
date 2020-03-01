@@ -246,7 +246,7 @@ namespace eHub.Android
         void SetOnOffLabelColor(TextView v, int state, bool spaOrPool)
         {
             var offColor = new Color(
-                ContextCompat.GetColor(v.Context, Resource.Color.redLabel));
+                ContextCompat.GetColor(v.Context, Resource.Color.orangeHolo));
             var onColor = new Color(
                 ContextCompat.GetColor(v.Context, Resource.Color.greenLabel));
 
