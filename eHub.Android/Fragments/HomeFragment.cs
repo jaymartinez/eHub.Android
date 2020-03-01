@@ -101,7 +101,7 @@ namespace eHub.Android.Fragments
             {
                 AboutTapped = () =>
                 {
-                    Dialogs.SimpleAlert(Context, "About", $"Version: {AppVersion.VersionName}").Show();
+                    Dialogs.SimpleAlert(Context, "About", $"Version: {AppVersion.VersionName}\nBuild: {AppVersion.VersionNumber}").Show();
                 }
             };
 

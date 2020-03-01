@@ -134,6 +134,7 @@ namespace eHub.Android
                         {
                             Toast.MakeText(v.Context, "One of the other pumps are still on, turn those off first!", 
                                 ToastLength.Short).Show();
+                            v.Checked = curPoolState == PinState.ON ? true : false;
                             return;
                         }
 
