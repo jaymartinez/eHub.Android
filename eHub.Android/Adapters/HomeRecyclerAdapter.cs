@@ -275,7 +275,7 @@ namespace eHub.Android
                 }
                 else
                 {
-                    v.SetImageResource(Resource.Drawable.icons8_light_off_96);
+                    v.SetImageResource(Resource.Drawable.icons8_bluelight_off_96);
                 }
             });
         }
