@@ -19,6 +19,7 @@ namespace eHub.Android.Fragments
         RecyclerView _recyclerView;
         SwipeRefreshLayout _refreshLayout;
         ProgressBar _progressBar;
+        TextView _statusLabel;
 
         [Inject] IPoolService PoolService { get; set; }
 
@@ -36,14 +37,26 @@ namespace eHub.Android.Fragments
 
         async Task OnRefreshAsync()
         {
-            _adapter.Items = await RefreshView();
-            _adapter.NotifyDataSetChanged();
+            if (await PoolService.Ping())
+            {
+                _adapter.Items = await RefreshView();
+                _adapter.NotifyDataSetChanged();
+
+                _statusLabel.Visibility = ViewStates.Gone;
+                _recyclerView.Visibility = ViewStates.Visible;
+            }
+            else
+            {
+                _statusLabel.Visibility = ViewStates.Visible;
+                _recyclerView.Visibility = ViewStates.Gone;
+            }
+
             _refreshLayout.Refreshing = false;
         }
 
         public override async void OnViewCreated(View view, Bundle savedInstanceState)
         {
-            var statusLabel = view.FindViewById<TextView>(Resource.Id.home_status_label);
+            _statusLabel = view.FindViewById<TextView>(Resource.Id.home_status_label);
 
             _recyclerView = view.FindViewById<RecyclerView>(Resource.Id.home_recycler_view);
             _refreshLayout = view.FindViewById<SwipeRefreshLayout>(Resource.Id.home_refresh_layout);
@@ -56,8 +69,8 @@ namespace eHub.Android.Fragments
             _progressBar.Visibility = ViewStates.Visible;
             if (await PoolService.Ping())
             {
-                statusLabel.Visibility = ViewStates.Gone;
-                _refreshLayout.Visibility = ViewStates.Visible;
+                _statusLabel.Visibility = ViewStates.Gone;
+                _recyclerView.Visibility = ViewStates.Visible;
 
                 var items = await RefreshView();
                 _adapter = new HomeRecyclerAdapter(items);
@@ -65,8 +78,8 @@ namespace eHub.Android.Fragments
             }
             else
             {
-                statusLabel.Visibility = ViewStates.Visible;
-                _refreshLayout.Visibility = ViewStates.Gone;
+                _statusLabel.Visibility = ViewStates.Visible;
+                _recyclerView.Visibility = ViewStates.Gone;
             }
 
             _progressBar.Visibility = ViewStates.Gone;
