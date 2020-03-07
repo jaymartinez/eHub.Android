@@ -25,7 +25,7 @@ namespace eHub.Android
 
             builder.Register(ctx =>
             {
-                var config = ctx.Resolve<Configuration>();
+                Configuration config = ctx.Resolve<Configuration>();
                 return new WebInterface(config);
             })
             .As<IWebInterface>()
@@ -33,7 +33,7 @@ namespace eHub.Android
 
             builder.Register(ctx =>
             {
-                var webApi = ctx.Resolve<IWebInterface>();
+                IWebInterface webApi = ctx.Resolve<IWebInterface>();
                 return new PoolApi(webApi);
             })
             .As<IPoolApi>()
@@ -41,7 +41,7 @@ namespace eHub.Android
 
             builder.Register(ctx =>
             {
-                var poolApi = ctx.Resolve<IPoolApi>();
+                IPoolApi poolApi = ctx.Resolve<IPoolApi>();
                 return new PoolService(poolApi);
             })
             .As<IPoolService>()
