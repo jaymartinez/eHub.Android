@@ -100,15 +100,18 @@ namespace eHub.Android
 
                 case CellType.Pool:
                     var poolCell = holder as PoolCell;
+
+                    // Initial states
                     SetOnOffLabelColor(poolCell.StatusTextView, item.PoolItem.PoolPump);
                     SetButtonBackground(poolCell.OnOffButton, item.PoolItem.PoolPump.State);
+                    UpdateImageButtonState(poolCell.LightButton, item.PoolItem.PoolLight.State);
 
-                    poolCell.LightSwitch.SetOnCheckedChangeListener(new OnCheckChangedListener(async (v, s) =>
+                    poolCell.LightButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var poolLight = await PoolService.Toggle(Pin.PoolLight);
                         if (poolLight != null)
                         {
-                            SetLightImageResource(poolCell.LightImageView, poolLight.State);
+                            UpdateImageButtonState(poolCell.LightButton, poolLight.State);
                         }
                     }));
 
@@ -147,21 +150,22 @@ namespace eHub.Android
                             }, "No").Show();
                     }));
 
-                    // Initial state
-                    SetLightImageResource(poolCell.LightImageView, item.PoolItem.PoolLight.State);
                     break;
 
                 case CellType.Spa:
                     var spaCell = holder as SpaCell;
+
+                    // Initial states
+                    UpdateImageButtonState(spaCell.LightButton, item.SpaItem.SpaLight.State);
                     SetOnOffLabelColor(spaCell.StatusTextView, item.SpaItem.SpaPump);
                     SetButtonBackground(spaCell.OnOffButton, item.SpaItem.SpaPump.State);
 
-                    spaCell.LightSwitch.SetOnCheckedChangeListener(new OnCheckChangedListener(async (v, s) =>
+                    spaCell.LightButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var spaLight = await PoolService.Toggle(Pin.SpaLight);
                         if (spaLight != null)
                         {
-                            SetLightImageResource(spaCell.LightImageView, spaLight.State);
+                            UpdateImageButtonState(spaCell.LightButton, spaLight.State);
                         }
                     }));
 
@@ -176,8 +180,6 @@ namespace eHub.Android
                         }
                     }));
 
-                    // Initial state
-                    SetLightImageResource(spaCell.LightImageView, item.SpaItem.SpaLight.State);
                     break;
 
                 case CellType.GroundLights:
@@ -273,17 +275,19 @@ namespace eHub.Android
             });
         }
 
-        void SetLightImageResource(ImageView v, int state)
+        void UpdateImageButtonState(ImageButton ib, int state)
         {
             _mainUiHandler.Post(() =>
             {
                 if (state == PinState.ON)
                 {
-                    v.SetImageResource(Resource.Drawable.icons8_light_on_96);
+                    ib.SetBackgroundResource(Resource.Drawable.rounded_corners_green_8dp);
+                    ib.SetImageResource(Resource.Drawable.icons8_light_on_96);
                 }
                 else
                 {
-                    v.SetImageResource(Resource.Drawable.icons8_bluelight_off_96);
+                    ib.SetBackgroundResource(Resource.Drawable.rounded_corners_bluegray_8dp);
+                    ib.SetImageResource(Resource.Drawable.icons8_bluelight_off_96);
                 }
             });
         }
@@ -337,7 +341,6 @@ namespace eHub.Android
 
         class EquipmentCell : RecyclerView.ViewHolder
         {
-            public ImageView LightImageView { get; set; }
             public TextView StatusTextView { get; set; }
             public Button OnOffButton { get; set; }
 
@@ -347,29 +350,27 @@ namespace eHub.Android
 
         class PoolCell : EquipmentCell
         {
-            public Switch LightSwitch { get; }
+            public ImageButton LightButton { get; }
 
             public PoolCell(View view)
                 : base(view)
             {
-                LightImageView = view.FindViewById<ImageView>(Resource.Id.pool_cell_light_switch_img);
                 StatusTextView = view.FindViewById<TextView>(Resource.Id.pool_cell_status_data_lbl);
-                OnOffButton = view.FindViewById<Button>(Resource.Id.pool_cell_onoff_btn);
-                LightSwitch = view.FindViewById<Switch>(Resource.Id.pool_cell_light_switch);
+                OnOffButton = view.FindViewById<Button>(Resource.Id.pool_cell_pump_btn);
+                LightButton = view.FindViewById<ImageButton>(Resource.Id.pool_cell_light_btn);
             }
         }
 
         class SpaCell : EquipmentCell
         {
-            public Switch LightSwitch { get; }
+            public ImageButton LightButton { get; }
 
             public SpaCell(View view)
                 : base(view)
             {
-                LightImageView = view.FindViewById<ImageView>(Resource.Id.spa_cell_light_switch_img);
                 StatusTextView = view.FindViewById<TextView>(Resource.Id.spa_cell_status_data_lbl);
                 OnOffButton = view.FindViewById<Button>(Resource.Id.spa_cell_onoff_btn);
-                LightSwitch = view.FindViewById<Switch>(Resource.Id.spa_cell_light_switch);
+                LightButton = view.FindViewById<ImageButton>(Resource.Id.spa_cell_light_btn);
             }
         }
 
