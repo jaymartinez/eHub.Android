@@ -187,9 +187,11 @@ namespace eHub.Android
                     var checkPool = item.CellTypeObj == CellType.Booster || item.CellTypeObj == CellType.Heater;
 
                     SetOnOffLabelColor(eqmtCell.StatusTextView, item.SingleSwitchItem);
+                    SetButtonBackground(eqmtCell.OnOffButton, item.SingleSwitchItem.State);
 
                     eqmtCell.OnOffButton.SetOnClickListener(new OnClickListener(async v =>
                     {
+                        var btn = v as Button;
                         if (checkPool)
                         {
                             var curStatus = await GetStatus(item.SingleSwitchItem.PinNumber);
@@ -200,7 +202,6 @@ namespace eHub.Android
                             {
                                 Toast.MakeText(v.Context, "Wait! The pool pump needs to be on first!", 
                                     ToastLength.Short).Show();
-                                //v.Checked = false;
                                 return;
                             }
                         }
@@ -209,6 +210,7 @@ namespace eHub.Android
                         if (toggle != null)
                         {
                             SetOnOffLabelColor(eqmtCell.StatusTextView, toggle);
+                            SetButtonBackground(btn, toggle.State);
                         }
                     }));
                     break;
