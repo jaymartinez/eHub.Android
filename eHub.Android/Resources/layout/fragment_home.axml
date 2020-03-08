@@ -12,7 +12,7 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentTop="true"
 		android:indeterminate="true"
-		android:indeterminateTint="@color/colorPrimary"
+		android:indeterminateTint="@color/material_grey_300"
 		android:max="100" />
 
 	<RelativeLayout
@@ -55,7 +55,7 @@
 		android:textSize="20dp"
 		android:visibility="gone"
 		android:layout_centerInParent="true"
-		android:text="Could not connect to pool!"
+		android:text="Could not connect to pool! Check wifi is on and pull down to refresh."
 		android:textColor="@android:color/holo_orange_dark"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent" />

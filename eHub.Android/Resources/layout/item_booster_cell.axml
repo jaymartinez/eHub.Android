@@ -37,8 +37,8 @@
 			<TextView
 				android:id="@+id/booster_cell_status_data_lbl"
 				android:textColor="@color/orangeHolo"
-				android:text="OFF"
-				android:textSize="16dp"
+				android:text="PUMP OFF"
+				android:textSize="14dp"
 				android:layout_width="wrap_content" 
 				android:layout_height="wrap_content" />
 
@@ -52,13 +52,13 @@
 		android:layout_width="match_parent" 
 		android:layout_height="wrap_content">
 
-		<Switch
-			android:id="@+id/booster_cell_onoff_switch"
+		<Button
+			android:id="@+id/booster_cell_onoff_btn"
 			android:layout_alignParentStart="true"
+			android:layout_centerInParent="true"
 			android:textColor="@color/material_grey_300"
-			android:text="On/Off"
-			android:switchPadding="8dp"
-			android:textSize="18dp"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:text="Off"
 			android:layout_marginLeft="16dp"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content" />

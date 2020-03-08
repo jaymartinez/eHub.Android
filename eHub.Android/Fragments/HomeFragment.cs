@@ -33,40 +33,18 @@ namespace eHub.Android.Fragments
 
         public async void OnRefresh()
         {
-            await OnRefreshAsync();
-        }
-
-        async Task OnRefreshAsync()
-        {
-            if (await PoolService.Ping())
-            {
-                _adapter.Items = await RefreshView();
-                _adapter.NotifyDataSetChanged();
-
-                _statusLabel.Visibility = ViewStates.Gone;
-                _recyclerView.Visibility = ViewStates.Visible;
-            }
-            else
-            {
-                _statusLabel.Visibility = ViewStates.Visible;
-                _recyclerView.Visibility = ViewStates.Gone;
-            }
-
+            await ProcessView();
             _refreshLayout.Refreshing = false;
         }
 
-        public override async void OnViewCreated(View view, Bundle savedInstanceState)
+        public override async void OnResume()
         {
-            _statusLabel = view.FindViewById<TextView>(Resource.Id.home_status_label);
+            base.OnResume();
+            await ProcessView(); 
+        }
 
-            _recyclerView = view.FindViewById<RecyclerView>(Resource.Id.home_recycler_view);
-            _refreshLayout = view.FindViewById<SwipeRefreshLayout>(Resource.Id.home_refresh_layout);
-            _progressBar = view.FindViewById<ProgressBar>(Resource.Id.home_progress_bar);
-
-            _refreshLayout.SetOnRefreshListener(this);
-            _recyclerView.SetLayoutManager(new LinearLayoutManager(Context));
-            _recyclerView.AddItemDecoration(new DividerItemDecoration(Context, LinearLayoutManager.Vertical));
-
+        async Task ProcessView()
+        {
             _progressBar.Visibility = ViewStates.Visible;
             if (await PoolService.Ping())
             {
@@ -84,6 +62,19 @@ namespace eHub.Android.Fragments
             }
 
             _progressBar.Visibility = ViewStates.Gone;
+        }
+
+        public override void OnViewCreated(View view, Bundle savedInstanceState)
+        {
+            _statusLabel = view.FindViewById<TextView>(Resource.Id.home_status_label);
+
+            _recyclerView = view.FindViewById<RecyclerView>(Resource.Id.home_recycler_view);
+            _refreshLayout = view.FindViewById<SwipeRefreshLayout>(Resource.Id.home_refresh_layout);
+            _progressBar = view.FindViewById<ProgressBar>(Resource.Id.home_progress_bar);
+
+            _refreshLayout.SetOnRefreshListener(this);
+            _recyclerView.SetLayoutManager(new LinearLayoutManager(Context));
+            _recyclerView.AddItemDecoration(new DividerItemDecoration(Context, LinearLayoutManager.Vertical));
         }
 
         async Task<List<HomeCellItem>> RefreshView()

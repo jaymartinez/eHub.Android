@@ -38,7 +38,8 @@
 			<CheckBox 
 				android:id="@+id/schedule_enabled_cb"
 				android:textColor="@color/material_grey_300"
-				android:text="Enabled (leave unchecked if running pool manually)"
+				android:layout_marginTop="4dp"
+				android:text="Enabled"
 				android:layout_width="wrap_content" 
 				android:layout_height="wrap_content" />
 
@@ -64,6 +65,8 @@
 			android:layout_toRightOf="@id/schedule_cell_begin_btn"
 			android:textColor="@color/material_grey_300"
 			android:layout_centerVertical="true"
+			android:layout_marginLeft="8dp"
+			android:layout_marginRight="8dp"
 			android:text=" to "
 			android:textSize="24dp"
 			android:layout_width="wrap_content" 
