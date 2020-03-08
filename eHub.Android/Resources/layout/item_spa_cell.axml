@@ -70,8 +70,8 @@
 			android:background="@drawable/rounded_corners_bluegray_8dp"
 			android:src="@drawable/icons8_bluelight_off_96"
 			android:layout_marginLeft="16dp"
-			android:layout_width="48dp"
-			android:layout_height="48dp" />
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
 
 	</RelativeLayout>
 </RelativeLayout>
