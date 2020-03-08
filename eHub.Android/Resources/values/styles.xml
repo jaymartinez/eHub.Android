@@ -21,7 +21,6 @@
   <style name="splash_theme" parent="AppTheme">
     <item name="android:windowBackground">@drawable/splash_bg</item>
     <item name="android:windowNoTitle">true</item>
-    <item name="android:windowFullscreen">true</item>
     <item name="android:windowContentOverlay">@null</item>
     <item name="android:windowActionBar">true</item>
   </style>

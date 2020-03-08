@@ -99,34 +99,27 @@ namespace eHub.Android
                     break;
 
                 case CellType.Pool:
-                    var poolCell = holder as EquipmentCell;
-                    poolCell.OnOffSwitch.Checked = item.PoolItem.PoolPump.State == PinState.ON;
+                    var poolCell = holder as PoolCell;
+                    SetOnOffLabelColor(poolCell.StatusTextView, item.PoolItem.PoolPump);
+                    SetButtonBackground(poolCell.OnOffButton, item.PoolItem.PoolPump.State);
 
-                    SetOnOffLabelColor(poolCell.StatusTextView, item.PoolItem.PoolPump.State, true);
-
-                    // Set light tap listener
-                    poolCell.LightImageView.SetOnClickListener(new OnClickListener(async v =>
+                    poolCell.LightSwitch.SetOnCheckedChangeListener(new OnCheckChangedListener(async (v, s) =>
                     {
-                        var light = await PoolService.Toggle(Pin.PoolLight);
-                        if (light != null && v is ImageView img)
+                        var poolLight = await PoolService.Toggle(Pin.PoolLight);
+                        if (poolLight != null)
                         {
-                            SetLightImageResource(img, light.State);
+                            SetLightImageResource(poolCell.LightImageView, poolLight.State);
                         }
                     }));
 
-                    poolCell.OnOffSwitch.SetOnCheckedChangeListener(new OnCheckChangedListener(async (v, r) =>
+                    poolCell.OnOffButton.SetOnClickListener(new OnClickListener(async v =>
                     {
+                        var b = v as Button;
                         var heaterStatus = await GetStatus(Pin.Heater);
                         var boosterStatus = await GetStatus(Pin.BoosterPump);
                         var spaStatus = await GetStatus(Pin.SpaPump);
                         var curPoolState = await GetStatus(Pin.PoolPump);
                         var onOffStr = curPoolState == PinState.ON  ? "off" : "on";
-
-                        if (curPoolState == PinState.ON && v.Checked
-                            || curPoolState == PinState.OFF && !v.Checked)
-                        {
-                            return;
-                        }
 
                         if (curPoolState == PinState.ON && (heaterStatus == PinState.ON
                             || boosterStatus == PinState.ON
@@ -134,7 +127,6 @@ namespace eHub.Android
                         {
                             Toast.MakeText(v.Context, "One of the other pumps are still on, turn those off first!", 
                                 ToastLength.Short).Show();
-                            v.Checked = curPoolState == PinState.ON ? true : false;
                             return;
                         }
 
@@ -148,12 +140,9 @@ namespace eHub.Android
                                     var poolToggle = await PoolService.Toggle(Pin.PoolPump);
                                     if (poolToggle != null)
                                     {
-                                        SetOnOffLabelColor(poolCell.StatusTextView, poolToggle.State, true);
+                                        SetOnOffLabelColor(poolCell.StatusTextView, poolToggle);
+                                        SetButtonBackground(b, poolToggle.State);
                                     }
-                                }
-                                else
-                                {
-                                    v.Checked = curPoolState == PinState.ON ? true : false;
                                 }
                             }, "No").Show();
                     }));
@@ -163,26 +152,27 @@ namespace eHub.Android
                     break;
 
                 case CellType.Spa:
-                    var spaCell = holder as EquipmentCell;
-                    spaCell.OnOffSwitch.Checked = item.SpaItem.SpaPump.State == PinState.ON;
+                    var spaCell = holder as SpaCell;
+                    SetOnOffLabelColor(spaCell.StatusTextView, item.SpaItem.SpaPump);
+                    SetButtonBackground(spaCell.OnOffButton, item.SpaItem.SpaPump.State);
 
-                    SetOnOffLabelColor(spaCell.StatusTextView, item.SpaItem.SpaPump.State, true);
-
-                    spaCell.LightImageView.SetOnClickListener(new OnClickListener(async v =>
+                    spaCell.LightSwitch.SetOnCheckedChangeListener(new OnCheckChangedListener(async (v, s) =>
                     {
                         var spaLight = await PoolService.Toggle(Pin.SpaLight);
-                        if (spaLight != null && v is ImageView img)
+                        if (spaLight != null)
                         {
-                            SetLightImageResource(img, spaLight.State);
+                            SetLightImageResource(spaCell.LightImageView, spaLight.State);
                         }
                     }));
 
-                    spaCell.OnOffSwitch.SetOnCheckedChangeListener(new OnCheckChangedListener(async (v, r) =>
+                    spaCell.OnOffButton.SetOnClickListener(new OnClickListener(async v =>
                     {
+                        var btn = v as Button;
                         var spaToggle = await PoolService.Toggle(Pin.SpaPump);
                         if (spaToggle != null)
                         {
-                            SetOnOffLabelColor(spaCell.StatusTextView, spaToggle.State, true);
+                            SetOnOffLabelColor(spaCell.StatusTextView, spaToggle);
+                            SetButtonBackground(btn, spaToggle.State);
                         }
                     }));
 
@@ -195,23 +185,22 @@ namespace eHub.Android
                 case CellType.Heater:
                     var eqmtCell = holder as EquipmentCell;
                     var checkPool = item.CellTypeObj == CellType.Booster || item.CellTypeObj == CellType.Heater;
-                    eqmtCell.OnOffSwitch.Checked = item.SingleSwitchItem.State == PinState.ON;
 
-                    SetOnOffLabelColor(eqmtCell.StatusTextView, item.SingleSwitchItem.State, false);
+                    SetOnOffLabelColor(eqmtCell.StatusTextView, item.SingleSwitchItem);
 
-                    eqmtCell.OnOffSwitch.SetOnCheckedChangeListener(new OnCheckChangedListener(async (v, r) =>
+                    eqmtCell.OnOffButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         if (checkPool)
                         {
                             var curStatus = await GetStatus(item.SingleSwitchItem.PinNumber);
+                            var poolPumpStatus = await GetStatus(Pin.PoolPump);
 
                             // Make sure the pool pump is on first!
-                            var poolPumpStatus = await GetStatus(Pin.PoolPump);
                             if (curStatus == PinState.OFF && poolPumpStatus == PinState.OFF)
                             {
                                 Toast.MakeText(v.Context, "Wait! The pool pump needs to be on first!", 
                                     ToastLength.Short).Show();
-                                v.Checked = false;
+                                //v.Checked = false;
                                 return;
                             }
                         }
@@ -219,7 +208,7 @@ namespace eHub.Android
                         var toggle = await PoolService.Toggle(item.SingleSwitchItem.PinNumber);
                         if (toggle != null)
                         {
-                            SetOnOffLabelColor(eqmtCell.StatusTextView, toggle.State, false);
+                            SetOnOffLabelColor(eqmtCell.StatusTextView, toggle);
                         }
                     }));
                     break;
@@ -243,7 +232,24 @@ namespace eHub.Android
             return result.State;
         }
 
-        void SetOnOffLabelColor(TextView v, int state, bool spaOrPool)
+        void SetButtonBackground(Button b, int state)
+        {
+            _mainUiHandler.Post(() =>
+            {
+                if (state == PinState.ON)
+                {
+                    b.SetBackgroundResource(Resource.Drawable.rounded_corners_green_8dp);
+                    b.Text = "ON";
+                }
+                else
+                {
+                    b.SetBackgroundResource(Resource.Drawable.rounded_corners_bluegray_8dp);
+                    b.Text = "OFF";
+                }
+            });
+        }
+
+        void SetOnOffLabelColor(TextView v, PiPin pin)
         {
             var offColor = new Color(
                 ContextCompat.GetColor(v.Context, Resource.Color.orangeHolo));
@@ -252,14 +258,14 @@ namespace eHub.Android
 
             _mainUiHandler.Post(() =>
             {
-                if (state == PinState.ON)
+                if (pin.State == PinState.ON)
                 {
-                    v.Text = spaOrPool ? "PUMP ON" : "ON";
+                    v.Text = $"Active at {pin.DateActivated.ToLocalTime().ToShortTimeString()}";
                     v.SetTextColor(onColor);
                 }
                 else
                 {
-                    v.Text = spaOrPool ? "PUMP OFF" : "OFF";
+                    v.Text = "OFF";
                     v.SetTextColor(offColor);
                 }
             });
@@ -331,7 +337,7 @@ namespace eHub.Android
         {
             public ImageView LightImageView { get; set; }
             public TextView StatusTextView { get; set; }
-            public Switch OnOffSwitch { get; set; }
+            public Button OnOffButton { get; set; }
 
             public EquipmentCell(View view)
                 : base(view) { }
@@ -339,23 +345,29 @@ namespace eHub.Android
 
         class PoolCell : EquipmentCell
         {
+            public Switch LightSwitch { get; }
+
             public PoolCell(View view)
                 : base(view)
             {
                 LightImageView = view.FindViewById<ImageView>(Resource.Id.pool_cell_light_switch_img);
                 StatusTextView = view.FindViewById<TextView>(Resource.Id.pool_cell_status_data_lbl);
-                OnOffSwitch = view.FindViewById<Switch>(Resource.Id.pool_cell_onoff_switch);
+                OnOffButton = view.FindViewById<Button>(Resource.Id.pool_cell_onoff_btn);
+                LightSwitch = view.FindViewById<Switch>(Resource.Id.pool_cell_light_switch);
             }
         }
 
         class SpaCell : EquipmentCell
         {
+            public Switch LightSwitch { get; }
+
             public SpaCell(View view)
                 : base(view)
             {
                 LightImageView = view.FindViewById<ImageView>(Resource.Id.spa_cell_light_switch_img);
                 StatusTextView = view.FindViewById<TextView>(Resource.Id.spa_cell_status_data_lbl);
-                OnOffSwitch = view.FindViewById<Switch>(Resource.Id.spa_cell_onoff_switch);
+                OnOffButton = view.FindViewById<Button>(Resource.Id.spa_cell_onoff_btn);
+                LightSwitch = view.FindViewById<Switch>(Resource.Id.spa_cell_light_switch);
             }
         }
 
@@ -365,7 +377,7 @@ namespace eHub.Android
                 : base(view)
             {
                 StatusTextView = view.FindViewById<TextView>(Resource.Id.booster_cell_status_data_lbl);
-                OnOffSwitch = view.FindViewById<Switch>(Resource.Id.booster_cell_onoff_switch);
+                OnOffButton = view.FindViewById<Button>(Resource.Id.booster_cell_onoff_btn);
             }
         }
 
@@ -375,7 +387,7 @@ namespace eHub.Android
                 : base(view)
             {
                 StatusTextView = view.FindViewById<TextView>(Resource.Id.heater_cell_status_data_lbl);
-                OnOffSwitch = view.FindViewById<Switch>(Resource.Id.heater_cell_onoff_switch);
+                OnOffButton = view.FindViewById<Button>(Resource.Id.heater_cell_onoff_btn);
             }
         }
 
@@ -385,7 +397,7 @@ namespace eHub.Android
                 : base(view)
             {
                 StatusTextView = view.FindViewById<TextView>(Resource.Id.groundlights_cell_status_data_lbl);
-                OnOffSwitch = view.FindViewById<Switch>(Resource.Id.groundlights_cell_onoff_switch);
+                OnOffButton = view.FindViewById<Button>(Resource.Id.groundlights_cell_onoff_btn);
             }
         }
 
