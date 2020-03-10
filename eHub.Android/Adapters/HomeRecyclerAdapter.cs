@@ -25,19 +25,18 @@ namespace eHub.Android
         const int AboutId = 7;
 
         readonly Handler _mainUiHandler;
+        readonly IPoolService _poolService;
 
         public List<HomeCellItem> Items { get; set; } = new List<HomeCellItem>();
 
-
         public WeakReference ActivityRef { get; set; }
 
-        [Inject] IPoolService PoolService { get; set; }
-
-        public HomeRecyclerAdapter(List<HomeCellItem> items)
+        public HomeRecyclerAdapter(List<HomeCellItem> items, IPoolService poolService)
         {
             EhubInjector.InjectProperties(this);
 
             _mainUiHandler = new Handler(Looper.MainLooper);
+            _poolService = poolService;
             Items = items;
         }
 
@@ -108,7 +107,7 @@ namespace eHub.Android
 
                     poolCell.LightButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        var poolLight = await PoolService.Toggle(Pin.PoolLight);
+                        var poolLight = await _poolService.Toggle(Pin.PoolLight);
                         if (poolLight != null)
                         {
                             UpdateImageButtonState(poolCell.LightButton, poolLight.State);
@@ -140,7 +139,7 @@ namespace eHub.Android
                             {
                                 if (confirmed)
                                 {
-                                    var poolToggle = await PoolService.Toggle(Pin.PoolPump);
+                                    var poolToggle = await _poolService.Toggle(Pin.PoolPump);
                                     if (poolToggle != null)
                                     {
                                         SetOnOffLabelColor(poolCell.StatusTextView, poolToggle);
@@ -162,7 +161,7 @@ namespace eHub.Android
 
                     spaCell.LightButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        var spaLight = await PoolService.Toggle(Pin.SpaLight);
+                        var spaLight = await _poolService.Toggle(Pin.SpaLight);
                         if (spaLight != null)
                         {
                             UpdateImageButtonState(spaCell.LightButton, spaLight.State);
@@ -172,7 +171,7 @@ namespace eHub.Android
                     spaCell.OnOffButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var btn = v as Button;
-                        var spaToggle = await PoolService.Toggle(Pin.SpaPump);
+                        var spaToggle = await _poolService.Toggle(Pin.SpaPump);
                         if (spaToggle != null)
                         {
                             SetOnOffLabelColor(spaCell.StatusTextView, spaToggle);
@@ -208,7 +207,7 @@ namespace eHub.Android
                             }
                         }
 
-                        var toggle = await PoolService.Toggle(item.SingleSwitchItem.PinNumber);
+                        var toggle = await _poolService.Toggle(item.SingleSwitchItem.PinNumber);
                         if (toggle != null)
                         {
                             SetOnOffLabelColor(eqmtCell.StatusTextView, toggle);
@@ -232,7 +231,7 @@ namespace eHub.Android
 
         async Task<int> GetStatus(int pin)
         {
-            var result = await PoolService.GetPinStatus(pin);
+            var result = await _poolService.GetPinStatus(pin);
             return result.State;
         }
 

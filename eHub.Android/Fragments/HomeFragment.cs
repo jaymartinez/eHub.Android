@@ -21,6 +21,8 @@ namespace eHub.Android.Fragments
         ProgressBar _progressBar;
         TextView _statusLabel;
 
+        IPoolService _mockPoolService;
+
         [Inject] IPoolService PoolService { get; set; }
         [Inject] AppVersion AppVersion { get; set; }
 
@@ -49,16 +51,18 @@ namespace eHub.Android.Fragments
             if (await PoolService.Ping())
             {
                 _statusLabel.Visibility = ViewStates.Gone;
-                _recyclerView.Visibility = ViewStates.Visible;
 
-                var items = await RefreshView();
-                _adapter = new HomeRecyclerAdapter(items);
+                var items = await RefreshView(PoolService);
+                _adapter = new HomeRecyclerAdapter(items, PoolService);
                 _recyclerView.SetAdapter(_adapter);
             }
             else
             {
                 _statusLabel.Visibility = ViewStates.Visible;
-                _recyclerView.Visibility = ViewStates.Gone;
+                _mockPoolService = new MockPoolService();
+                var mockItems = await RefreshView(_mockPoolService);
+                _adapter = new HomeRecyclerAdapter(mockItems, _mockPoolService);
+                _recyclerView.SetAdapter(_adapter);
             }
 
             _progressBar.Visibility = ViewStates.Gone;
@@ -77,16 +81,16 @@ namespace eHub.Android.Fragments
             _recyclerView.AddItemDecoration(new DividerItemDecoration(Context, LinearLayoutManager.Vertical));
         }
 
-        async Task<List<HomeCellItem>> RefreshView()
+        async Task<List<HomeCellItem>> RefreshView(IPoolService poolService)
         {
-            var sched = await PoolService.GetSchedule();
-            var pool = await PoolService.GetPinStatus(Pin.PoolPump);
-            var poolLight = await PoolService.GetPinStatus(Pin.PoolLight);
-            var spa = await PoolService.GetPinStatus(Pin.SpaPump);
-            var spaLight = await PoolService.GetPinStatus(Pin.SpaLight);
-            var booster = await PoolService.GetPinStatus(Pin.BoosterPump);
-            var heater = await PoolService.GetPinStatus(Pin.Heater);
-            var groundLights = await PoolService.GetPinStatus(Pin.GroundLights);
+            var sched = await poolService.GetSchedule();
+            var pool = await poolService.GetPinStatus(Pin.PoolPump);
+            var poolLight = await poolService.GetPinStatus(Pin.PoolLight);
+            var spa = await poolService.GetPinStatus(Pin.SpaPump);
+            var spaLight = await poolService.GetPinStatus(Pin.SpaLight);
+            var booster = await poolService.GetPinStatus(Pin.BoosterPump);
+            var heater = await poolService.GetPinStatus(Pin.Heater);
+            var groundLights = await poolService.GetPinStatus(Pin.GroundLights);
 
             var aboutItem = new HomeCellItem(CellType.About)
             {
@@ -103,7 +107,7 @@ namespace eHub.Android.Fragments
             {
                 StartTapped = async (btn) =>
                 {
-                    var curSched = await PoolService.GetSchedule();
+                    var curSched = await poolService.GetSchedule();
                     var picker = TimePickerFragment.CreateInstance(curSched.StartHour, curSched.StartMinute);
 
                     picker.OnTimeSelected = async (args) =>
@@ -123,14 +127,14 @@ namespace eHub.Android.Fragments
                             IsActive = curSched.IsActive
                         };
 
-                        await SaveScheduleAsync(ps);
+                        await SaveScheduleAsync(poolService, ps);
                     };
 
                     picker.Show(ChildFragmentManager, "starttime_picker");
                 },
                 EndTapped = async (btn) =>
                 {
-                    var curSched = await PoolService.GetSchedule();
+                    var curSched = await poolService.GetSchedule();
                     var picker = TimePickerFragment.CreateInstance(curSched.EndHour, curSched.EndMinute);
 
                     picker.OnTimeSelected = async (args) =>
@@ -150,14 +154,14 @@ namespace eHub.Android.Fragments
                             IsActive = curSched.IsActive
                         };
 
-                        await SaveScheduleAsync(ps);
+                        await SaveScheduleAsync(poolService, ps);
                     };
 
                     picker.Show(ChildFragmentManager, "endtime_picker");
                 },
                 EnabledCheckboxTapped = async (cb) =>
                 {
-                    var curSched = await PoolService.GetSchedule();
+                    var curSched = await poolService.GetSchedule();
 
                     var ps = new PoolSchedule
                     {
@@ -168,7 +172,7 @@ namespace eHub.Android.Fragments
                         IsActive = cb.Checked
                     };
 
-                    await SaveScheduleAsync(ps);
+                    await SaveScheduleAsync(poolService, ps);
                 } 
             };
 
@@ -184,14 +188,14 @@ namespace eHub.Android.Fragments
             };
         }
 
-        async Task SaveScheduleAsync(PoolSchedule ps)
+        async Task SaveScheduleAsync(IPoolService poolService, PoolSchedule ps)
         {
             var startDateTime = new DateTime(
                 DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, ps.StartHour, ps.StartMinute, 0);
             var endDateTime = new DateTime(
                 DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, ps.EndHour, ps.EndMinute, 0);
 
-            var result = await PoolService.SetSchedule(startDateTime, endDateTime, ps.IsActive);
+            var result = await poolService.SetSchedule(startDateTime, endDateTime, ps.IsActive);
 
             if (result != null)
             {
