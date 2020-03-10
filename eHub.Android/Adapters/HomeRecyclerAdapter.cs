@@ -123,11 +123,10 @@ namespace eHub.Android
                         var curPoolState = await GetStatus(Pin.PoolPump);
                         var onOffStr = curPoolState == PinState.ON  ? "off" : "on";
 
-                        if (curPoolState == PinState.ON && (heaterStatus == PinState.ON
-                            || boosterStatus == PinState.ON
-                            || spaStatus == PinState.ON))
+                        if (curPoolState == PinState.ON 
+                            && (heaterStatus == PinState.ON || boosterStatus == PinState.ON))
                         {
-                            Toast.MakeText(v.Context, "One of the other pumps are still on, turn those off first!", 
+                            Toast.MakeText(v.Context, "Make sure the heater and the booster pump are off first!", 
                                 ToastLength.Short).Show();
                             return;
                         }
