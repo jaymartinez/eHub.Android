@@ -20,7 +20,7 @@ namespace eHub.Android
             builder.Register(ctx =>
             {
                 //TODO read from manifest
-                return new AppVersion { VersionName = "1.2.1", VersionNumber = 1214 }; 
+                return new AppVersion { VersionName = "1.3.2", VersionNumber = 1320 }; 
             }).As<AppVersion>();
 
             builder.Register(ctx =>
