@@ -67,8 +67,6 @@
 			android:id="@+id/pool_cell_light_btn"
 			android:layout_centerInParent="true"
 			android:layout_alignParentEnd="true"
-			android:paddingHorizontal="16dp"
-			android:paddingVertical="16dp"
 			android:background="@drawable/rounded_corners_bluegray_8dp"
 			android:src="@drawable/icons8_bluelight_off_96"
 			android:layout_marginLeft="16dp"
