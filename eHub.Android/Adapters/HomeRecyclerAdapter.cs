@@ -102,7 +102,7 @@ namespace eHub.Android
 
                     // Initial states
                     SetOnOffLabelColor(poolCell.StatusTextView, item.PoolItem.PoolPump);
-                    SetButtonBackground(poolCell.OnOffButton, item.PoolItem.PoolPump.State);
+                    SetButtonBackground(poolCell.OnOffButton, item.PoolItem.PoolPump.State, CellType.Pool);
                     UpdateImageButtonState(poolCell.LightButton, item.PoolItem.PoolLight.State);
 
                     poolCell.LightButton.SetOnClickListener(new OnClickListener(async v =>
@@ -142,7 +142,7 @@ namespace eHub.Android
                                     if (poolToggle != null)
                                     {
                                         SetOnOffLabelColor(poolCell.StatusTextView, poolToggle);
-                                        SetButtonBackground(b, poolToggle.State);
+                                        SetButtonBackground(b, poolToggle.State, CellType.Pool);
                                     }
                                 }
                             }, "No").Show();
@@ -156,7 +156,7 @@ namespace eHub.Android
                     // Initial states
                     UpdateImageButtonState(spaCell.LightButton, item.SpaItem.SpaLight.State);
                     SetOnOffLabelColor(spaCell.StatusTextView, item.SpaItem.SpaPump);
-                    SetButtonBackground(spaCell.OnOffButton, item.SpaItem.SpaPump.State);
+                    SetButtonBackground(spaCell.OnOffButton, item.SpaItem.SpaPump.State, CellType.Spa);
 
                     spaCell.LightButton.SetOnClickListener(new OnClickListener(async v =>
                     {
@@ -174,7 +174,7 @@ namespace eHub.Android
                         if (spaToggle != null)
                         {
                             SetOnOffLabelColor(spaCell.StatusTextView, spaToggle);
-                            SetButtonBackground(btn, spaToggle.State);
+                            SetButtonBackground(btn, spaToggle.State, CellType.Spa);
                         }
                     }));
 
@@ -234,19 +234,22 @@ namespace eHub.Android
             return result.State;
         }
 
-        void SetButtonBackground(Button b, int state)
+        void SetButtonBackground(Button b, int state, CellType? cellType = null)
         {
             _mainUiHandler.Post(() =>
             {
                 if (state == PinState.ON)
                 {
                     b.SetBackgroundResource(Resource.Drawable.rounded_corners_green_8dp);
-                    b.Text = "ON";
+                    b.Text = cellType == CellType.Pool || cellType == CellType.Spa 
+                        ? "TURN PUMP OFF" : "TURN OFF";
                 }
                 else
                 {
                     b.SetBackgroundResource(Resource.Drawable.rounded_corners_bluegray_8dp);
-                    b.Text = "OFF";
+                    //b.Text = "TURN ON";
+                    b.Text = cellType == CellType.Pool || cellType == CellType.Spa 
+                        ? "TURN PUMP ON" : "TURN ON";
                 }
             });
         }
