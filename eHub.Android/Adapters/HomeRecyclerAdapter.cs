@@ -247,7 +247,6 @@ namespace eHub.Android
                 else
                 {
                     b.SetBackgroundResource(Resource.Drawable.rounded_corners_bluegray_8dp);
-                    //b.Text = "TURN ON";
                     b.Text = cellType == CellType.Pool || cellType == CellType.Spa 
                         ? "TURN PUMP ON" : "TURN ON";
                 }
