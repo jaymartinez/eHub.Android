@@ -315,12 +315,6 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_help_outline_blue_dark_48dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\eHub.Common\eHub.Service\eHub.Common.csproj">
-      <Project>{48aeb5e2-6c25-45fe-a7ba-fe9a2dc4830c}</Project>
-      <Name>eHub.Common</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\layout\item_schedule_cell.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -510,6 +504,12 @@
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\eHub.Common\eHub.Service\eHub.Common.csproj">
+      <Project>{2acb7e7e-97bb-449d-b703-9ef5defa38be}</Project>
+      <Name>eHub.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

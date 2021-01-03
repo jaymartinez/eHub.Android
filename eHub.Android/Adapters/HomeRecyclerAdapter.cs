@@ -11,6 +11,7 @@ using eHub.Android.Listeners;
 using eHub.Android.Models;
 using eHub.Common.Models;
 using eHub.Common.Services;
+using Switch = Android.Support.V7.Widget.SwitchCompat; 
 
 namespace eHub.Android
 {
@@ -44,7 +45,7 @@ namespace eHub.Android
 
         public override int GetItemViewType(int position)
         {
-            var item = Items[position] as HomeCellItem;
+            var item = Items[position];
 
             switch (item.CellTypeObj)
             {
@@ -69,7 +70,7 @@ namespace eHub.Android
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
-            var item = Items[position] as HomeCellItem;
+            var item = Items[position];
 
             switch (item.CellTypeObj)
             {
@@ -79,7 +80,8 @@ namespace eHub.Android
                     var endTime = new TimeSpan(item.ScheduleCellItem.Schedule.EndHour, item.ScheduleCellItem.Schedule.EndMinute, 0);
                     schCell.StartButton.Text = startTime.ToString(@"%h\:mm");
                     schCell.EndButton.Text = endTime.ToString(@"%h\:mm");
-                    schCell.EnabledCheckbox.Checked = item.ScheduleCellItem.Schedule.IsActive;
+                    schCell.OnOffSwitch.Checked = item.ScheduleCellItem.Schedule.IsActive;
+                    schCell.IncludeBoosterCheckbox.Checked = item.ScheduleCellItem.Schedule.IncludeBooster;
 
                     schCell.StartButton.SetOnClickListener(new OnClickListener(v =>
                     {
@@ -91,9 +93,13 @@ namespace eHub.Android
                         item.ScheduleCellItem.EndTapped.Invoke(v as Button);
                     }));
 
-                    schCell.EnabledCheckbox.SetOnClickListener(new OnClickListener(v =>
+                    schCell.OnOffSwitch.SetOnClickListener(new OnClickListener(v =>
                     {
-                        item.ScheduleCellItem.EnabledCheckboxTapped.Invoke(v as CheckBox);
+                        item.ScheduleCellItem.OnOffSwitchTapped.Invoke(v as Switch);
+                    }));
+                    schCell.IncludeBoosterCheckbox.SetOnClickListener(new OnClickListener(v =>
+                    {
+                        item.ScheduleCellItem.IncludeBoosterTapped.Invoke(v as CheckBox);
                     }));
                     break;
 
@@ -328,14 +334,16 @@ namespace eHub.Android
         {
             public Button StartButton { get; }
             public Button EndButton { get; }
-            public CheckBox EnabledCheckbox { get; }
+            public CheckBox IncludeBoosterCheckbox { get; }
+            public Switch OnOffSwitch { get; }
 
             public ScheduleCell(View view)
                 : base(view)
             {
                 StartButton = view.FindViewById<Button>(Resource.Id.schedule_cell_begin_btn);
                 EndButton = view.FindViewById<Button>(Resource.Id.schedule_cell_end_btn);
-                EnabledCheckbox = view.FindViewById<CheckBox>(Resource.Id.schedule_enabled_cb);
+                IncludeBoosterCheckbox = view.FindViewById<CheckBox>(Resource.Id.schedule_cell_include_booster_cb);
+                OnOffSwitch = view.FindViewById<Switch>(Resource.Id.schedule_onoff_switch);
             }
         }
 
