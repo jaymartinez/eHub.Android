@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using Android.App;
+using Autofac;
 using eHub.Android.Models;
 using eHub.Common.Api;
 using eHub.Common.Models;
@@ -19,8 +20,8 @@ namespace eHub.Android
 
             builder.Register(ctx =>
             {
-                //TODO read from manifest
-                return new AppVersion { VersionName = "1.2.1", VersionNumber = 1214 }; 
+                var packageInfo = Application.Context.PackageManager.GetPackageInfo(Application.Context.PackageName, 0);
+                return new AppVersion { VersionName = packageInfo.VersionName, VersionNumber = packageInfo.LongVersionCode}; 
             }).As<AppVersion>();
 
             builder.Register(ctx =>
