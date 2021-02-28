@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.2.1" package="eHub.Android.eHub.Android" android:installLocation="auto" android:versionCode="1214">
-	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="28" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.4.1" package="eHub.Android.eHub.Android" android:installLocation="auto" android:versionCode="1410">
+	<uses-sdk android:minSdkVersion="23" android:targetSdkVersion="29" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
