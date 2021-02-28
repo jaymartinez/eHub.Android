@@ -14,7 +14,7 @@ namespace eHub.Android.Models
 {
     public class AppVersion
     {
-        public int VersionNumber { get; set; }
+        public long VersionNumber { get; set; }
 
         public string VersionName { get; set; }
     }
