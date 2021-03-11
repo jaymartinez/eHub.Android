@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Reactive.Linq;
 using Fragment = Android.Support.V4.App.Fragment;
 
 namespace eHub.Android.Fragments
@@ -20,6 +21,7 @@ namespace eHub.Android.Fragments
         SwipeRefreshLayout _refreshLayout;
         ProgressBar _progressBar;
         TextView _statusLabel;
+        IDisposable _timerObs;
 
         [Inject] IPoolService PoolService { get; set; }
         [Inject] AppVersion AppVersion { get; set; }
@@ -43,10 +45,15 @@ namespace eHub.Android.Fragments
             await ProcessView(); 
         }
 
+        public override void OnDestroy()
+        {
+
+            base.OnDestroy();
+        }
+
         async Task ProcessView()
         {
             _progressBar.Visibility = ViewStates.Visible;
-            var adapter = default(HomeRecyclerAdapter); 
             if (await PoolService.Ping())
             {
                 _statusLabel.Visibility = ViewStates.Gone;
@@ -54,7 +61,7 @@ namespace eHub.Android.Fragments
                 var items = await RefreshView(PoolService);
                 if (items != null)
                 {
-                    adapter = new HomeRecyclerAdapter(items, PoolService);
+                    var adapter = new HomeRecyclerAdapter(items, PoolService);
                     _recyclerView.SetAdapter(adapter);
                 }
             }
@@ -65,7 +72,7 @@ namespace eHub.Android.Fragments
                 var mockItems = await RefreshView(mockPoolService);
                 if (mockItems != null)
                 {
-                    adapter = new HomeRecyclerAdapter(mockItems, mockPoolService);
+                    var adapter = new HomeRecyclerAdapter(mockItems, mockPoolService);
                     _recyclerView.SetAdapter(adapter);
                 }
             }
@@ -114,7 +121,36 @@ namespace eHub.Android.Fragments
                 }
             };
 
-            var poolCell = new PoolCellItem(pool, poolLight);
+            var poolCell = new PoolCellItem(pool, poolLight)
+            {
+                LightOnOffSwitchTapped = async sw =>
+                {
+                    var state = (await poolService.Toggle(Pin.PoolLight))?.State ?? PinState.OFF;
+                    sw.Checked = state == 1;
+                },
+                LightModeButtonTapped = async model =>
+                {
+                    var state = (await poolService.GetPinStatus(Pin.PoolLight))?.State ?? PinState.OFF;
+                    if (state == PinState.OFF)
+                    {
+                        Dialogs.SimpleAlert(Context, "Light is off", "Turn the pool light on before changing light modes, or pull down to refresh page to see current light status.").Show();
+                        return;
+                    }
+
+                    _progressBar.Visibility = ViewStates.Visible;
+                    var alert = Dialogs.SimpleAlert(Context, "Applying following theme", model.ModeDisplay, "");
+                    alert.Show();
+                    alert.SetCancelable(false);
+                    alert.SetCanceledOnTouchOutside(false);
+                    for (var i = 0; i < model.PowerCycles * 2; i++)
+                    {
+                        var toggleResult = await poolService.Toggle(Pin.PoolLight);
+                        await Task.Delay(TimeSpan.FromMilliseconds(500));
+                    }
+                    _progressBar.Visibility = ViewStates.Gone;
+                    alert.Hide();
+                }
+            };
             var spaCell = new SpaCellItem(spa, spaLight);
 
             var schedCell = new ScheduleCellItem(sched)
