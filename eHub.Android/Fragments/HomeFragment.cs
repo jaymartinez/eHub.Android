@@ -138,22 +138,29 @@ namespace eHub.Android.Fragments
                     var state = (await poolService.GetPinStatus(Pin.PoolLight))?.State ?? PinState.OFF;
                     if (state == PinState.OFF)
                     {
-                        Dialogs.SimpleAlert(Context, "Light is off", "Turn the pool light on before changing light modes, or pull down to refresh page to see current light status.").Show();
+                        Toast.MakeText(Context, "Turn the pool light on before changing light modes", ToastLength.Long).Show();
                         return;
                     }
 
                     if (model.Mode == PoolLightMode.Recall && serverLightState.PreviousPoolLightMode == PoolLightMode.NotSet)
                     {
-                        Dialogs.SimpleAlert(Context, "Nothing to recall", "There is no previous light mode saved yet.").Show();
+                        Toast.MakeText(Context, "There is no previous light mode saved yet.", ToastLength.Long).Show();
+                        return;
+                    }
+
+                    if (model.Mode == serverLightState.CurrentPoolLightMode)
+                    {
+                        Toast.MakeText(Context, "You are already on that mode!", ToastLength.Long).Show();
                         return;
                     }
 
                     _progressBar.Visibility = ViewStates.Visible;
-                    var alert = Dialogs.SimpleAlert(Context, "Applying following theme", model.Mode.ToLightModeText(), "");
 
+                    var alert = Dialogs.SimpleAlert(Context, "Applying theme", model.Mode.ToLightModeText(), "");
                     var numCycles = model.PowerCycles * 2;
                     if (model.Mode == PoolLightMode.Recall)
                     {
+                        alert = Dialogs.SimpleAlert(Context, "Applying last theme", serverLightState.PreviousPoolLightMode.ToLightModeText(), "");
                         numCycles = (int)serverLightState.PreviousPoolLightMode * 2;
                     }
 
