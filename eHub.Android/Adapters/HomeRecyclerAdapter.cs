@@ -9,6 +9,7 @@ using Android.Views;
 using Android.Widget;
 using eHub.Android.Listeners;
 using eHub.Android.Models;
+using eHub.Common.Helpers;
 using eHub.Common.Models;
 using eHub.Common.Services;
 using Switch = Android.Support.V7.Widget.SwitchCompat; 
@@ -97,6 +98,7 @@ namespace eHub.Android
                     {
                         item.ScheduleCellItem.OnOffSwitchTapped.Invoke(v as Switch);
                     }));
+
                     schCell.IncludeBoosterCheckbox.SetOnClickListener(new OnClickListener(v =>
                     {
                         item.ScheduleCellItem.IncludeBoosterTapped.Invoke(v as CheckBox);
@@ -110,6 +112,7 @@ namespace eHub.Android
                     SetOnOffLabelColor(poolCell.StatusTextView, item.PoolItem.PoolPump);
                     SetButtonBackground(poolCell.OnOffButton, item.PoolItem.PoolPump.State, CellType.Pool);
                     poolCell.LightOnOffSwitch.Checked = item.PoolItem.PoolLight.State == 1;
+                    poolCell.SelectedLightModeText.Text = item.PoolItem.SelectedLightMode.ToLightModeText();
 
                     poolCell.LightOnOffSwitch.SetOnClickListener(new OnClickListener(v =>
                     {
@@ -118,59 +121,59 @@ namespace eHub.Android
 
                     poolCell.SamModeButton.SetOnClickListener(new OnClickListener(v =>
                     {
-                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Sam));
+                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Sam), poolCell.SelectedLightModeText);
                     }));
                     poolCell.PartyModeButton.SetOnClickListener(new OnClickListener(v =>
                     {
-                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Party));
+                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Party), poolCell.SelectedLightModeText);
                     }));
                     poolCell.RomanceModeButton.SetOnClickListener(new OnClickListener(v =>
                     {
-                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Romance));
+                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Romance), poolCell.SelectedLightModeText);
                     }));
                     poolCell.CaribbeanModeButton.SetOnClickListener(new OnClickListener(v =>
                     {
-                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Caribbean));
+                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Caribbean), poolCell.SelectedLightModeText);
                     }));
                     poolCell.AmericanModeButton.SetOnClickListener(new OnClickListener(v =>
                     {
-                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.American));
+                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.American), poolCell.SelectedLightModeText);
                     }));
                     poolCell.CaliSunsetModeButton.SetOnClickListener(new OnClickListener(v =>
                     {
-                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.CaliforniaSunset));
+                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.CaliforniaSunset), poolCell.SelectedLightModeText);
                     }));
                     poolCell.RoyalModeButton.SetOnClickListener(new OnClickListener(v =>
                     {
-                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Royal));
+                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Royal), poolCell.SelectedLightModeText);
                     }));
                     poolCell.BlueModeButton.SetOnClickListener(new OnClickListener(v =>
                     {
-                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Blue));
+                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Blue), poolCell.SelectedLightModeText);
                     }));
                     poolCell.GreenModeButton.SetOnClickListener(new OnClickListener(v =>
                     {
-                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Green));
+                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Green), poolCell.SelectedLightModeText);
                     }));
                     poolCell.RedModeButton.SetOnClickListener(new OnClickListener(v =>
                     {
-                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Red));
+                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Red), poolCell.SelectedLightModeText);
                     }));
                     poolCell.WhiteModeButton.SetOnClickListener(new OnClickListener(v =>
                     {
-                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.White));
+                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.White), poolCell.SelectedLightModeText);
                     }));
                     poolCell.MagentaModeButton.SetOnClickListener(new OnClickListener(v =>
                     {
-                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Magenta));
+                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Magenta), poolCell.SelectedLightModeText);
                     }));
                     poolCell.HoldModeButton.SetOnClickListener(new OnClickListener(v =>
                     {
-                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Hold));
+                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Hold), poolCell.SelectedLightModeText);
                     }));
                     poolCell.RecallModeButton.SetOnClickListener(new OnClickListener(v =>
                     {
-                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Recall));
+                        item.PoolItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Recall), poolCell.SelectedLightModeText);
                     }));
 
                     poolCell.OnOffButton.SetOnClickListener(new OnClickListener(async v =>
@@ -426,6 +429,7 @@ namespace eHub.Android
             public Button MagentaModeButton { get; }
             public Button HoldModeButton { get; }
             public Button RecallModeButton { get; }
+            public TextView SelectedLightModeText { get; }
 
             public PoolCell(View view)
                 : base(view)
@@ -447,6 +451,7 @@ namespace eHub.Android
                 MagentaModeButton = view.FindViewById<Button>(Resource.Id.pool_cell_magenta_fixed_mode_button);
                 HoldModeButton = view.FindViewById<Button>(Resource.Id.pool_cell_hold_mode_button);
                 RecallModeButton = view.FindViewById<Button>(Resource.Id.pool_recall_mode_button);
+                SelectedLightModeText = view.FindViewById<TextView>(Resource.Id.pool_cell_selected_light_mode_label);
             }
         }
 
