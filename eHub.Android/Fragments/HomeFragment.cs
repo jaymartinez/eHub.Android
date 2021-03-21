@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Reactive.Linq;
 using Fragment = Android.Support.V4.App.Fragment;
+using eHub.Common.Helpers;
 
 namespace eHub.Android.Fragments
 {
@@ -97,6 +98,7 @@ namespace eHub.Android.Fragments
         {
             var allPins = await poolService.GetAllStatuses();
             var sched = await poolService.GetSchedule();
+            var serverLightState = await poolService.GetCurrentPoolLightMode();
 
             if (allPins == null || sched == null)
             {
@@ -128,8 +130,11 @@ namespace eHub.Android.Fragments
                     var state = (await poolService.Toggle(Pin.PoolLight))?.State ?? PinState.OFF;
                     sw.Checked = state == 1;
                 },
-                LightModeButtonTapped = async model =>
+                LightModeButtonTapped = async (model, selectedModeLabel) =>
                 {
+                    // Get the state again
+                    serverLightState = await poolService.GetCurrentPoolLightMode();
+
                     var state = (await poolService.GetPinStatus(Pin.PoolLight))?.State ?? PinState.OFF;
                     if (state == PinState.OFF)
                     {
@@ -137,19 +142,56 @@ namespace eHub.Android.Fragments
                         return;
                     }
 
+                    if (model.Mode == PoolLightMode.Recall && serverLightState.PreviousPoolLightMode == PoolLightMode.NotSet)
+                    {
+                        Dialogs.SimpleAlert(Context, "Nothing to recall", "There is no previous light mode saved yet.").Show();
+                        return;
+                    }
+
                     _progressBar.Visibility = ViewStates.Visible;
-                    var alert = Dialogs.SimpleAlert(Context, "Applying following theme", model.ModeDisplay, "");
+                    var alert = Dialogs.SimpleAlert(Context, "Applying following theme", model.Mode.ToLightModeText(), "");
+
+                    var numCycles = model.PowerCycles * 2;
+                    if (model.Mode == PoolLightMode.Recall)
+                    {
+                        numCycles = (int)serverLightState.PreviousPoolLightMode * 2;
+                    }
+
                     alert.Show();
                     alert.SetCancelable(false);
                     alert.SetCanceledOnTouchOutside(false);
-                    for (var i = 0; i < model.PowerCycles * 2; i++)
+                    for (var i = 0; i < numCycles; i++)
                     {
                         var toggleResult = await poolService.Toggle(Pin.PoolLight);
                         await Task.Delay(TimeSpan.FromMilliseconds(500));
                     }
+
+                    // After applying mode the light takes about 2 seconds to come back on.
+                    await Task.Delay(TimeSpan.FromSeconds(2));
+
+                    if (model.Mode == PoolLightMode.Hold || model.Mode == PoolLightMode.Recall)
+                    {
+                        if (model.Mode == PoolLightMode.Hold)
+                        {
+                            selectedModeLabel.Text = "Holding current color from light show";
+                        }
+                        else
+                        {
+                            await poolService.SavePoolLightMode(serverLightState.PreviousPoolLightMode);
+                            selectedModeLabel.Text = serverLightState.PreviousPoolLightMode.ToLightModeText();
+                        }
+                    }
+                    else
+                    {
+                        await poolService.SavePoolLightMode(model.Mode);
+                        selectedModeLabel.Text = model.Mode.ToLightModeText();
+                    }
+
+
                     _progressBar.Visibility = ViewStates.Gone;
                     alert.Hide();
-                }
+                },
+                SelectedLightMode = serverLightState.CurrentPoolLightMode
             };
             var spaCell = new SpaCellItem(spa, spaLight);
 
