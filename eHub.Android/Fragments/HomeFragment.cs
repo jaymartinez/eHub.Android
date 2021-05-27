@@ -48,7 +48,6 @@ namespace eHub.Android.Fragments
 
         public override void OnDestroy()
         {
-
             base.OnDestroy();
         }
 
