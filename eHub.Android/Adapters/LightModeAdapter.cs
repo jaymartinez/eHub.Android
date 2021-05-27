@@ -16,7 +16,7 @@ using Switch = Android.Support.V7.Widget.SwitchCompat;
 
 namespace eHub.Android
 {
-    public class HomeRecyclerAdapter : RecyclerView.Adapter
+    public class LightModeAdapter : RecyclerView.Adapter
     {
         const int ScheduleId = 1;
         const int PoolId = 2;
@@ -27,19 +27,17 @@ namespace eHub.Android
         const int AboutId = 7;
 
         readonly Handler _mainUiHandler;
-        readonly IPoolService _poolService;
-
-        public List<HomeCellItem> Items { get; set; } = new List<HomeCellItem>();
 
         public WeakReference ActivityRef { get; set; }
 
-        public HomeRecyclerAdapter(List<HomeCellItem> items, IPoolService poolService)
+        [Inject] IPoolService PoolService { get; set; }
+
+        public List<HomeCellItem> Items { get; set; }
+
+        public LightModeAdapter(List<HomeCellItem> items)
         {
             EhubInjector.InjectProperties(this);
-
             _mainUiHandler = new Handler(Looper.MainLooper);
-            _poolService = poolService;
-            Items = items;
         }
 
         public override int ItemCount => Items?.Count ?? 0;
@@ -200,7 +198,7 @@ namespace eHub.Android
                             {
                                 if (confirmed)
                                 {
-                                    var poolToggle = await _poolService.Toggle(Pin.PoolPump);
+                                    var poolToggle = await PoolService.Toggle(Pin.PoolPump);
                                     if (poolToggle != null)
                                     {
                                         SetOnOffLabelColor(poolCell.StatusTextView, poolToggle);
@@ -216,77 +214,23 @@ namespace eHub.Android
                     var spaCell = holder as SpaCell;
 
                     // Initial states
-                    spaCell.LightOnOffSwitch.Checked = item.SpaItem.SpaLight.State == 1;
-                    spaCell.SelectedLightModeText.Text = item.SpaItem.SelectedLightMode.ToLightModeText();
+                    UpdateImageButtonState(spaCell.LightButton, item.SpaItem.SpaLight.State);
                     SetOnOffLabelColor(spaCell.StatusTextView, item.SpaItem.SpaPump);
                     SetButtonBackground(spaCell.OnOffButton, item.SpaItem.SpaPump.State, CellType.Spa);
 
-                    spaCell.LightOnOffSwitch.SetOnClickListener(new OnClickListener(v =>
+                    spaCell.LightButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        item.SpaItem.LightOnOffSwitchTapped.Invoke(v as Switch);
-                    }));
-
-                    spaCell.SamModeButton.SetOnClickListener(new OnClickListener(v =>
-                    {
-                        item.SpaItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Sam), spaCell.SelectedLightModeText);
-                    }));
-                    spaCell.PartyModeButton.SetOnClickListener(new OnClickListener(v =>
-                    {
-                        item.SpaItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Party), spaCell.SelectedLightModeText);
-                    }));
-                    spaCell.RomanceModeButton.SetOnClickListener(new OnClickListener(v =>
-                    {
-                        item.SpaItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Romance), spaCell.SelectedLightModeText);
-                    }));
-                    spaCell.CaribbeanModeButton.SetOnClickListener(new OnClickListener(v =>
-                    {
-                        item.SpaItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Caribbean), spaCell.SelectedLightModeText);
-                    }));
-                    spaCell.AmericanModeButton.SetOnClickListener(new OnClickListener(v =>
-                    {
-                        item.SpaItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.American), spaCell.SelectedLightModeText);
-                    }));
-                    spaCell.CaliSunsetModeButton.SetOnClickListener(new OnClickListener(v =>
-                    {
-                        item.SpaItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.CaliforniaSunset), spaCell.SelectedLightModeText);
-                    }));
-                    spaCell.RoyalModeButton.SetOnClickListener(new OnClickListener(v =>
-                    {
-                        item.SpaItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Royal), spaCell.SelectedLightModeText);
-                    }));
-                    spaCell.BlueModeButton.SetOnClickListener(new OnClickListener(v =>
-                    {
-                        item.SpaItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Blue), spaCell.SelectedLightModeText);
-                    }));
-                    spaCell.GreenModeButton.SetOnClickListener(new OnClickListener(v =>
-                    {
-                        item.SpaItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Green), spaCell.SelectedLightModeText);
-                    }));
-                    spaCell.RedModeButton.SetOnClickListener(new OnClickListener(v =>
-                    {
-                        item.SpaItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Red), spaCell.SelectedLightModeText);
-                    }));
-                    spaCell.WhiteModeButton.SetOnClickListener(new OnClickListener(v =>
-                    {
-                        item.SpaItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.White), spaCell.SelectedLightModeText);
-                    }));
-                    spaCell.MagentaModeButton.SetOnClickListener(new OnClickListener(v =>
-                    {
-                        item.SpaItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Magenta), spaCell.SelectedLightModeText);
-                    }));
-                    spaCell.HoldModeButton.SetOnClickListener(new OnClickListener(v =>
-                    {
-                        item.SpaItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Hold), spaCell.SelectedLightModeText);
-                    }));
-                    spaCell.RecallModeButton.SetOnClickListener(new OnClickListener(v =>
-                    {
-                        item.SpaItem.LightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Recall), spaCell.SelectedLightModeText);
+                        var spaLight = await PoolService.Toggle(Pin.SpaLight);
+                        if (spaLight != null)
+                        {
+                            UpdateImageButtonState(spaCell.LightButton, spaLight.State);
+                        }
                     }));
 
                     spaCell.OnOffButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var btn = v as Button;
-                        var spaToggle = await _poolService.Toggle(Pin.SpaPump);
+                        var spaToggle = await PoolService.Toggle(Pin.SpaPump);
                         if (spaToggle != null)
                         {
                             SetOnOffLabelColor(spaCell.StatusTextView, spaToggle);
@@ -322,7 +266,7 @@ namespace eHub.Android
                             }
                         }
 
-                        var toggle = await _poolService.Toggle(item.SingleSwitchItem.PinNumber);
+                        var toggle = await PoolService.Toggle(item.SingleSwitchItem.PinNumber);
                         if (toggle != null)
                         {
                             SetOnOffLabelColor(eqmtCell.StatusTextView, toggle);
@@ -346,7 +290,7 @@ namespace eHub.Android
 
         async Task<int> GetStatus(int pin)
         {
-            var result = await _poolService.GetPinStatus(pin);
+            var result = await PoolService.GetPinStatus(pin);
             return result.State;
         }
 
@@ -511,44 +455,13 @@ namespace eHub.Android
 
         class SpaCell : EquipmentCell
         {
-            public Switch LightOnOffSwitch { get; }
-            public Button SamModeButton { get; }
-            public Button PartyModeButton { get; }
-            public Button RomanceModeButton { get; }
-            public Button CaribbeanModeButton { get; }
-            public Button AmericanModeButton { get; }
-            public Button CaliSunsetModeButton { get; }
-            public Button RoyalModeButton { get; }
-            public Button BlueModeButton { get; }
-            public Button GreenModeButton { get; }
-            public Button RedModeButton { get; }
-            public Button WhiteModeButton { get; }
-            public Button MagentaModeButton { get; }
-            public Button HoldModeButton { get; }
-            public Button RecallModeButton { get; }
-            public TextView SelectedLightModeText { get; }
+            public ImageButton LightButton { get; }
 
             public SpaCell(View view)
                 : base(view)
             {
                 StatusTextView = view.FindViewById<TextView>(Resource.Id.spa_cell_status_data_lbl);
                 OnOffButton = view.FindViewById<Button>(Resource.Id.spa_cell_onoff_btn);
-                LightOnOffSwitch = view.FindViewById<Switch>(Resource.Id.spa_cell_light_onoff_switch);
-                SamModeButton = view.FindViewById<Button>(Resource.Id.spa_cell_sam_mode_button);
-                PartyModeButton = view.FindViewById<Button>(Resource.Id.spa_cell_party_mode_button);
-                RomanceModeButton = view.FindViewById<Button>(Resource.Id.spa_cell_romance_mode_button);
-                CaribbeanModeButton = view.FindViewById<Button>(Resource.Id.spa_cell_caribbean_mode_button);
-                AmericanModeButton = view.FindViewById<Button>(Resource.Id.spa_cell_american_mode_button);
-                CaliSunsetModeButton = view.FindViewById<Button>(Resource.Id.spa_cell_cali_sunset_mode_button);
-                RoyalModeButton = view.FindViewById<Button>(Resource.Id.spa_cell_royal_mode_button);
-                BlueModeButton = view.FindViewById<Button>(Resource.Id.spa_cell_blue_fixed_mode_button);
-                GreenModeButton = view.FindViewById<Button>(Resource.Id.spa_cell_green_fixed_mode_button);
-                RedModeButton = view.FindViewById<Button>(Resource.Id.spa_cell_red_fixed_mode_button);
-                WhiteModeButton = view.FindViewById<Button>(Resource.Id.spa_cell_white_fixed_mode_button);
-                MagentaModeButton = view.FindViewById<Button>(Resource.Id.spa_cell_magenta_fixed_mode_button);
-                HoldModeButton = view.FindViewById<Button>(Resource.Id.spa_cell_hold_mode_button);
-                RecallModeButton = view.FindViewById<Button>(Resource.Id.spa_recall_mode_button);
-                SelectedLightModeText = view.FindViewById<TextView>(Resource.Id.spa_cell_selected_light_mode_label);
             }
         }
 

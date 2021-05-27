@@ -63,6 +63,10 @@ namespace eHub.Android.Models
     {
         public PiPin SpaPump { get; }
         public PiPin SpaLight { get; }
+        public Action<Switch> LightOnOffSwitchTapped { get; set; }
+        public PoolLightMode SelectedLightMode { get; set; }
+
+        public Action<PoolLightModel, TextView> LightModeButtonTapped { get; set; }
 
         public SpaCellItem(PiPin spaPump, PiPin spaLight)
         {

@@ -200,7 +200,83 @@ namespace eHub.Android.Fragments
                 },
                 SelectedLightMode = serverLightState.CurrentPoolLightMode
             };
-            var spaCell = new SpaCellItem(spa, spaLight);
+            var spaCell = new SpaCellItem(spa, spaLight)
+            {
+                LightOnOffSwitchTapped = async sw =>
+                {
+                    var state = (await poolService.Toggle(Pin.SpaLight))?.State ?? PinState.OFF;
+                    sw.Checked = state == 1;
+                },
+                LightModeButtonTapped = async (model, selectedModeLabel) =>
+                {
+                    // Get the state again
+                    serverLightState = await poolService.GetCurrentSpaLightMode();
+
+                    var state = (await poolService.GetPinStatus(Pin.SpaLight))?.State ?? PinState.OFF;
+                    if (state == PinState.OFF)
+                    {
+                        Toast.MakeText(Context, "Turn the spa light on before changing light modes", ToastLength.Long).Show();
+                        return;
+                    }
+
+                    if (model.Mode == PoolLightMode.Recall && serverLightState.PreviousPoolLightMode == PoolLightMode.NotSet)
+                    {
+                        Toast.MakeText(Context, "There is no previous light mode saved yet.", ToastLength.Long).Show();
+                        return;
+                    }
+
+                    if (model.Mode == serverLightState.CurrentPoolLightMode)
+                    {
+                        Toast.MakeText(Context, "You are already on that mode!", ToastLength.Long).Show();
+                        return;
+                    }
+
+                    _progressBar.Visibility = ViewStates.Visible;
+
+                    var alert = Dialogs.SimpleAlert(Context, "Applying theme", model.Mode.ToLightModeText(), "");
+                    var numCycles = model.PowerCycles * 2;
+                    if (model.Mode == PoolLightMode.Recall)
+                    {
+                        alert = Dialogs.SimpleAlert(Context, "Applying last theme", serverLightState.PreviousPoolLightMode.ToLightModeText(), "");
+                        numCycles = (int)serverLightState.PreviousPoolLightMode * 2;
+                    }
+
+                    alert.Show();
+                    alert.SetCancelable(false);
+                    alert.SetCanceledOnTouchOutside(false);
+                    for (var i = 0; i < numCycles; i++)
+                    {
+                        var toggleResult = await poolService.Toggle(Pin.SpaLight);
+                        await Task.Delay(TimeSpan.FromMilliseconds(500));
+                    }
+
+                    // After applying mode the light takes about 2 seconds to come back on.
+                    await Task.Delay(TimeSpan.FromSeconds(2));
+
+                    if (model.Mode == PoolLightMode.Hold || model.Mode == PoolLightMode.Recall)
+                    {
+                        if (model.Mode == PoolLightMode.Hold)
+                        {
+                            selectedModeLabel.Text = "Holding current color from light show";
+                        }
+                        else
+                        {
+                            await poolService.SaveSpaLightMode(serverLightState.PreviousPoolLightMode);
+                            selectedModeLabel.Text = serverLightState.PreviousPoolLightMode.ToLightModeText();
+                        }
+                    }
+                    else
+                    {
+                        await poolService.SaveSpaLightMode(model.Mode);
+                        selectedModeLabel.Text = model.Mode.ToLightModeText();
+                    }
+
+
+                    _progressBar.Visibility = ViewStates.Gone;
+                    alert.Hide();
+                },
+                SelectedLightMode = serverLightState.CurrentPoolLightMode
+            };
 
             var schedCell = new ScheduleCellItem(sched)
             {

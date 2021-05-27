@@ -48,6 +48,7 @@
     </AndroidTlsProvider>
     <AndroidHttpClientHandlerType>
     </AndroidHttpClientHandlerType>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -74,6 +75,7 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adapters\LightModeAdapter.cs" />
     <Compile Include="Adapters\HomeRecyclerAdapter.cs" />
     <Compile Include="ContainerConfig.cs" />
     <Compile Include="Dialogs.cs" />
