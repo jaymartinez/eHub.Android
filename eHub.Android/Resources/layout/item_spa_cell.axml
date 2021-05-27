@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout 
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:padding="8dp"
-	android:background="@drawable/rounded_corners_8dp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+	android:background="@drawable/rounded_corners_8dp_lighterblue"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content">
 
 	<LinearLayout
 		android:id="@+id/spa_cell_label_container"
@@ -15,8 +17,8 @@
 
 		<ImageView 
 			android:id="@+id/spa_cell_image"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
+			android:layout_width="48dp"
+			android:layout_height="48dp"
 			android:src="@drawable/ic_hot_tub_blue_grey_300_48dp" />
 
 		<LinearLayout 
@@ -43,35 +45,224 @@
 				android:layout_height="wrap_content" />
 
 		</LinearLayout>
+
+		<android.support.v7.widget.SwitchCompat
+          android:id="@+id/spa_cell_light_onoff_switch"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content" 
+		  android:layout_gravity="end"
+	      android:textAlignment="textEnd"
+	      android:layout_marginEnd="8dp"
+          android:textColor="@color/white"
+          app:switchPadding="8dp"
+          android:text="Light" />
+
 	</LinearLayout>
 
 	<RelativeLayout
 		android:id="@+id/spa_cell_btns_container"
 		android:layout_below="@id/spa_cell_label_container"
-		android:padding="16dp"
+		android:padding="8dp"
 		android:layout_width="match_parent" 
 		android:layout_height="wrap_content">
+
+		<TextView
+			android:id="@+id/spa_cell_pump_control_lbl"
+			android:textColor="@color/material_grey_300"
+			android:text="Pump Control"
+			android:gravity="center_horizontal"
+			android:layout_width="match_parent" 
+			android:layout_height="wrap_content" />
 
 		<Button
 			android:id="@+id/spa_cell_onoff_btn"
 			android:textColor="@color/material_grey_300"
 			android:background="@drawable/rounded_corners_bluegray_8dp"
-			android:layout_centerInParent="true"
-			android:layout_alignParentStart="true"
-			android:layout_marginLeft="16dp"
+			android:layout_below="@id/spa_cell_pump_control_lbl"
+			android:layout_marginTop="8dp"
 			android:text="Off"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content" />
-
-		<ImageButton
-			android:id="@+id/spa_cell_light_btn"
-			android:layout_centerInParent="true"
-			android:layout_alignParentEnd="true"
-			android:background="@drawable/rounded_corners_bluegray_8dp"
-			android:src="@drawable/icons8_bluelight_off_96"
-			android:layout_marginLeft="16dp"
-			android:layout_width="wrap_content"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content" />
 
 	</RelativeLayout>
+
+	<LinearLayout
+		android:id="@+id/spa_cell_light_mode_btns_container"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content" 
+		android:paddingTop="16dp"
+		android:orientation="vertical"
+		android:layout_below="@id/spa_cell_btns_container">
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" 
+			android:textColor="@color/material_grey_300"
+			android:gravity="center_horizontal"
+			android:text="Light Modes" />
+
+		<TextView
+			android:id="@+id/spa_cell_selected_light_mode_label"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" 
+			android:textSize="12sp"
+			android:textColor="@color/orangeHolo"
+			android:gravity="center_horizontal"
+			tools:text="Party Mode" />
+
+		<Button
+			android:id="@+id/spa_cell_sam_mode_button"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:textAllCaps="false"
+			android:layout_marginTop="8dp"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:text="SAM: Cycles through white, magenta, blue and green colors (emulates the Pentair SAM color changing light)"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/spa_cell_party_mode_button"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:textAllCaps="false"
+			android:layout_marginTop="8dp"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:text="Party Mode: Rapid color changing building energy and excitement. "
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/spa_cell_romance_mode_button"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:textAllCaps="false"
+			android:layout_marginTop="8dp"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:text="Romance Mode: Slow color transitions creating a mesmerizing and calming effect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/spa_cell_caribbean_mode_button"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:textAllCaps="false"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:text="Caribbean Mode: Transitions between a variety of blues and greens"
+			android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/spa_cell_american_mode_button"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:layout_marginTop="8dp"
+			android:textAllCaps="false"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:text="American Mode: Patriotic red, white and blue transition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/spa_cell_cali_sunset_mode_button"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:textAllCaps="false"
+			android:layout_marginTop="8dp"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:text="California Sunset: Dramatic transitions of orange, red and magenta tones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/spa_cell_royal_mode_button"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:textAllCaps="false"
+			android:layout_marginTop="8dp"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:text="Royal Mode: Richer, deeper color tones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/spa_cell_blue_fixed_mode_button"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:layout_marginTop="8dp"
+			android:textAllCaps="false"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:text="Blue: Fixed color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/spa_cell_green_fixed_mode_button"
+			android:layout_marginTop="8dp"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:textAllCaps="false"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:text="Green: Fixed color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/spa_cell_red_fixed_mode_button"
+			android:layout_marginTop="8dp"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:textAllCaps="false"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:text="Red: Fixed color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/spa_cell_white_fixed_mode_button"
+			android:layout_marginTop="8dp"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:textAllCaps="false"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:text="White: Fixed color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/spa_cell_magenta_fixed_mode_button"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:textAllCaps="false"
+			android:layout_marginTop="8dp"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:text="Magenta: Fixed color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/spa_cell_hold_mode_button"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:textAllCaps="false"
+			android:textColor="@color/material_grey_300"
+			android:layout_marginTop="8dp"
+			android:textSize="16sp"
+			android:text="Hold: Save the current color effect during a color light show"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/spa_recall_mode_button"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:textAllCaps="false"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:layout_marginTop="8dp"
+			android:text="Recall: Activate the last saved color effect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+	</LinearLayout>
 </RelativeLayout>

@@ -48,7 +48,6 @@ namespace eHub.Android.Fragments
 
         public override void OnDestroy()
         {
-
             base.OnDestroy();
         }
 
@@ -98,7 +97,8 @@ namespace eHub.Android.Fragments
         {
             var allPins = await poolService.GetAllStatuses();
             var sched = await poolService.GetSchedule();
-            var serverLightState = await poolService.GetCurrentPoolLightMode();
+            var serverPoolLightState = await poolService.GetCurrentPoolLightMode();
+            var serverSpaLightState = await poolService.GetCurrentSpaLightMode();
 
             if (allPins == null || sched == null)
             {
@@ -133,25 +133,25 @@ namespace eHub.Android.Fragments
                 LightModeButtonTapped = async (model, selectedModeLabel) =>
                 {
                     // Get the state again
-                    serverLightState = await poolService.GetCurrentPoolLightMode();
+                    serverPoolLightState = await poolService.GetCurrentPoolLightMode();
 
                     var state = (await poolService.GetPinStatus(Pin.PoolLight))?.State ?? PinState.OFF;
                     if (state == PinState.OFF)
                     {
                         Toast.MakeText(Context, "Turn the pool light on before changing light modes", ToastLength.Long).Show();
-                        return;
+                        return false;
                     }
 
-                    if (model.Mode == PoolLightMode.Recall && serverLightState.PreviousPoolLightMode == PoolLightMode.NotSet)
+                    if (model.Mode == PoolLightMode.Recall && serverPoolLightState.PreviousPoolLightMode == PoolLightMode.NotSet)
                     {
                         Toast.MakeText(Context, "There is no previous light mode saved yet.", ToastLength.Long).Show();
-                        return;
+                        return false;
                     }
 
-                    if (model.Mode == serverLightState.CurrentPoolLightMode)
+                    if (model.Mode == serverPoolLightState.CurrentPoolLightMode)
                     {
                         Toast.MakeText(Context, "You are already on that mode!", ToastLength.Long).Show();
-                        return;
+                        return false;
                     }
 
                     _progressBar.Visibility = ViewStates.Visible;
@@ -160,8 +160,8 @@ namespace eHub.Android.Fragments
                     var numCycles = model.PowerCycles * 2;
                     if (model.Mode == PoolLightMode.Recall)
                     {
-                        alert = Dialogs.SimpleAlert(Context, "Applying last theme", serverLightState.PreviousPoolLightMode.ToLightModeText(), "");
-                        numCycles = (int)serverLightState.PreviousPoolLightMode * 2;
+                        alert = Dialogs.SimpleAlert(Context, "Applying last theme", serverPoolLightState.PreviousPoolLightMode.ToLightModeText(), "");
+                        numCycles = (int)serverPoolLightState.PreviousPoolLightMode * 2;
                     }
 
                     alert.Show();
@@ -184,8 +184,8 @@ namespace eHub.Android.Fragments
                         }
                         else
                         {
-                            await poolService.SavePoolLightMode(serverLightState.PreviousPoolLightMode);
-                            selectedModeLabel.Text = serverLightState.PreviousPoolLightMode.ToLightModeText();
+                            await poolService.SavePoolLightMode(serverPoolLightState.PreviousPoolLightMode);
+                            selectedModeLabel.Text = serverPoolLightState.PreviousPoolLightMode.ToLightModeText();
                         }
                     }
                     else
@@ -194,13 +194,91 @@ namespace eHub.Android.Fragments
                         selectedModeLabel.Text = model.Mode.ToLightModeText();
                     }
 
+                    _progressBar.Visibility = ViewStates.Gone;
+                    alert.Hide();
+
+                    return true;
+                },
+                SelectedLightMode = serverPoolLightState.CurrentPoolLightMode
+            };
+            var spaCell = new SpaCellItem(spa, spaLight)
+            {
+                LightOnOffSwitchTapped = async sw =>
+                {
+                    var state = (await poolService.Toggle(Pin.SpaLight))?.State ?? PinState.OFF;
+                    sw.Checked = state == 1;
+                },
+                LightModeButtonTapped = async (model, selectedModeLabel) =>
+                {
+                    // Get the state again
+                    serverSpaLightState = await poolService.GetCurrentSpaLightMode();
+
+                    var state = (await poolService.GetPinStatus(Pin.SpaLight))?.State ?? PinState.OFF;
+                    if (state == PinState.OFF)
+                    {
+                        Toast.MakeText(Context, "Turn the spa light on before changing light modes", ToastLength.Long).Show();
+                        return false;
+                    }
+
+                    if (model.Mode == PoolLightMode.Recall && serverSpaLightState.PreviousPoolLightMode == PoolLightMode.NotSet)
+                    {
+                        Toast.MakeText(Context, "There is no previous light mode saved yet.", ToastLength.Long).Show();
+                        return false;
+                    }
+
+                    if (model.Mode == serverSpaLightState.CurrentPoolLightMode)
+                    {
+                        Toast.MakeText(Context, "You are already on that mode!", ToastLength.Long).Show();
+                        return false;
+                    }
+
+                    _progressBar.Visibility = ViewStates.Visible;
+
+                    var alert = Dialogs.SimpleAlert(Context, "Applying theme", model.Mode.ToLightModeText(), "");
+                    var numCycles = model.PowerCycles * 2;
+                    if (model.Mode == PoolLightMode.Recall)
+                    {
+                        alert = Dialogs.SimpleAlert(Context, "Applying last theme", serverSpaLightState.PreviousPoolLightMode.ToLightModeText(), "");
+                        numCycles = (int)serverSpaLightState.PreviousPoolLightMode * 2;
+                    }
+
+                    alert.Show();
+                    alert.SetCancelable(false);
+                    alert.SetCanceledOnTouchOutside(false);
+                    for (var i = 0; i < numCycles; i++)
+                    {
+                        var toggleResult = await poolService.Toggle(Pin.SpaLight);
+                        await Task.Delay(TimeSpan.FromMilliseconds(500));
+                    }
+
+                    // After applying mode the light takes about 2 seconds to come back on.
+                    await Task.Delay(TimeSpan.FromSeconds(2));
+
+                    if (model.Mode == PoolLightMode.Hold || model.Mode == PoolLightMode.Recall)
+                    {
+                        if (model.Mode == PoolLightMode.Hold)
+                        {
+                            selectedModeLabel.Text = "Holding current color from light show";
+                        }
+                        else
+                        {
+                            await poolService.SaveSpaLightMode(serverSpaLightState.PreviousPoolLightMode);
+                            selectedModeLabel.Text = serverSpaLightState.PreviousPoolLightMode.ToLightModeText();
+                        }
+                    }
+                    else
+                    {
+                        await poolService.SaveSpaLightMode(model.Mode);
+                        selectedModeLabel.Text = model.Mode.ToLightModeText();
+                    }
 
                     _progressBar.Visibility = ViewStates.Gone;
                     alert.Hide();
+
+                    return true;
                 },
-                SelectedLightMode = serverLightState.CurrentPoolLightMode
+                SelectedLightMode = serverSpaLightState.CurrentPoolLightMode
             };
-            var spaCell = new SpaCellItem(spa, spaLight);
 
             var schedCell = new ScheduleCellItem(sched)
             {
