@@ -98,7 +98,8 @@ namespace eHub.Android.Fragments
         {
             var allPins = await poolService.GetAllStatuses();
             var sched = await poolService.GetSchedule();
-            var serverLightState = await poolService.GetCurrentPoolLightMode();
+            var serverPoolLightState = await poolService.GetCurrentPoolLightMode();
+            var serverSpaLightState = await poolService.GetCurrentSpaLightMode();
 
             if (allPins == null || sched == null)
             {
@@ -133,7 +134,7 @@ namespace eHub.Android.Fragments
                 LightModeButtonTapped = async (model, selectedModeLabel) =>
                 {
                     // Get the state again
-                    serverLightState = await poolService.GetCurrentPoolLightMode();
+                    serverPoolLightState = await poolService.GetCurrentPoolLightMode();
 
                     var state = (await poolService.GetPinStatus(Pin.PoolLight))?.State ?? PinState.OFF;
                     if (state == PinState.OFF)
@@ -142,13 +143,13 @@ namespace eHub.Android.Fragments
                         return;
                     }
 
-                    if (model.Mode == PoolLightMode.Recall && serverLightState.PreviousPoolLightMode == PoolLightMode.NotSet)
+                    if (model.Mode == PoolLightMode.Recall && serverPoolLightState.PreviousPoolLightMode == PoolLightMode.NotSet)
                     {
                         Toast.MakeText(Context, "There is no previous light mode saved yet.", ToastLength.Long).Show();
                         return;
                     }
 
-                    if (model.Mode == serverLightState.CurrentPoolLightMode)
+                    if (model.Mode == serverPoolLightState.CurrentPoolLightMode)
                     {
                         Toast.MakeText(Context, "You are already on that mode!", ToastLength.Long).Show();
                         return;
@@ -160,8 +161,8 @@ namespace eHub.Android.Fragments
                     var numCycles = model.PowerCycles * 2;
                     if (model.Mode == PoolLightMode.Recall)
                     {
-                        alert = Dialogs.SimpleAlert(Context, "Applying last theme", serverLightState.PreviousPoolLightMode.ToLightModeText(), "");
-                        numCycles = (int)serverLightState.PreviousPoolLightMode * 2;
+                        alert = Dialogs.SimpleAlert(Context, "Applying last theme", serverPoolLightState.PreviousPoolLightMode.ToLightModeText(), "");
+                        numCycles = (int)serverPoolLightState.PreviousPoolLightMode * 2;
                     }
 
                     alert.Show();
@@ -184,8 +185,8 @@ namespace eHub.Android.Fragments
                         }
                         else
                         {
-                            await poolService.SavePoolLightMode(serverLightState.PreviousPoolLightMode);
-                            selectedModeLabel.Text = serverLightState.PreviousPoolLightMode.ToLightModeText();
+                            await poolService.SavePoolLightMode(serverPoolLightState.PreviousPoolLightMode);
+                            selectedModeLabel.Text = serverPoolLightState.PreviousPoolLightMode.ToLightModeText();
                         }
                     }
                     else
@@ -198,7 +199,7 @@ namespace eHub.Android.Fragments
                     _progressBar.Visibility = ViewStates.Gone;
                     alert.Hide();
                 },
-                SelectedLightMode = serverLightState.CurrentPoolLightMode
+                SelectedLightMode = serverPoolLightState.CurrentPoolLightMode
             };
             var spaCell = new SpaCellItem(spa, spaLight)
             {
@@ -210,7 +211,7 @@ namespace eHub.Android.Fragments
                 LightModeButtonTapped = async (model, selectedModeLabel) =>
                 {
                     // Get the state again
-                    serverLightState = await poolService.GetCurrentSpaLightMode();
+                    serverSpaLightState = await poolService.GetCurrentSpaLightMode();
 
                     var state = (await poolService.GetPinStatus(Pin.SpaLight))?.State ?? PinState.OFF;
                     if (state == PinState.OFF)
@@ -219,13 +220,13 @@ namespace eHub.Android.Fragments
                         return;
                     }
 
-                    if (model.Mode == PoolLightMode.Recall && serverLightState.PreviousPoolLightMode == PoolLightMode.NotSet)
+                    if (model.Mode == PoolLightMode.Recall && serverSpaLightState.PreviousPoolLightMode == PoolLightMode.NotSet)
                     {
                         Toast.MakeText(Context, "There is no previous light mode saved yet.", ToastLength.Long).Show();
                         return;
                     }
 
-                    if (model.Mode == serverLightState.CurrentPoolLightMode)
+                    if (model.Mode == serverSpaLightState.CurrentPoolLightMode)
                     {
                         Toast.MakeText(Context, "You are already on that mode!", ToastLength.Long).Show();
                         return;
@@ -237,8 +238,8 @@ namespace eHub.Android.Fragments
                     var numCycles = model.PowerCycles * 2;
                     if (model.Mode == PoolLightMode.Recall)
                     {
-                        alert = Dialogs.SimpleAlert(Context, "Applying last theme", serverLightState.PreviousPoolLightMode.ToLightModeText(), "");
-                        numCycles = (int)serverLightState.PreviousPoolLightMode * 2;
+                        alert = Dialogs.SimpleAlert(Context, "Applying last theme", serverSpaLightState.PreviousPoolLightMode.ToLightModeText(), "");
+                        numCycles = (int)serverSpaLightState.PreviousPoolLightMode * 2;
                     }
 
                     alert.Show();
@@ -261,8 +262,8 @@ namespace eHub.Android.Fragments
                         }
                         else
                         {
-                            await poolService.SaveSpaLightMode(serverLightState.PreviousPoolLightMode);
-                            selectedModeLabel.Text = serverLightState.PreviousPoolLightMode.ToLightModeText();
+                            await poolService.SaveSpaLightMode(serverSpaLightState.PreviousPoolLightMode);
+                            selectedModeLabel.Text = serverSpaLightState.PreviousPoolLightMode.ToLightModeText();
                         }
                     }
                     else
@@ -275,7 +276,7 @@ namespace eHub.Android.Fragments
                     _progressBar.Visibility = ViewStates.Gone;
                     alert.Hide();
                 },
-                SelectedLightMode = serverLightState.CurrentPoolLightMode
+                SelectedLightMode = serverSpaLightState.CurrentPoolLightMode
             };
 
             var schedCell = new ScheduleCellItem(sched)
