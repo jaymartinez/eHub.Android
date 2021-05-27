@@ -139,19 +139,19 @@ namespace eHub.Android.Fragments
                     if (state == PinState.OFF)
                     {
                         Toast.MakeText(Context, "Turn the pool light on before changing light modes", ToastLength.Long).Show();
-                        return;
+                        return false;
                     }
 
                     if (model.Mode == PoolLightMode.Recall && serverPoolLightState.PreviousPoolLightMode == PoolLightMode.NotSet)
                     {
                         Toast.MakeText(Context, "There is no previous light mode saved yet.", ToastLength.Long).Show();
-                        return;
+                        return false;
                     }
 
                     if (model.Mode == serverPoolLightState.CurrentPoolLightMode)
                     {
                         Toast.MakeText(Context, "You are already on that mode!", ToastLength.Long).Show();
-                        return;
+                        return false;
                     }
 
                     _progressBar.Visibility = ViewStates.Visible;
@@ -194,9 +194,10 @@ namespace eHub.Android.Fragments
                         selectedModeLabel.Text = model.Mode.ToLightModeText();
                     }
 
-
                     _progressBar.Visibility = ViewStates.Gone;
                     alert.Hide();
+
+                    return true;
                 },
                 SelectedLightMode = serverPoolLightState.CurrentPoolLightMode
             };
@@ -216,19 +217,19 @@ namespace eHub.Android.Fragments
                     if (state == PinState.OFF)
                     {
                         Toast.MakeText(Context, "Turn the spa light on before changing light modes", ToastLength.Long).Show();
-                        return;
+                        return false;
                     }
 
                     if (model.Mode == PoolLightMode.Recall && serverSpaLightState.PreviousPoolLightMode == PoolLightMode.NotSet)
                     {
                         Toast.MakeText(Context, "There is no previous light mode saved yet.", ToastLength.Long).Show();
-                        return;
+                        return false;
                     }
 
                     if (model.Mode == serverSpaLightState.CurrentPoolLightMode)
                     {
                         Toast.MakeText(Context, "You are already on that mode!", ToastLength.Long).Show();
-                        return;
+                        return false;
                     }
 
                     _progressBar.Visibility = ViewStates.Visible;
@@ -271,9 +272,10 @@ namespace eHub.Android.Fragments
                         selectedModeLabel.Text = model.Mode.ToLightModeText();
                     }
 
-
                     _progressBar.Visibility = ViewStates.Gone;
                     alert.Hide();
+
+                    return true;
                 },
                 SelectedLightMode = serverSpaLightState.CurrentPoolLightMode
             };

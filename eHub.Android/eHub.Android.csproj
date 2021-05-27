@@ -75,7 +75,6 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Adapters\LightModeAdapter.cs" />
     <Compile Include="Adapters\HomeRecyclerAdapter.cs" />
     <Compile Include="ContainerConfig.cs" />
     <Compile Include="Dialogs.cs" />
@@ -523,6 +522,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\fragment_pool_light_color_picker.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\rounded_corners_8dp_lighterblue.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

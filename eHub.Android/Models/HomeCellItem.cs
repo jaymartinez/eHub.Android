@@ -1,6 +1,7 @@
 ﻿using Android.Widget;
 using eHub.Common.Models;
 using System;
+using System.Threading.Tasks;
 using Switch = Android.Support.V7.Widget.SwitchCompat; 
 
 namespace eHub.Android.Models
@@ -66,7 +67,7 @@ namespace eHub.Android.Models
         public Action<Switch> LightOnOffSwitchTapped { get; set; }
         public PoolLightMode SelectedLightMode { get; set; }
 
-        public Action<PoolLightModel, TextView> LightModeButtonTapped { get; set; }
+        public Func<PoolLightModel, TextView, Task<bool>> LightModeButtonTapped { get; set; }
 
         public SpaCellItem(PiPin spaPump, PiPin spaLight)
         {
@@ -82,7 +83,7 @@ namespace eHub.Android.Models
         public Action<Switch> LightOnOffSwitchTapped { get; set; }
         public PoolLightMode SelectedLightMode { get; set; }
 
-        public Action<PoolLightModel, TextView> LightModeButtonTapped { get; set; }
+        public Func<PoolLightModel, TextView, Task<bool>> LightModeButtonTapped { get; set; }
 
         public PoolCellItem(PiPin poolPump, PiPin poolLight)
         {

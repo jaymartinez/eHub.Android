@@ -87,6 +87,7 @@
 	</RelativeLayout>
 
 	<LinearLayout
+		android:id="@+id/pool_cell_light_mode_btns_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
 		android:paddingTop="16dp"
