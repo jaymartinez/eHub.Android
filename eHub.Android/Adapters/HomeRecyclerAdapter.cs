@@ -117,6 +117,13 @@ namespace eHub.Android
                     poolCell.LightOnOffSwitch.Checked = item.PoolItem.PoolLight.State == 1;
                     poolCell.SelectedLightModeText.Text = item.PoolItem.SelectedLightMode.ToLightModeText();
 
+                    poolCell.ExpandCollapseLabel.SetOnClickListener(new OnClickListener(v =>
+                    {
+                        var curVisibility = poolCell.LightModeBtnContainer.Visibility;
+                        poolCell.LightModeBtnContainer.Visibility =
+                            curVisibility == ViewStates.Visible ? ViewStates.Gone : ViewStates.Visible;
+                    }));
+
                     poolCell.LightOnOffSwitch.SetOnClickListener(new OnClickListener(v =>
                     {
                         item.PoolItem.LightOnOffSwitchTapped.Invoke(v as Switch);
@@ -282,6 +289,13 @@ namespace eHub.Android
                     SetButtonBackground(spaCell.OnOffButton, item.SpaItem.SpaPump.State, CellType.Spa);
 
                     selectedColor = new Color(ContextCompat.GetColor(spaCell.ItemView.Context, Resource.Color.orangeHolo));
+
+                    spaCell.ExpandCollapseLabel.SetOnClickListener(new OnClickListener(v =>
+                    {
+                        var curVisibility = spaCell.LightModeBtnContainer.Visibility;
+                        spaCell.LightModeBtnContainer.Visibility =
+                            curVisibility == ViewStates.Visible ? ViewStates.Gone : ViewStates.Visible;
+                    }));
 
                     spaCell.LightOnOffSwitch.SetOnClickListener(new OnClickListener(v =>
                     {
@@ -623,6 +637,7 @@ namespace eHub.Android
             public Button RecallModeButton { get; }
             public TextView SelectedLightModeText { get; }
             public LinearLayout LightModeBtnContainer { get; }
+            public TextView ExpandCollapseLabel { get; }
 
             public PoolCell(View view)
                 : base(view)
@@ -646,6 +661,7 @@ namespace eHub.Android
                 RecallModeButton = view.FindViewById<Button>(Resource.Id.pool_recall_mode_button);
                 SelectedLightModeText = view.FindViewById<TextView>(Resource.Id.pool_cell_selected_light_mode_label);
                 LightModeBtnContainer = view.FindViewById<LinearLayout>(Resource.Id.pool_cell_light_mode_btns_container);
+                ExpandCollapseLabel = view.FindViewById<TextView>(Resource.Id.pool_cell_expand_lights_textview);
             }
 
             internal void Bind(HomeCellItem item)
@@ -713,6 +729,7 @@ namespace eHub.Android
             public Button RecallModeButton { get; }
             public TextView SelectedLightModeText { get; }
             public LinearLayout LightModeBtnContainer { get; }
+            public TextView ExpandCollapseLabel { get; }
 
             public SpaCell(View view)
                 : base(view)
@@ -736,6 +753,7 @@ namespace eHub.Android
                 RecallModeButton = view.FindViewById<Button>(Resource.Id.spa_recall_mode_button);
                 SelectedLightModeText = view.FindViewById<TextView>(Resource.Id.spa_cell_selected_light_mode_label);
                 LightModeBtnContainer = view.FindViewById<LinearLayout>(Resource.Id.spa_cell_light_mode_btns_container);
+                ExpandCollapseLabel = view.FindViewById<TextView>(Resource.Id.spa_cell_expand_lights_textview);
             }
 
             internal void Bind(HomeCellItem item)

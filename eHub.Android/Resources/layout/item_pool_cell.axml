@@ -86,29 +86,57 @@
 
 	</RelativeLayout>
 
+	<RelativeLayout
+        android:id="@+id/pool_cell_light_modes_label_container"
+        android:layout_below="@id/pool_cell_btns_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/pool_cell_light_modes_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:textColor="@color/material_grey_300"
+                android:layout_marginTop="8dp"
+                android:gravity="center_horizontal"
+                android:text="Light Modes" />
+
+            <TextView
+                android:id="@+id/pool_cell_selected_light_mode_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:textSize="12dp"
+                android:textColor="@color/orangeHolo"
+                android:gravity="center_horizontal"
+                tools:text="Party Mode" />
+		</LinearLayout>
+
+		<TextView
+			android:id="@+id/pool_cell_expand_lights_textview"
+			android:text="show/hide >>"
+            android:textColor="@color/lightblue"
+			android:layout_alignParentEnd="true"
+			android:layout_centerInParent="true"
+			android:paddingEnd="16dp"
+			android:paddingStart="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+	</RelativeLayout>
+
 	<LinearLayout
 		android:id="@+id/pool_cell_light_mode_btns_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
-		android:paddingTop="16dp"
+		android:paddingTop="4dp"
 		android:orientation="vertical"
-		android:layout_below="@id/pool_cell_btns_container">
-
-		<TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" 
-			android:textColor="@color/material_grey_300"
-			android:gravity="center_horizontal"
-			android:text="Light Modes" />
-
-		<TextView
-			android:id="@+id/pool_cell_selected_light_mode_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" 
-			android:textSize="12dp"
-			android:textColor="@color/orangeHolo"
-			android:gravity="center_horizontal"
-			tools:text="Party Mode" />
+		android:visibility="gone"
+		tools:visibility="visible"
+        android:layout_below="@+id/pool_cell_light_modes_label_container">
 
 		<Button
 			android:id="@+id/pool_cell_sam_mode_button"
