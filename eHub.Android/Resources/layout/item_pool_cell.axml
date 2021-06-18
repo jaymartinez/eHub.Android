@@ -46,6 +46,17 @@
 
 		</LinearLayout>
 
+		<TextView
+			android:id="@+id/pool_cell_water_temp_lbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+			tools:text="78.8\u00B0 F" 
+			android:textSize="16sp"
+			android:paddingStart="4dp"
+			android:paddingEnd="4dp"
+			android:paddingTop="4dp"
+			android:textColor="@android:color/holo_blue_dark" />
+
 		<android.support.v7.widget.SwitchCompat
             android:id="@+id/pool_cell_light_onoff_switch"
             android:layout_width="match_parent"
