@@ -112,10 +112,11 @@ namespace eHub.Android
                     var selectedColor = new Color(ContextCompat.GetColor(poolCell.ItemView.Context, Resource.Color.orangeHolo));
 
                     // Initial states
-                    SetOnOffLabelColor(poolCell.StatusTextView, item.PoolItem.PoolPump);
-                    SetButtonBackground(poolCell.OnOffButton, item.PoolItem.PoolPump.State, CellType.Pool);
+                    SetOnOffLabelColor(poolCell.StatusTextView, item.PoolItem.PoolPin1);
+                    SetButtonBackground(poolCell.OnOffButton, item.PoolItem.PoolPin1.State, CellType.Pool);
                     poolCell.LightOnOffSwitch.Checked = item.PoolItem.PoolLight.State == 1;
                     poolCell.SelectedLightModeText.Text = item.PoolItem.SelectedLightMode.ToLightModeText();
+                    poolCell.WaterTempLabel.Text = item.PoolItem.WaterTemp.TemperatureFahrenheit;
 
                     poolCell.ExpandCollapseLabel.SetOnClickListener(new OnClickListener(v =>
                     {
@@ -246,13 +247,16 @@ namespace eHub.Android
                     {
                         var b = v as Button;
                         var heaterStatus = await GetStatus(Pin.Heater);
-                        var boosterStatus = await GetStatus(Pin.BoosterPump);
-                        var spaStatus = await GetStatus(Pin.SpaPump);
-                        var curPoolState = await GetStatus(Pin.PoolPump);
-                        var onOffStr = curPoolState == PinState.ON  ? "off" : "on";
+                        var booster1Status = await GetStatus(Pin.BoosterPump_1);
+                        var booster2Status = await GetStatus(Pin.BoosterPump_2);
+                        var spa1Status = await GetStatus(Pin.SpaPump_1);
+                        var spa2Status = await GetStatus(Pin.SpaPump_2);
+                        var curPool1State = await GetStatus(Pin.PoolPump_1);
+                        var curPool2State = await GetStatus(Pin.PoolPump_2);
+                        var onOffStr = curPool1State == PinState.ON && curPool2State == PinState.ON  ? "off" : "on";
 
-                        if (curPoolState == PinState.ON 
-                            && (heaterStatus == PinState.ON || boosterStatus == PinState.ON))
+                        if (curPool1State == PinState.ON && curPool2State == PinState.ON
+                            && (heaterStatus == PinState.ON || booster1Status == PinState.ON || booster2Status == PinState.ON))
                         {
                             Toast.MakeText(v.Context, "Make sure the heater and the booster pump are off first!", 
                                 ToastLength.Short).Show();
@@ -266,7 +270,8 @@ namespace eHub.Android
                             {
                                 if (confirmed)
                                 {
-                                    var poolToggle = await _poolService.Toggle(Pin.PoolPump);
+                                    // toggling pool1 or pool2 will turn the both on at the same time on the server
+                                    var poolToggle = await _poolService.Toggle(Pin.PoolPump_1);
                                     if (poolToggle != null)
                                     {
                                         SetOnOffLabelColor(poolCell.StatusTextView, poolToggle);
@@ -285,8 +290,8 @@ namespace eHub.Android
                     // Initial states
                     spaCell.LightOnOffSwitch.Checked = item.SpaItem.SpaLight.State == 1;
                     spaCell.SelectedLightModeText.Text = item.SpaItem.SelectedLightMode.ToLightModeText();
-                    SetOnOffLabelColor(spaCell.StatusTextView, item.SpaItem.SpaPump);
-                    SetButtonBackground(spaCell.OnOffButton, item.SpaItem.SpaPump.State, CellType.Spa);
+                    SetOnOffLabelColor(spaCell.StatusTextView, item.SpaItem.SpaPin1);
+                    SetButtonBackground(spaCell.OnOffButton, item.SpaItem.SpaPin1.State, CellType.Spa);
 
                     selectedColor = new Color(ContextCompat.GetColor(spaCell.ItemView.Context, Resource.Color.orangeHolo));
 
@@ -418,7 +423,7 @@ namespace eHub.Android
                     spaCell.OnOffButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var btn = v as Button;
-                        var spaToggle = await _poolService.Toggle(Pin.SpaPump);
+                        var spaToggle = await _poolService.Toggle(Pin.SpaPump_1);
                         if (spaToggle != null)
                         {
                             SetOnOffLabelColor(spaCell.StatusTextView, spaToggle);
@@ -443,7 +448,7 @@ namespace eHub.Android
                         if (checkPool)
                         {
                             var curStatus = await GetStatus(item.SingleSwitchItem.PinNumber);
-                            var poolPumpStatus = await GetStatus(Pin.PoolPump);
+                            var poolPumpStatus = await GetStatus(Pin.PoolPump_1);
 
                             // Make sure the pool pump is on first!
                             if (curStatus == PinState.OFF && poolPumpStatus == PinState.OFF)
@@ -638,6 +643,7 @@ namespace eHub.Android
             public TextView SelectedLightModeText { get; }
             public LinearLayout LightModeBtnContainer { get; }
             public TextView ExpandCollapseLabel { get; }
+            public TextView WaterTempLabel { get; }
 
             public PoolCell(View view)
                 : base(view)
@@ -662,6 +668,7 @@ namespace eHub.Android
                 SelectedLightModeText = view.FindViewById<TextView>(Resource.Id.pool_cell_selected_light_mode_label);
                 LightModeBtnContainer = view.FindViewById<LinearLayout>(Resource.Id.pool_cell_light_mode_btns_container);
                 ExpandCollapseLabel = view.FindViewById<TextView>(Resource.Id.pool_cell_expand_lights_textview);
+                WaterTempLabel = view.FindViewById<TextView>(Resource.Id.pool_cell_water_temp_lbl);
             }
 
             internal void Bind(HomeCellItem item)

@@ -95,6 +95,7 @@ namespace eHub.Android.Fragments
 
         async Task<List<HomeCellItem>> RefreshView(IPoolService poolService)
         {
+            //var waterTemp = await poolService.GetWaterTemp();
             var allPins = await poolService.GetAllStatuses();
             var sched = await poolService.GetSchedule();
             var serverPoolLightState = await poolService.GetCurrentPoolLightMode();
@@ -107,11 +108,14 @@ namespace eHub.Android.Fragments
                 return null;
             }
 
-            var pool = allPins.FirstOrDefault(_ => _.PinNumber == Pin.PoolPump);
+            var pool1 = allPins.FirstOrDefault(_ => _.PinNumber == Pin.PoolPump_1);
+            var pool2 = allPins.FirstOrDefault(_ => _.PinNumber == Pin.PoolPump_2);
             var poolLight = allPins.FirstOrDefault(_ => _.PinNumber == Pin.PoolLight);
-            var spa = allPins.FirstOrDefault(_ => _.PinNumber == Pin.SpaPump);
+            var spa1 = allPins.FirstOrDefault(_ => _.PinNumber == Pin.SpaPump_1);
+            var spa2 = allPins.FirstOrDefault(_ => _.PinNumber == Pin.SpaPump_2);
             var spaLight = allPins.FirstOrDefault(_ => _.PinNumber == Pin.SpaLight);
-            var booster = allPins.FirstOrDefault(_ => _.PinNumber == Pin.BoosterPump);
+            var booster1 = allPins.FirstOrDefault(_ => _.PinNumber == Pin.BoosterPump_1);
+            var booster2 = allPins.FirstOrDefault(_ => _.PinNumber == Pin.BoosterPump_2);
             var heater = allPins.FirstOrDefault(_ => _.PinNumber == Pin.Heater);
             var groundLights = allPins.FirstOrDefault(_ => _.PinNumber == Pin.GroundLights);
 
@@ -123,7 +127,7 @@ namespace eHub.Android.Fragments
                 }
             };
 
-            var poolCell = new PoolCellItem(pool, poolLight)
+            var poolCell = new PoolCellItem(pool1, pool2, poolLight)
             {
                 LightOnOffSwitchTapped = async sw =>
                 {
@@ -199,9 +203,10 @@ namespace eHub.Android.Fragments
 
                     return true;
                 },
-                SelectedLightMode = serverPoolLightState.CurrentPoolLightMode
+                SelectedLightMode = serverPoolLightState.CurrentPoolLightMode,
+                WaterTemp = new WaterTemp() { ValueC = 0.0, ValueF = 0.0 } //waterTemp
             };
-            var spaCell = new SpaCellItem(spa, spaLight)
+            var spaCell = new SpaCellItem(spa1, spa2, spaLight)
             {
                 LightOnOffSwitchTapped = async sw =>
                 {
@@ -350,12 +355,14 @@ namespace eHub.Android.Fragments
                 }
             };
 
+            var boosterCell = new BoosterCellItem(booster1, booster2);
+
             return new List<HomeCellItem>(7)
             {
                 new HomeCellItem(schedCell, CellType.Schedule),
                 new HomeCellItem(poolCell, CellType.Pool),
                 new HomeCellItem(spaCell, CellType.Spa),
-                new HomeCellItem(booster, CellType.Booster),
+                new HomeCellItem(boosterCell, CellType.Booster),
                 new HomeCellItem(heater, CellType.Heater),
                 new HomeCellItem(groundLights, CellType.GroundLights),
                 aboutItem
