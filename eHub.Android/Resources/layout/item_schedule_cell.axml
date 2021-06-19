@@ -48,7 +48,7 @@
                 android:id="@+id/schedule_cell_include_booster_cb"
                 android:textColor="@color/material_grey_300"
                 android:layout_marginTop="16dp"
-                android:text="Run Booster Pump With Schedule"
+                android:text="Run Booster Pump With Timer"
                 android:layout_width="wrap_content" 
                 android:layout_height="wrap_content" />
 
