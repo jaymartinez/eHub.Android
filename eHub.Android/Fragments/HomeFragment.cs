@@ -99,8 +99,10 @@ namespace eHub.Android.Fragments
             //var waterTemp = await poolService.GetWaterTemp();
             var allPins = await poolService.GetAllStatuses();
             var sched = await poolService.GetSchedule();
-            var serverPoolLightState = await poolService.GetCurrentPoolLightMode();
-            var serverSpaLightState = await poolService.GetCurrentSpaLightMode();
+            var serverPoolLightMode = await poolService.GetCurrentPoolLightMode();
+            var serverSpaLightMode = await poolService.GetCurrentSpaLightMode();
+            var curPoolLightSched = await poolService.GetPoolLightSchedule();
+            var curSpaLightSched = await poolService.GetSpaLightSchedule();
 
             if (allPins == null || sched == null)
             {
@@ -109,16 +111,8 @@ namespace eHub.Android.Fragments
                 return null;
             }
 
-            var pool1 = allPins.FirstOrDefault(_ => _.PinNumber == Pin.PoolPump_1);
-            var pool2 = allPins.FirstOrDefault(_ => _.PinNumber == Pin.PoolPump_2);
-            var poolLight = allPins.FirstOrDefault(_ => _.PinNumber == Pin.PoolLight);
-            var spa1 = allPins.FirstOrDefault(_ => _.PinNumber == Pin.SpaPump_1);
-            var spa2 = allPins.FirstOrDefault(_ => _.PinNumber == Pin.SpaPump_2);
-            var spaLight = allPins.FirstOrDefault(_ => _.PinNumber == Pin.SpaLight);
             var booster1 = allPins.FirstOrDefault(_ => _.PinNumber == Pin.BoosterPump_1);
             var booster2 = allPins.FirstOrDefault(_ => _.PinNumber == Pin.BoosterPump_2);
-            var heater = allPins.FirstOrDefault(_ => _.PinNumber == Pin.Heater);
-            var groundLights = allPins.FirstOrDefault(_ => _.PinNumber == Pin.GroundLights);
 
             var devicesItem = new DeviceCellItem(allPins.ToList());
 
@@ -130,162 +124,163 @@ namespace eHub.Android.Fragments
                 }
             };
 
-            var poolCell = new PoolCellItem(pool1, pool2, poolLight)
+            var lightModesItem = new LightModesCellItem(curPoolLightSched, curSpaLightSched)
             {
-                LightOnOffSwitchTapped = async sw =>
-                {
-                    var state = (await poolService.Toggle(Pin.PoolLight))?.State ?? PinState.OFF;
-                    sw.Checked = state == 1;
-                },
-                LightModeButtonTapped = async (model, selectedModeLabel) =>
+                PoolLightModeButtonTapped = async (model, selectedModeLabel) =>
                 {
                     // Get the state again
-                    serverPoolLightState = await poolService.GetCurrentPoolLightMode();
-
-                    var state = (await poolService.GetPinStatus(Pin.PoolLight))?.State ?? PinState.OFF;
-                    if (state == PinState.OFF)
-                    {
-                        Toast.MakeText(Context, "Turn the pool light on before changing light modes", ToastLength.Long).Show();
-                        return false;
-                    }
-
-                    if (model.Mode == PoolLightMode.Recall && serverPoolLightState.PreviousPoolLightMode == PoolLightMode.NotSet)
-                    {
-                        Toast.MakeText(Context, "There is no previous light mode saved yet.", ToastLength.Long).Show();
-                        return false;
-                    }
-
-                    if (model.Mode == serverPoolLightState.CurrentPoolLightMode)
-                    {
-                        Toast.MakeText(Context, "You are already on that mode!", ToastLength.Long).Show();
-                        return false;
-                    }
-
-                    _progressBar.Visibility = ViewStates.Visible;
-
-                    var alert = Dialogs.SimpleAlert(Context, "Applying theme", model.Mode.ToLightModeText(), "");
-                    var numCycles = model.PowerCycles * 2;
-                    if (model.Mode == PoolLightMode.Recall)
-                    {
-                        alert = Dialogs.SimpleAlert(Context, "Applying last theme", serverPoolLightState.PreviousPoolLightMode.ToLightModeText(), "");
-                        numCycles = (int)serverPoolLightState.PreviousPoolLightMode * 2;
-                    }
-
-                    alert.Show();
-                    alert.SetCancelable(false);
-                    alert.SetCanceledOnTouchOutside(false);
-                    for (var i = 0; i < numCycles; i++)
-                    {
-                        var toggleResult = await poolService.Toggle(Pin.PoolLight);
-                        await Task.Delay(TimeSpan.FromMilliseconds(500));
-                    }
-
-                    // After applying mode the light takes about 2 seconds to come back on.
-                    await Task.Delay(TimeSpan.FromSeconds(2));
-
-                    if (model.Mode == PoolLightMode.Hold || model.Mode == PoolLightMode.Recall)
-                    {
-                        if (model.Mode == PoolLightMode.Hold)
-                        {
-                            selectedModeLabel.Text = "Holding current color from light show";
-                        }
-                        else
-                        {
-                            await poolService.SavePoolLightMode(serverPoolLightState.PreviousPoolLightMode);
-                            selectedModeLabel.Text = serverPoolLightState.PreviousPoolLightMode.ToLightModeText();
-                        }
-                    }
-                    else
-                    {
-                        await poolService.SavePoolLightMode(model.Mode);
-                        selectedModeLabel.Text = model.Mode.ToLightModeText();
-                    }
-
-                    _progressBar.Visibility = ViewStates.Gone;
-                    alert.Hide();
-
-                    return true;
+                    serverPoolLightMode = await poolService.GetCurrentPoolLightMode();
+                    return await OnLightModeButtonTapped(model, serverPoolLightMode, selectedModeLabel, poolService, Pin.PoolLight);
                 },
-                SelectedLightMode = serverPoolLightState.CurrentPoolLightMode,
-                WaterTemp = new WaterTemp() { ValueC = 0.0, ValueF = 0.0 } //waterTemp
-            };
-            var spaCell = new SpaCellItem(spa1, spa2, spaLight)
-            {
-                LightOnOffSwitchTapped = async sw =>
-                {
-                    var state = (await poolService.Toggle(Pin.SpaLight))?.State ?? PinState.OFF;
-                    sw.Checked = state == 1;
-                },
-                LightModeButtonTapped = async (model, selectedModeLabel) =>
+                SpaLightModeButtonTapped = async (model, selectedModeLabel) =>
                 {
                     // Get the state again
-                    serverSpaLightState = await poolService.GetCurrentSpaLightMode();
-
-                    var state = (await poolService.GetPinStatus(Pin.SpaLight))?.State ?? PinState.OFF;
-                    if (state == PinState.OFF)
-                    {
-                        Toast.MakeText(Context, "Turn the spa light on before changing light modes", ToastLength.Long).Show();
-                        return false;
-                    }
-
-                    if (model.Mode == PoolLightMode.Recall && serverSpaLightState.PreviousPoolLightMode == PoolLightMode.NotSet)
-                    {
-                        Toast.MakeText(Context, "There is no previous light mode saved yet.", ToastLength.Long).Show();
-                        return false;
-                    }
-
-                    if (model.Mode == serverSpaLightState.CurrentPoolLightMode)
-                    {
-                        Toast.MakeText(Context, "You are already on that mode!", ToastLength.Long).Show();
-                        return false;
-                    }
-
-                    _progressBar.Visibility = ViewStates.Visible;
-
-                    var alert = Dialogs.SimpleAlert(Context, "Applying theme", model.Mode.ToLightModeText(), "");
-                    var numCycles = model.PowerCycles * 2;
-                    if (model.Mode == PoolLightMode.Recall)
-                    {
-                        alert = Dialogs.SimpleAlert(Context, "Applying last theme", serverSpaLightState.PreviousPoolLightMode.ToLightModeText(), "");
-                        numCycles = (int)serverSpaLightState.PreviousPoolLightMode * 2;
-                    }
-
-                    alert.Show();
-                    alert.SetCancelable(false);
-                    alert.SetCanceledOnTouchOutside(false);
-                    for (var i = 0; i < numCycles; i++)
-                    {
-                        var toggleResult = await poolService.Toggle(Pin.SpaLight);
-                        await Task.Delay(TimeSpan.FromMilliseconds(500));
-                    }
-
-                    // After applying mode the light takes about 2 seconds to come back on.
-                    await Task.Delay(TimeSpan.FromSeconds(2));
-
-                    if (model.Mode == PoolLightMode.Hold || model.Mode == PoolLightMode.Recall)
-                    {
-                        if (model.Mode == PoolLightMode.Hold)
-                        {
-                            selectedModeLabel.Text = "Holding current color from light show";
-                        }
-                        else
-                        {
-                            await poolService.SaveSpaLightMode(serverSpaLightState.PreviousPoolLightMode);
-                            selectedModeLabel.Text = serverSpaLightState.PreviousPoolLightMode.ToLightModeText();
-                        }
-                    }
-                    else
-                    {
-                        await poolService.SaveSpaLightMode(model.Mode);
-                        selectedModeLabel.Text = model.Mode.ToLightModeText();
-                    }
-
-                    _progressBar.Visibility = ViewStates.Gone;
-                    alert.Hide();
-
-                    return true;
+                    serverSpaLightMode = await poolService.GetCurrentSpaLightMode();
+                    return await OnLightModeButtonTapped(model, serverSpaLightMode, selectedModeLabel, poolService, Pin.SpaLight);
                 },
-                SelectedLightMode = serverSpaLightState.CurrentPoolLightMode
+                PoolLightScheduleStartTapped = async (btn) =>
+                {
+                    var curSched = await poolService.GetPoolLightSchedule();
+                    var picker = TimePickerFragment.CreateInstance(curSched.StartHour, curSched.StartMinute);
+
+                    picker.OnTimeSelected = async (args) =>
+                    {
+                        var time = new TimeSpan(args.Hour, args.Minute, 0);
+                        Activity.RunOnUiThread(() =>
+                        {
+                            btn.Text = time.ToString(@"%h\:mm");
+                        });
+
+                        var es = new EquipmentSchedule
+                        {
+                            StartHour = args.Hour,
+                            StartMinute = args.Minute,
+                            EndHour = curSched.EndHour,
+                            EndMinute = curSched.EndMinute,
+                            IsActive = curSched.IsActive
+                        };
+
+                        await SaveLightScheduleAsync(poolService, es, true);
+                    };
+
+                    picker.Show(ChildFragmentManager, "starttime_picker");
+                },
+                PoolLightScheduleEndTapped = async (btn) =>
+                {
+                    var curSched = await poolService.GetPoolLightSchedule();
+                    var picker = TimePickerFragment.CreateInstance(curSched.EndHour, curSched.EndMinute);
+
+                    picker.OnTimeSelected = async (args) =>
+                    {
+                        var time = new TimeSpan(args.Hour, args.Minute, 0);
+                        Activity.RunOnUiThread(() =>
+                        {
+                            btn.Text = time.ToString(@"%h\:mm");
+                        });
+
+                        var es = new EquipmentSchedule
+                        {
+                            StartHour = curSched.StartHour,
+                            StartMinute = curSched.StartMinute,
+                            EndHour = args.Hour,
+                            EndMinute = args.Minute,
+                            IsActive = curSched.IsActive
+                        };
+
+                        await SaveLightScheduleAsync(poolService, es, true);
+                    };
+
+                    picker.Show(ChildFragmentManager, "endtime_picker");
+                },
+
+                SpaLightScheduleStartTapped = async (btn) =>
+                {
+                    var curSched = await poolService.GetSpaLightSchedule();
+                    var picker = TimePickerFragment.CreateInstance(curSched.StartHour, curSched.StartMinute);
+
+                    picker.OnTimeSelected = async (args) =>
+                    {
+                        var time = new TimeSpan(args.Hour, args.Minute, 0);
+                        Activity.RunOnUiThread(() =>
+                        {
+                            btn.Text = time.ToString(@"%h\:mm");
+                        });
+
+                        var es = new EquipmentSchedule
+                        {
+                            StartHour = args.Hour,
+                            StartMinute = args.Minute,
+                            EndHour = curSched.EndHour,
+                            EndMinute = curSched.EndMinute,
+                            IsActive = curSched.IsActive
+                        };
+
+                        await SaveLightScheduleAsync(poolService, es, false);
+                    };
+
+                    picker.Show(ChildFragmentManager, "starttime_picker");
+                },
+                SpaLightScheduleEndTapped = async (btn) =>
+                {
+                    var curSched = await poolService.GetSpaLightSchedule();
+                    var picker = TimePickerFragment.CreateInstance(curSched.EndHour, curSched.EndMinute);
+
+                    picker.OnTimeSelected = async (args) =>
+                    {
+                        var time = new TimeSpan(args.Hour, args.Minute, 0);
+                        Activity.RunOnUiThread(() =>
+                        {
+                            btn.Text = time.ToString(@"%h\:mm");
+                        });
+
+                        var es = new EquipmentSchedule
+                        {
+                            StartHour = curSched.StartHour,
+                            StartMinute = curSched.StartMinute,
+                            EndHour = args.Hour,
+                            EndMinute = args.Minute,
+                            IsActive = curSched.IsActive
+                        };
+
+                        await SaveLightScheduleAsync(poolService, es, false);
+                    };
+
+                    picker.Show(ChildFragmentManager, "endtime_picker");
+                },
+                PoolLightScheduleOnOffSwitchTapped = async sw =>
+                {
+                    var curSched = await poolService.GetPoolLightSchedule();
+
+                    await SaveLightScheduleAsync(poolService, new EquipmentSchedule
+                    {
+                        StartHour = curSched.StartHour,
+                        EndHour = curSched.EndHour,
+                        StartMinute = curSched.StartMinute,
+                        EndMinute = curSched.EndMinute,
+                        IsActive = !curSched.IsActive
+                    }, true);
+
+                    curSched = await poolService.GetPoolLightSchedule();
+                    sw.Checked = curSched.IsActive;
+                },
+                SpaLightScheduleOnOffSwitchTapped = async sw =>
+                {
+                    var curSched = await poolService.GetSpaLightSchedule();
+
+                    await SaveLightScheduleAsync(poolService, new EquipmentSchedule
+                    {
+                        StartHour = curSched.StartHour,
+                        EndHour = curSched.EndHour,
+                        StartMinute = curSched.StartMinute,
+                        EndMinute = curSched.EndMinute,
+                        IsActive = !curSched.IsActive
+                    }, false);
+
+                    curSched = await poolService.GetSpaLightSchedule();
+                    sw.Checked = curSched.IsActive;
+                },
+                SelectedPoolLightMode = serverPoolLightMode.CurrentPoolLightMode,
+                SelectedSpaLightMode = serverSpaLightMode.CurrentPoolLightMode
             };
 
             var schedCell = new ScheduleCellItem(sched)
@@ -364,13 +359,81 @@ namespace eHub.Android.Fragments
             {
                 new HomeCellItem(schedCell, CellType.Schedule),
                 new HomeCellItem(devicesItem, CellType.DeviceControl),
-                //new HomeCellItem(poolCell, CellType.Pool),
-                //new HomeCellItem(spaCell, CellType.Spa),
-                //new HomeCellItem(boosterCell, CellType.Booster),
-                //new HomeCellItem(heater, CellType.Heater),
-                //new HomeCellItem(groundLights, CellType.GroundLights),
+                new HomeCellItem(lightModesItem, CellType.LightModes),
                 aboutItem
             };
+        }
+
+        async Task<bool> OnLightModeButtonTapped(
+            PoolLightModel model,
+            PoolLightServerModel serverModel, 
+            TextView statusText, 
+            IPoolService poolService,
+            int lightPin)
+        {
+            var state = (await poolService.GetPinStatus(lightPin))?.State ?? PinState.OFF;
+            if (state == PinState.OFF)
+            {
+                Toast.MakeText(Context, "Turn the light on before changing light modes", ToastLength.Long).Show();
+                return false;
+            }
+
+            if (model.Mode == PoolLightMode.Recall && serverModel.PreviousPoolLightMode == PoolLightMode.NotSet)
+            {
+                Toast.MakeText(Context, "There is no previous light mode saved yet.", ToastLength.Long).Show();
+                return false;
+            }
+
+            if (model.Mode == serverModel.CurrentPoolLightMode)
+            {
+                Toast.MakeText(Context, "You are already on that mode!", ToastLength.Long).Show();
+                return false;
+            }
+
+            _progressBar.Visibility = ViewStates.Visible;
+
+            var alert = Dialogs.SimpleAlert(Context, "Applying theme", model.Mode.ToLightModeText(), "");
+            var numCycles = model.PowerCycles * 2;
+            if (model.Mode == PoolLightMode.Recall)
+            {
+                alert = Dialogs.SimpleAlert(Context, "Applying last theme", serverModel.PreviousPoolLightMode.ToLightModeText(), "");
+                numCycles = (int)serverModel.PreviousPoolLightMode * 2;
+            }
+
+            alert.Show();
+            alert.SetCancelable(false);
+            alert.SetCanceledOnTouchOutside(false);
+            for (var i = 0; i < numCycles; i++)
+            {
+                var toggleResult = await poolService.Toggle(Pin.PoolLight);
+                await Task.Delay(TimeSpan.FromMilliseconds(500));
+            }
+
+            // After applying mode the light takes about 2 seconds to come back on.
+            await Task.Delay(TimeSpan.FromSeconds(2));
+
+            if (model.Mode == PoolLightMode.Hold || model.Mode == PoolLightMode.Recall)
+            {
+                if (model.Mode == PoolLightMode.Hold)
+                {
+                    statusText.Text = "Holding current color from light show";
+                }
+                else
+                {
+                    await poolService.SavePoolLightMode(serverModel.PreviousPoolLightMode);
+                    statusText.Text = serverModel.PreviousPoolLightMode.ToLightModeText();
+                }
+            }
+            else
+            {
+                await poolService.SavePoolLightMode(model.Mode);
+                statusText.Text = model.Mode.ToLightModeText();
+            }
+
+            _progressBar.Visibility = ViewStates.Gone;
+            alert.Hide();
+
+            return true;
         }
 
         void ToggleOnOffButtonStyle(Button onButton, Button offButton, int state)
@@ -396,6 +459,29 @@ namespace eHub.Android.Fragments
         {
             var result = await poolService.GetPinStatus(pin);
             return result.State;
+        }
+
+        async Task SaveLightScheduleAsync(IPoolService poolService, EquipmentSchedule es, bool isPoolLight)
+        {
+            var startDateTime = new DateTime(
+                DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, es.StartHour, es.StartMinute, 0);
+            var endDateTime = new DateTime(
+                DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, es.EndHour, es.EndMinute, 0);
+
+            var result = default(EquipmentSchedule);
+            if (isPoolLight)
+            {
+                result = await poolService.SetPoolLightSchedule(startDateTime, endDateTime, es.IsActive);
+            }
+            else
+            {
+                result = await poolService.SetSpaLightSchedule(startDateTime, endDateTime, es.IsActive);
+            }
+
+            if (result != null)
+            {
+                Toast.MakeText(Context, "Schedule Saved", ToastLength.Short).Show();
+            }
         }
 
         async Task SaveScheduleAsync(IPoolService poolService, PoolSchedule ps)
