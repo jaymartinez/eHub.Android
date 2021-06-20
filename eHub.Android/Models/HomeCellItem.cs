@@ -12,6 +12,7 @@ namespace eHub.Android.Models
         public ScheduleCellItem ScheduleCellItem { get; set; }
         public PoolCellItem PoolItem { get; set; }
         public SpaCellItem SpaItem { get; set; }
+        public DeviceCellItem DevicesItem { get; set; }
         public BoosterCellItem BoosterItem { get; set; }
         public CellType CellTypeObj { get; }
         public PiPin SingleSwitchItem { get; }
@@ -20,6 +21,12 @@ namespace eHub.Android.Models
 
         public HomeCellItem(CellType cellType)
         {
+            CellTypeObj = cellType;
+        }
+
+        public HomeCellItem(DeviceCellItem deviceCellItem, CellType cellType)
+        {
+            DevicesItem = deviceCellItem;
             CellTypeObj = cellType;
         }
 
@@ -101,7 +108,7 @@ namespace eHub.Android.Models
 
     public class DeviceCellItem
     {
-        List<PiPin> DevicePins { get; }
+        public List<PiPin> DevicePins { get; }
 
         public DeviceCellItem(List<PiPin> devicePins)
         {

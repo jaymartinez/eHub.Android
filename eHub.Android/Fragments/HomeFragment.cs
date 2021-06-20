@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using System.Reactive.Linq;
 using Fragment = Android.Support.V4.App.Fragment;
 using eHub.Common.Helpers;
+using Android.Support.V4.Content;
+using Android.Graphics;
 
 namespace eHub.Android.Fragments
 {
@@ -358,16 +360,42 @@ namespace eHub.Android.Fragments
 
             var boosterCell = new BoosterCellItem(booster1, booster2);
 
-            return new List<HomeCellItem>(7)
+            return new List<HomeCellItem>()
             {
                 new HomeCellItem(schedCell, CellType.Schedule),
-                new HomeCellItem(poolCell, CellType.Pool),
-                new HomeCellItem(spaCell, CellType.Spa),
-                new HomeCellItem(boosterCell, CellType.Booster),
-                new HomeCellItem(heater, CellType.Heater),
-                new HomeCellItem(groundLights, CellType.GroundLights),
+                new HomeCellItem(devicesItem, CellType.DeviceControl),
+                //new HomeCellItem(poolCell, CellType.Pool),
+                //new HomeCellItem(spaCell, CellType.Spa),
+                //new HomeCellItem(boosterCell, CellType.Booster),
+                //new HomeCellItem(heater, CellType.Heater),
+                //new HomeCellItem(groundLights, CellType.GroundLights),
                 aboutItem
             };
+        }
+
+        void ToggleOnOffButtonStyle(Button onButton, Button offButton, int state)
+        {
+            if (state == PinState.ON)
+            {
+                var onTextColor = ContextCompat.GetColor(
+                    Context, Resource.Color.material_blue_grey_800);
+
+                onButton.SetBackgroundResource(Resource.Drawable.rounded_corners_green_8dp);
+                onButton.SetTextColor(new Color(onTextColor));
+            }
+            else
+            {
+                var offTextColor = ContextCompat.GetColor(
+                    Context, Resource.Color.material_grey_300);
+                offButton.SetBackgroundResource(Resource.Drawable.rounded_corners_bluegray_8dp);
+                offButton.SetTextColor(new Color(offTextColor));
+            }
+        }
+
+        async Task<int> GetStatus(int pin, IPoolService poolService)
+        {
+            var result = await poolService.GetPinStatus(pin);
+            return result.State;
         }
 
         async Task SaveScheduleAsync(IPoolService poolService, PoolSchedule ps)
