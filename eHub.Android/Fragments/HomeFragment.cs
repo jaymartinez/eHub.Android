@@ -22,7 +22,6 @@ namespace eHub.Android.Fragments
         SwipeRefreshLayout _refreshLayout;
         ProgressBar _progressBar;
         TextView _statusLabel;
-        IDisposable _timerObs;
 
         [Inject] IPoolService PoolService { get; set; }
         [Inject] AppVersion AppVersion { get; set; }
