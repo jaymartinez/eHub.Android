@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:padding="8dp"
+	android:background="@drawable/rounded_corners_8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/pool_light_schedule_container"
+        android:orientation="vertical"
+		android:layout_width="match_parent" 
+		android:layout_height="wrap_content">
+
+        <RelativeLayout 
+            android:padding="16dp"
+            android:layout_width="wrap_content" 
+            android:layout_height="match_parent">
+
+            <ImageView 
+                android:id="@+id/pool_light_schedule_cell_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_schedule_blue_grey_400_48dp" />
+
+            <LinearLayout 
+                android:layout_toRightOf="@id/pool_light_schedule_cell_image"
+                android:layout_centerInParent="true"
+                android:paddingLeft="8dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView 
+                    android:text="Pool Light Schedule"
+                    android:textSize="20dp"
+                    android:textColor="@color/material_grey_300"
+                    android:layout_width="wrap_content" 
+                    android:layout_height="wrap_content" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/pool_light_schedule_onoff_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" 
+                    android:textColor="@color/white"
+                    app:switchPadding="8dp"
+                    android:text="On/Off" />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+		    android:gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/pool_light_schedule_begin_btn"
+                android:text="8:30 am"
+                android:padding="8dp"
+                android:textSize="28dp"
+                android:layout_width="wrap_content" 
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/pool_light_schedule_dash"
+                android:layout_toRightOf="@id/pool_light_schedule_begin_btn"
+                android:textColor="@color/material_grey_300"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:text=" to "
+                android:textSize="24dp"
+                android:layout_width="wrap_content" 
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/pool_light_schedule_end_btn"
+                android:layout_toRightOf="@id/pool_light_schedule_dash"
+                android:padding="8dp"
+                android:text="2:30 pm"
+                android:textSize="28dp"
+                android:layout_width="wrap_content" 
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+	</LinearLayout>
+	
+	<RelativeLayout
+        android:id="@+id/pool_light_modes_label_container"
+        android:layout_below="@id/pool_light_schedule_container"
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/pool_light_modes_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:textColor="@color/material_grey_300"
+                android:layout_marginTop="8dp"
+                android:gravity="center_horizontal"
+                android:text="Pool Light Modes" />
+
+            <TextView
+                android:id="@+id/pool_light_selected_light_mode_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:textSize="12dp"
+                android:textColor="@color/orangeHolo"
+                android:gravity="center_horizontal"
+                android:visibility="gone"
+                tools:text="Party Mode" />
+		</LinearLayout>
+
+		<TextView
+			android:id="@+id/pool_light_modes_expand_textview"
+			android:text="show/hide >>"
+            android:textColor="@color/lightblue"
+			android:layout_alignParentEnd="true"
+			android:layout_centerInParent="true"
+            android:visibility="gone"
+			android:paddingEnd="16dp"
+			android:paddingStart="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+	</RelativeLayout>
+
+	<LinearLayout
+		android:id="@+id/pool_light_mode_btns_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+		android:paddingTop="4dp"
+		android:orientation="vertical"
+        android:layout_below="@+id/pool_light_modes_label_container">
+
+		<Button
+			android:id="@+id/pool_light_sam_mode_button"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:textAllCaps="false"
+			android:layout_marginTop="8dp"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:text="SAM: Cycles through white, magenta, blue and green colors (emulates the Pentair SAM color changing light)"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/pool_light_party_mode_button"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:textAllCaps="false"
+			android:layout_marginTop="8dp"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:text="Party Mode: Rapid color changing building energy and excitement. "
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/pool_light_romance_mode_button"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:textAllCaps="false"
+			android:layout_marginTop="8dp"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:text="Romance Mode: Slow color transitions creating a mesmerizing and calming effect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/pool_light_caribbean_mode_button"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:textAllCaps="false"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:text="Caribbean Mode: Transitions between a variety of blues and greens"
+			android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/pool_light_american_mode_button"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:layout_marginTop="8dp"
+			android:textAllCaps="false"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:text="American Mode: Patriotic red, white and blue transition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/pool_light_cali_sunset_mode_button"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:textAllCaps="false"
+			android:layout_marginTop="8dp"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:text="California Sunset: Dramatic transitions of orange, red and magenta tones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/pool_light_royal_mode_button"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:textAllCaps="false"
+			android:layout_marginTop="8dp"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:text="Royal Mode: Richer, deeper color tones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/pool_light_blue_fixed_mode_button"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:layout_marginTop="8dp"
+			android:textAllCaps="false"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:text="Blue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/pool_light_green_fixed_mode_button"
+			android:layout_marginTop="8dp"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:textAllCaps="false"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:text="Green"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/pool_light_red_fixed_mode_button"
+			android:layout_marginTop="8dp"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:textAllCaps="false"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:text="Red"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/pool_light_white_fixed_mode_button"
+			android:layout_marginTop="8dp"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:textAllCaps="false"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:text="White"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/pool_light_magenta_fixed_mode_button"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:textAllCaps="false"
+			android:layout_marginTop="8dp"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:text="Magenta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/pool_light_hold_mode_button"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:textAllCaps="false"
+			android:textColor="@color/material_grey_300"
+			android:layout_marginTop="8dp"
+			android:textSize="16sp"
+			android:text="Hold: Save the current color effect during a color light show"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+		<Button
+			android:id="@+id/pool_light_recall_mode_button"
+			android:background="@drawable/rounded_corners_bluegray_8dp"
+			android:textAllCaps="false"
+			android:textColor="@color/material_grey_300"
+			android:textSize="16sp"
+			android:layout_marginTop="8dp"
+			android:text="Recall: Activate the last saved color effect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+	</LinearLayout>
+
+    <View
+        android:id="@+id/light_mode_separator"
+        android:layout_below="@id/pool_light_mode_btns_container"
+        android:layout_width="match_parent"
+        android:layout_height="2dp" 
+        android:layout_marginTop="16dp"
+        android:background="@color/white" />
+
+    <LinearLayout
+        android:id="@+id/spa_light_schedule_container"
+		android:padding="16dp"
+        android:orientation="vertical"
+        android:layout_below="@id/light_mode_separator"
+		android:layout_width="match_parent" 
+		android:layout_height="wrap_content">
+
+        <RelativeLayout 
+            android:padding="16dp"
+            android:layout_width="wrap_content" 
+            android:layout_height="match_parent">
+
+            <ImageView 
+                android:id="@+id/spa_light_schedule_cell_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_schedule_blue_grey_400_48dp" />
+
+            <LinearLayout 
+                android:layout_toRightOf="@id/spa_light_schedule_cell_image"
+                android:layout_centerInParent="true"
+                android:paddingLeft="8dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView 
+                    android:text="Spa Light Schedule"
+                    android:textSize="20dp"
+                    android:textColor="@color/material_grey_300"
+                    android:layout_width="wrap_content" 
+                    android:layout_height="wrap_content" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/spa_light_schedule_onoff_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" 
+                    android:textColor="@color/white"
+                    android:layout_marginLeft="32dp"
+                    app:switchPadding="8dp"
+                    android:text="On/Off" />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+		    android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/spa_light_schedule_begin_btn"
+                android:text="8:30 am"
+                android:padding="8dp"
+                android:textSize="28dp"
+                android:layout_width="wrap_content" 
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/spa_light_schedule_dash"
+                android:layout_toRightOf="@id/spa_light_schedule_begin_btn"
+                android:textColor="@color/material_grey_300"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:text=" to "
+                android:textSize="24dp"
+                android:layout_width="wrap_content" 
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/spa_light_schedule_end_btn"
+                android:layout_toRightOf="@id/spa_light_schedule_dash"
+                android:padding="8dp"
+                android:text="2:30 pm"
+                android:textSize="28dp"
+                android:layout_width="wrap_content" 
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+	</LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/spa_light_modes_label_container"
+        android:layout_below="@id/spa_light_schedule_container"
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/spa_light_modes_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/material_grey_300"
+                android:layout_marginTop="8dp"
+                android:gravity="center_horizontal"
+                android:text="Spa Light Modes" />
+
+            <TextView
+                android:id="@+id/spa_light_selected_light_mode_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:visibility="gone"
+                android:textColor="@color/orangeHolo"
+                android:gravity="center_horizontal"
+                tools:text="Party Mode" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/spa_light_modes_expand_textview"
+            android:text="show/hide >>"
+            android:textColor="@color/lightblue"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:paddingEnd="16dp"
+            android:paddingStart="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/spa_light_mode_btns_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="4dp"
+        android:orientation="vertical"
+        android:layout_below="@+id/spa_light_modes_label_container">
+
+        <Button
+            android:id="@+id/spa_light_sam_mode_button"
+            android:background="@drawable/rounded_corners_bluegray_8dp"
+            android:textAllCaps="false"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/material_grey_300"
+            android:textSize="16sp"
+            android:text="SAM: Cycles through white, magenta, blue and green colors (emulates the Pentair SAM color changing light)"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/spa_light_party_mode_button"
+            android:background="@drawable/rounded_corners_bluegray_8dp"
+            android:textAllCaps="false"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/material_grey_300"
+            android:textSize="16sp"
+            android:text="Party Mode: Rapid color changing building energy and excitement. "
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/spa_light_romance_mode_button"
+            android:background="@drawable/rounded_corners_bluegray_8dp"
+            android:textAllCaps="false"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/material_grey_300"
+            android:textSize="16sp"
+            android:text="Romance Mode: Slow color transitions creating a mesmerizing and calming effect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/spa_light_caribbean_mode_button"
+            android:background="@drawable/rounded_corners_bluegray_8dp"
+            android:textAllCaps="false"
+            android:textColor="@color/material_grey_300"
+            android:textSize="16sp"
+            android:text="Caribbean Mode: Transitions between a variety of blues and greens"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/spa_light_american_mode_button"
+            android:background="@drawable/rounded_corners_bluegray_8dp"
+            android:layout_marginTop="8dp"
+            android:textAllCaps="false"
+            android:textColor="@color/material_grey_300"
+            android:textSize="16sp"
+            android:text="American Mode: Patriotic red, white and blue transition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/spa_light_cali_sunset_mode_button"
+            android:background="@drawable/rounded_corners_bluegray_8dp"
+            android:textAllCaps="false"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/material_grey_300"
+            android:textSize="16sp"
+            android:text="California Sunset: Dramatic transitions of orange, red and magenta tones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/spa_light_royal_mode_button"
+            android:background="@drawable/rounded_corners_bluegray_8dp"
+            android:textAllCaps="false"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/material_grey_300"
+            android:textSize="16sp"
+            android:text="Royal Mode: Richer, deeper color tones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/spa_light_blue_fixed_mode_button"
+            android:background="@drawable/rounded_corners_bluegray_8dp"
+            android:layout_marginTop="8dp"
+            android:textAllCaps="false"
+            android:textColor="@color/material_grey_300"
+            android:textSize="16sp"
+            android:text="Blue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/spa_light_green_fixed_mode_button"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_corners_bluegray_8dp"
+            android:textAllCaps="false"
+            android:textColor="@color/material_grey_300"
+            android:textSize="16sp"
+            android:text="Green"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/spa_light_red_fixed_mode_button"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_corners_bluegray_8dp"
+            android:textAllCaps="false"
+            android:textColor="@color/material_grey_300"
+            android:textSize="16sp"
+            android:text="Red"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/spa_light_white_fixed_mode_button"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_corners_bluegray_8dp"
+            android:textAllCaps="false"
+            android:textColor="@color/material_grey_300"
+            android:textSize="16sp"
+            android:text="White"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/spa_light_magenta_fixed_mode_button"
+            android:background="@drawable/rounded_corners_bluegray_8dp"
+            android:textAllCaps="false"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/material_grey_300"
+            android:textSize="16sp"
+            android:text="Magenta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/spa_light_hold_mode_button"
+            android:background="@drawable/rounded_corners_bluegray_8dp"
+            android:textAllCaps="false"
+            android:textColor="@color/material_grey_300"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            android:text="Hold: Save the current color effect during a color light show"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/spa_light_recall_mode_button"
+            android:background="@drawable/rounded_corners_bluegray_8dp"
+            android:textAllCaps="false"
+            android:textColor="@color/material_grey_300"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp"
+            android:text="Recall: Activate the last saved color effect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+</RelativeLayout>

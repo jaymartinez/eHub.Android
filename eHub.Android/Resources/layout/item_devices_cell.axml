@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:padding="8dp"
+	android:orientation="vertical"
+	android:background="@drawable/rounded_corners_8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+	<RelativeLayout
+		android:id="@+id/device_cell_pool_container"
+		android:padding="8dp"
+		android:layout_width="match_parent" 
+		android:layout_height="wrap_content">
+
+		<TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+			android:textSize="20sp"
+			android:layout_alignParentStart="true"
+			android:layout_centerVertical="true"
+			android:textColor="@color/material_grey_300"
+			android:text="Pool Pump" />
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_alignParentEnd="true"
+			android:layout_marginEnd="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/device_cell_pool_on_btn"
+                android:textColor="@color/material_grey_300"
+                android:background="@color/blue_gray_400"
+                android:layout_marginLeft="8dp"
+                android:text="On"
+                tools:background="@color/greenLabel"
+                tools:textColor="@color/material_blue_grey_800"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/device_cell_pool_off_btn"
+                android:textColor="@color/material_grey_300"
+                android:background="@color/blue_gray_400"
+                android:text="Off"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+		</LinearLayout>
+	</RelativeLayout>
+
+    <RelativeLayout
+		android:id="@+id/device_cell_booster_container"
+		android:padding="8dp"
+		android:layout_width="match_parent" 
+		android:layout_height="wrap_content">
+
+		<TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+			android:textSize="20sp"
+			android:layout_alignParentStart="true"
+			android:layout_centerVertical="true"
+			android:textColor="@color/material_grey_300"
+			android:text="Booster Pump" />
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_alignParentEnd="true"
+			android:layout_marginEnd="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/device_cell_booster_on_btn"
+                android:textColor="@color/material_grey_300"
+                android:background="@color/blue_gray_400"
+                android:layout_marginLeft="8dp"
+                android:text="On"
+                tools:background="@color/greenLabel"
+                tools:textColor="@color/material_blue_grey_800"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/device_cell_booster_off_btn"
+                android:textColor="@color/material_grey_300"
+                android:background="@color/blue_gray_400"
+                android:text="Off"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+		</LinearLayout>
+	</RelativeLayout>
+
+    <RelativeLayout
+		android:id="@+id/device_cell_spa_container"
+		android:padding="8dp"
+		android:layout_width="match_parent" 
+		android:layout_height="wrap_content">
+
+		<TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+			android:textSize="20sp"
+			android:layout_alignParentStart="true"
+			android:layout_centerVertical="true"
+			android:textColor="@color/material_grey_300"
+			android:text="Spa Jets" />
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_alignParentEnd="true"
+			android:layout_marginEnd="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/device_cell_spa_on_btn"
+                android:textColor="@color/material_grey_300"
+                android:background="@color/blue_gray_400"
+                android:layout_marginLeft="8dp"
+                android:text="On"
+                tools:background="@color/greenLabel"
+                tools:textColor="@color/material_blue_grey_800"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/device_cell_spa_off_btn"
+                android:textColor="@color/material_grey_300"
+                android:background="@color/blue_gray_400"
+                android:text="Off"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+		</LinearLayout>
+	</RelativeLayout>
+
+    <RelativeLayout
+		android:id="@+id/device_cell_heater_container"
+		android:padding="8dp"
+		android:layout_width="match_parent" 
+		android:layout_height="wrap_content">
+
+		<TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+			android:textSize="20sp"
+			android:layout_alignParentStart="true"
+			android:layout_centerVertical="true"
+			android:textColor="@color/material_grey_300"
+			android:text="Heater" />
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_alignParentEnd="true"
+			android:layout_marginEnd="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/device_cell_heater_on_btn"
+                android:textColor="@color/material_grey_300"
+                android:background="@color/blue_gray_400"
+                android:layout_marginLeft="8dp"
+                android:text="On"
+                tools:background="@color/greenLabel"
+                tools:textColor="@color/material_blue_grey_800"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/device_cell_heater_off_btn"
+                android:textColor="@color/material_grey_300"
+                android:background="@color/blue_gray_400"
+                android:text="Off"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+		</LinearLayout>
+	</RelativeLayout>
+
+    <RelativeLayout
+		android:id="@+id/device_cell_pool_light_container"
+		android:padding="8dp"
+		android:layout_width="match_parent" 
+		android:layout_height="wrap_content">
+
+		<TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+			android:textSize="20sp"
+			android:layout_alignParentStart="true"
+			android:layout_centerVertical="true"
+			android:textColor="@color/material_grey_300"
+			android:text="Pool Light" />
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_alignParentEnd="true"
+			android:layout_marginEnd="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/device_cell_pool_light_on_btn"
+                android:textColor="@color/material_grey_300"
+                android:background="@color/blue_gray_400"
+                android:layout_marginLeft="8dp"
+                android:text="On"
+                tools:background="@color/greenLabel"
+                tools:textColor="@color/material_blue_grey_800"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/device_cell_pool_light_off_btn"
+                android:textColor="@color/material_grey_300"
+                android:background="@color/blue_gray_400"
+                android:text="Off"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+		</LinearLayout>
+	</RelativeLayout>
+
+    <RelativeLayout
+		android:id="@+id/device_cell_spa_light_container"
+		android:padding="8dp"
+		android:layout_width="match_parent" 
+		android:layout_height="wrap_content">
+
+		<TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+			android:textSize="20sp"
+			android:layout_alignParentStart="true"
+			android:layout_centerVertical="true"
+			android:textColor="@color/material_grey_300"
+			android:text="Spa Light" />
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_alignParentEnd="true"
+			android:layout_marginEnd="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/device_cell_spa_light_on_btn"
+                android:textColor="@color/material_grey_300"
+                android:background="@color/blue_gray_400"
+                android:layout_marginLeft="8dp"
+                android:text="On"
+                tools:background="@color/greenLabel"
+                tools:textColor="@color/material_blue_grey_800"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/device_cell_spa_light_off_btn"
+                android:textColor="@color/material_grey_300"
+                android:background="@color/blue_gray_400"
+                android:text="Off"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+		</LinearLayout>
+	</RelativeLayout>
+
+</LinearLayout>

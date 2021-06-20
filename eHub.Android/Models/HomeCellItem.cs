@@ -1,6 +1,7 @@
 ﻿using Android.Widget;
 using eHub.Common.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Switch = Android.Support.V7.Widget.SwitchCompat; 
 
@@ -11,7 +12,9 @@ namespace eHub.Android.Models
         public ScheduleCellItem ScheduleCellItem { get; set; }
         public PoolCellItem PoolItem { get; set; }
         public SpaCellItem SpaItem { get; set; }
+        public DeviceCellItem DevicesItem { get; set; }
         public BoosterCellItem BoosterItem { get; set; }
+        public LightModesCellItem LightModesItem { get; set; }
         public CellType CellTypeObj { get; }
         public PiPin SingleSwitchItem { get; }
 
@@ -22,10 +25,21 @@ namespace eHub.Android.Models
             CellTypeObj = cellType;
         }
 
+        public HomeCellItem(DeviceCellItem deviceCellItem, CellType cellType)
+        {
+            DevicesItem = deviceCellItem;
+            CellTypeObj = cellType;
+        }
+
         public HomeCellItem(BoosterCellItem boosterCellItem, CellType cellType)
         {
             SingleSwitchItem = boosterCellItem.BoosterPin1;
             BoosterItem = boosterCellItem;
+            CellTypeObj = cellType;
+        }
+        public HomeCellItem(LightModesCellItem item, CellType cellType)
+        {
+            LightModesItem = item;
             CellTypeObj = cellType;
         }
 
@@ -98,6 +112,39 @@ namespace eHub.Android.Models
         }
     }
 
+    public class DeviceCellItem
+    {
+        public List<PiPin> DevicePins { get; }
+
+        public DeviceCellItem(List<PiPin> devicePins)
+        {
+            DevicePins = devicePins;
+        }
+    }
+
+    public class LightModesCellItem
+    {
+        public EquipmentSchedule PoolLightSchedule { get; }
+        public EquipmentSchedule SpaLightSchedule { get; }
+        public Func<PoolLightModel, TextView, Task<bool>> PoolLightModeButtonTapped { get; set; }
+        public Func<PoolLightModel, TextView, Task<bool>> SpaLightModeButtonTapped { get; set; }
+        public PoolLightMode SelectedPoolLightMode { get; set; }
+        public PoolLightMode SelectedSpaLightMode { get; set; }
+
+        public Action<Button> PoolLightScheduleStartTapped { get; set; }
+        public Action<Button> PoolLightScheduleEndTapped { get; set; }
+        public Action<Button> SpaLightScheduleStartTapped { get; set; }
+        public Action<Button> SpaLightScheduleEndTapped { get; set; }
+        public Action<Switch> PoolLightScheduleOnOffSwitchTapped { get; set; }
+        public Action<Switch> SpaLightScheduleOnOffSwitchTapped { get; set; }
+
+        public LightModesCellItem(EquipmentSchedule poolLightSchedule, EquipmentSchedule spaLightSchedule)
+        {
+            PoolLightSchedule = poolLightSchedule;
+            SpaLightSchedule = spaLightSchedule;
+        }
+    }
+
     public class PoolCellItem
     {
         public PiPin PoolPin1 { get; }
@@ -130,7 +177,9 @@ namespace eHub.Android.Models
 
     public enum CellType
     {
+        DeviceControl,
         Schedule,
+        LightModes,
         Pool,
         Spa,
         Booster,
