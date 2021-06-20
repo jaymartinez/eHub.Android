@@ -26,6 +26,7 @@ namespace eHub.Android
         const int HeaterId = 5;
         const int GroundLightsId = 6;
         const int AboutId = 7;
+        const int DevicesId = 8;
 
         readonly Handler _mainUiHandler;
         readonly IPoolService _poolService;
@@ -65,6 +66,8 @@ namespace eHub.Android
                     return GroundLightsId;
                 case CellType.About:
                     return AboutId;
+                case CellType.DeviceControl:
+                    return DevicesId;
                 default:
                     return -1;
             }
@@ -103,6 +106,57 @@ namespace eHub.Android
                     schCell.IncludeBoosterCheckbox.SetOnClickListener(new OnClickListener(v =>
                     {
                         item.ScheduleCellItem.IncludeBoosterTapped.Invoke(v as CheckBox);
+                    }));
+                    break;
+
+                case CellType.DeviceControl:
+                    var devicesCell = holder as DevicesCell;
+                    devicesCell.PoolOnButton.SetOnClickListener(new OnClickListener(async v =>
+                    {
+                        var curPool1State = await GetStatus(Pin.PoolPump_1);
+                        var curPool2State = await GetStatus(Pin.PoolPump_2);
+
+                        // if both are already on bail out
+                        if (curPool1State == PinState.ON
+                            && curPool2State == PinState.ON)
+                        {
+                            return;
+                        }
+                        if ((curPool1State == PinState.ON && curPool2State == PinState.OFF)
+                            || (curPool1State == PinState.OFF && curPool2State == PinState.ON))
+                        {
+                            Dialogs.SimpleAlert(devicesCell.ItemView.Context,
+                                "Attention!",
+                                "One of the pins is on and the other is off, turn it off and try again").Show();
+                            return;
+                        }
+
+                        var onButton = v as Button;
+                        var heaterStatus = await GetStatus(Pin.Heater);
+                        var booster1Status = await GetStatus(Pin.BoosterPump_1);
+                        var booster2Status = await GetStatus(Pin.BoosterPump_2);
+                        var spa1Status = await GetStatus(Pin.SpaPump_1);
+                        var spa2Status = await GetStatus(Pin.SpaPump_2);
+                        var onOffStr = curPool1State == PinState.ON && curPool2State == PinState.ON ? "off" : "on";
+
+                        Dialogs.Confirm(devicesCell.ItemView.Context,
+                            "Are You Sure?",
+                            $"Are you sure you want to turn it {onOffStr}?",
+                            "Yes", async (confirmed) =>
+                            {
+                                if (confirmed)
+                                {
+                                    // toggling pool1 or pool2 will turn the both on at the same time on the server
+                                    var poolToggle = await _poolService.Toggle(Pin.PoolPump_1);
+                                    if (poolToggle != null)
+                                    {
+                                        ToggleOnOffButtonStyle(onButton,
+                                            devicesCell.PoolOffButton,
+                                            poolToggle.State,
+                                            devicesCell.ItemView.Context);
+                                    }
+                                }
+                            }, "No").Show();
                     }));
                     break;
 
@@ -507,6 +561,32 @@ namespace eHub.Android
             return result.State;
         }
 
+        void ToggleOnOffButtonStyle(
+            Button onButton, 
+            Button offButton, 
+            int state, 
+            Context context)
+        {
+            _mainUiHandler.Post(() =>
+            {
+                if (state == PinState.ON)
+                {
+                    var onTextColor = ContextCompat.GetColor(
+                        context, Resource.Color.material_blue_grey_800);
+
+                    onButton.SetBackgroundResource(Resource.Drawable.rounded_corners_green_8dp);
+                    onButton.SetTextColor(new Color(onTextColor));
+                }
+                else
+                {
+                    var offTextColor = ContextCompat.GetColor(
+                        context, Resource.Color.material_grey_300);
+                    offButton.SetBackgroundResource(Resource.Drawable.rounded_corners_bluegray_8dp);
+                    offButton.SetTextColor(new Color(offTextColor));
+                }
+            });
+        }
+
         void SetButtonBackground(Button b, int state, CellType? cellType = null)
         {
             _mainUiHandler.Post(() =>
@@ -592,6 +672,9 @@ namespace eHub.Android
                 case AboutId:
                     var aboutView = inflater.Inflate(Resource.Layout.item_about_cell, parent, false);
                     return new AboutCell(aboutView);
+                case DevicesId:
+                    var devicesView = inflater.Inflate(Resource.Layout.item_devices_cell, parent, false);
+                    return new DevicesCell(devicesView);
             }
 
             return null;
@@ -621,6 +704,39 @@ namespace eHub.Android
 
             public EquipmentCell(View view)
                 : base(view) { }
+        }
+
+        class DevicesCell : RecyclerView.ViewHolder
+        {
+            public Button PoolOnButton { get; }
+            public Button PoolOffButton { get; }
+            public Button SpaOnButton { get; }
+            public Button SpaOffButton { get; }
+            public Button BoosterOnButton { get; }
+            public Button BoosterOffButton { get; }
+            public Button HeaterOnButton { get; }
+            public Button HeaterOffButton { get; }
+            public Button PoolLightOnButton { get; }
+            public Button PoolLightOffButton { get; }
+            public Button SpaLightOnButton { get; }
+            public Button SpaLightOffButton { get; }
+
+            public DevicesCell(View view)
+                : base(view)
+            {
+                PoolOnButton = view.FindViewById<Button>(Resource.Id.device_cell_pool_on_btn);
+                PoolOffButton = view.FindViewById<Button>(Resource.Id.device_cell_pool_off_btn);
+                SpaOnButton = view.FindViewById<Button>(Resource.Id.device_cell_spa_on_btn);
+                SpaOffButton = view.FindViewById<Button>(Resource.Id.device_cell_spa_off_btn);
+                BoosterOnButton = view.FindViewById<Button>(Resource.Id.device_cell_booster_on_btn);
+                BoosterOffButton = view.FindViewById<Button>(Resource.Id.device_cell_booster_off_btn);
+                HeaterOnButton = view.FindViewById<Button>(Resource.Id.device_cell_heater_on_btn);
+                HeaterOffButton = view.FindViewById<Button>(Resource.Id.device_cell_heater_off_btn);
+                PoolLightOnButton = view.FindViewById<Button>(Resource.Id.device_cell_pool_light_on_btn);
+                PoolLightOffButton = view.FindViewById<Button>(Resource.Id.device_cell_pool_light_off_btn);
+                SpaLightOnButton = view.FindViewById<Button>(Resource.Id.device_cell_spa_light_on_btn);
+                SpaLightOffButton = view.FindViewById<Button>(Resource.Id.device_cell_spa_light_off_btn);
+            }
         }
 
         class PoolCell : EquipmentCell

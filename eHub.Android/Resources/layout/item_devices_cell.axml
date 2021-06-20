@@ -225,7 +225,7 @@
 	</RelativeLayout>
 
     <RelativeLayout
-		android:id="@+id/pumps_cell_spa_light_container"
+		android:id="@+id/device_cell_spa_light_container"
 		android:padding="8dp"
 		android:layout_width="match_parent" 
 		android:layout_height="wrap_content">
@@ -247,7 +247,7 @@
             android:layout_height="wrap_content">
 
             <Button
-                android:id="@+id/pumps_cell_spa_light_on_btn"
+                android:id="@+id/device_cell_spa_light_on_btn"
                 android:textColor="@color/material_grey_300"
                 android:background="@color/blue_gray_400"
                 android:layout_marginLeft="8dp"
@@ -258,7 +258,7 @@
                 android:layout_height="wrap_content" />
 
             <Button
-                android:id="@+id/pumps_cell_spa_light_off_btn"
+                android:id="@+id/device_cell_spa_light_off_btn"
                 android:textColor="@color/material_grey_300"
                 android:background="@color/blue_gray_400"
                 android:text="Off"

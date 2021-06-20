@@ -118,6 +118,8 @@ namespace eHub.Android.Fragments
             var heater = allPins.FirstOrDefault(_ => _.PinNumber == Pin.Heater);
             var groundLights = allPins.FirstOrDefault(_ => _.PinNumber == Pin.GroundLights);
 
+            var devicesItem = new DeviceCellItem(allPins.ToList());
+
             var aboutItem = new HomeCellItem(CellType.About)
             {
                 AboutTapped = () =>

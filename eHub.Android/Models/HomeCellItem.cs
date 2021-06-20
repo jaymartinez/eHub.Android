@@ -1,6 +1,7 @@
 ﻿using Android.Widget;
 using eHub.Common.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Switch = Android.Support.V7.Widget.SwitchCompat; 
 
@@ -98,6 +99,16 @@ namespace eHub.Android.Models
         }
     }
 
+    public class DeviceCellItem
+    {
+        List<PiPin> DevicePins { get; }
+
+        public DeviceCellItem(List<PiPin> devicePins)
+        {
+            DevicePins = devicePins;
+        }
+    }
+
     public class PoolCellItem
     {
         public PiPin PoolPin1 { get; }
@@ -130,6 +141,7 @@ namespace eHub.Android.Models
 
     public enum CellType
     {
+        DeviceControl,
         Schedule,
         Pool,
         Spa,
