@@ -130,13 +130,13 @@ namespace eHub.Android.Fragments
                 {
                     // Get the state again
                     serverPoolLightMode = await poolService.GetCurrentPoolLightMode();
-                    return await OnLightModeButtonTapped(model, serverPoolLightMode, selectedModeLabel, poolService, Pin.PoolLight);
+                    return await OnLightModeButtonTapped(model, serverPoolLightMode, selectedModeLabel, poolService, Pin.PoolLight, LightType.Pool);
                 },
                 SpaLightModeButtonTapped = async (model, selectedModeLabel) =>
                 {
                     // Get the state again
                     serverSpaLightMode = await poolService.GetCurrentSpaLightMode();
-                    return await OnLightModeButtonTapped(model, serverSpaLightMode, selectedModeLabel, poolService, Pin.SpaLight);
+                    return await OnLightModeButtonTapped(model, serverSpaLightMode, selectedModeLabel, poolService, Pin.SpaLight, LightType.Spa);
                 },
                 PoolLightScheduleStartTapped = async (btn) =>
                 {
@@ -369,7 +369,8 @@ namespace eHub.Android.Fragments
             PoolLightServerModel serverModel, 
             TextView statusText, 
             IPoolService poolService,
-            int lightPin)
+            int lightPin,
+            LightType lightType)
         {
             var state = (await poolService.GetPinStatus(lightPin))?.State ?? PinState.OFF;
             if (state == PinState.OFF)
@@ -405,7 +406,7 @@ namespace eHub.Android.Fragments
             alert.SetCanceledOnTouchOutside(false);
             for (var i = 0; i < numCycles; i++)
             {
-                var toggleResult = await poolService.Toggle(Pin.PoolLight);
+                var toggleResult = await poolService.Toggle(lightPin);
                 await Task.Delay(TimeSpan.FromMilliseconds(500));
             }
 
@@ -420,13 +421,27 @@ namespace eHub.Android.Fragments
                 }
                 else
                 {
-                    await poolService.SavePoolLightMode(serverModel.PreviousPoolLightMode);
+                    if (lightType == LightType.Pool)
+                    {
+                        await poolService.SavePoolLightMode(serverModel.PreviousPoolLightMode);
+                    }
+                    else
+                    {
+                        await poolService.SaveSpaLightMode(serverModel.PreviousPoolLightMode);
+                    }
                     statusText.Text = serverModel.PreviousPoolLightMode.ToLightModeText();
                 }
             }
             else
             {
-                await poolService.SavePoolLightMode(model.Mode);
+                if (lightType == LightType.Pool)
+                {
+                    await poolService.SavePoolLightMode(model.Mode);
+                }
+                else
+                {
+                    await poolService.SaveSpaLightMode(model.Mode);
+                }
                 statusText.Text = model.Mode.ToLightModeText();
             }
 
