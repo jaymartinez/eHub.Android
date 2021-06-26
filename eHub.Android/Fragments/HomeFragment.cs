@@ -13,8 +13,6 @@ using System.Threading.Tasks;
 using System.Reactive.Linq;
 using Fragment = Android.Support.V4.App.Fragment;
 using eHub.Common.Helpers;
-using Android.Support.V4.Content;
-using Android.Graphics;
 
 namespace eHub.Android.Fragments
 {
@@ -129,14 +127,14 @@ namespace eHub.Android.Fragments
                 PoolLightModeButtonTapped = async (model, selectedModeLabel) =>
                 {
                     // Get the state again
-                    serverPoolLightMode = await poolService.GetCurrentPoolLightMode();
-                    return await OnLightModeButtonTapped(model, serverPoolLightMode, selectedModeLabel, poolService, Pin.PoolLight, LightType.Pool);
+                    var currentPoolLightMode = await poolService.GetCurrentPoolLightMode();
+                    return await OnLightModeButtonTapped(model, currentPoolLightMode, selectedModeLabel, poolService, Pin.PoolLight, LightType.Pool);
                 },
                 SpaLightModeButtonTapped = async (model, selectedModeLabel) =>
                 {
                     // Get the state again
-                    serverSpaLightMode = await poolService.GetCurrentSpaLightMode();
-                    return await OnLightModeButtonTapped(model, serverSpaLightMode, selectedModeLabel, poolService, Pin.SpaLight, LightType.Spa);
+                    var currentSpaLightMode = await poolService.GetCurrentSpaLightMode();
+                    return await OnLightModeButtonTapped(model, currentSpaLightMode, selectedModeLabel, poolService, Pin.SpaLight, LightType.Spa);
                 },
                 PoolLightScheduleStartTapped = async (btn) =>
                 {
@@ -364,7 +362,7 @@ namespace eHub.Android.Fragments
             };
         }
 
-        async Task<bool> OnLightModeButtonTapped(
+        async Task<PoolLightModel> OnLightModeButtonTapped(
             PoolLightModel model,
             PoolLightServerModel serverModel, 
             TextView statusText, 
@@ -376,19 +374,19 @@ namespace eHub.Android.Fragments
             if (state == PinState.OFF)
             {
                 Toast.MakeText(Context, "Turn the light on before changing light modes", ToastLength.Long).Show();
-                return false;
+                return null;
             }
 
             if (model.Mode == PoolLightMode.Recall && serverModel.PreviousPoolLightMode == PoolLightMode.NotSet)
             {
                 Toast.MakeText(Context, "There is no previous light mode saved yet.", ToastLength.Long).Show();
-                return false;
+                return null;
             }
 
             if (model.Mode == serverModel.CurrentPoolLightMode)
             {
                 Toast.MakeText(Context, "You are already on that mode!", ToastLength.Long).Show();
-                return false;
+                return null;
             }
 
             _progressBar.Visibility = ViewStates.Visible;
@@ -407,73 +405,35 @@ namespace eHub.Android.Fragments
             for (var i = 0; i < numCycles; i++)
             {
                 var toggleResult = await poolService.Toggle(lightPin);
-                await Task.Delay(TimeSpan.FromMilliseconds(500));
+                await Task.Delay(TimeSpan.FromMilliseconds(250));
             }
 
-            // After applying mode the light takes about 2 seconds to come back on.
-            await Task.Delay(TimeSpan.FromSeconds(2));
+            // After applying mode the light takes a second to come back on.
+            await Task.Delay(TimeSpan.FromSeconds(1));
 
-            if (model.Mode == PoolLightMode.Hold || model.Mode == PoolLightMode.Recall)
+            var modeToSave = model.Mode == PoolLightMode.Recall ?
+                serverModel.PreviousPoolLightMode : model.Mode;
+
+            if (lightType == LightType.Pool)
             {
-                if (model.Mode == PoolLightMode.Hold)
-                {
-                    statusText.Text = "Holding current color from light show";
-                }
-                else
-                {
-                    if (lightType == LightType.Pool)
-                    {
-                        await poolService.SavePoolLightMode(serverModel.PreviousPoolLightMode);
-                    }
-                    else
-                    {
-                        await poolService.SaveSpaLightMode(serverModel.PreviousPoolLightMode);
-                    }
-                    statusText.Text = serverModel.PreviousPoolLightMode.ToLightModeText();
-                }
+                model.Mode = await Task.Run(async () =>
+                { 
+                    return await poolService.SavePoolLightMode(modeToSave);
+                });
             }
             else
             {
-                if (lightType == LightType.Pool)
-                {
-                    await poolService.SavePoolLightMode(model.Mode);
-                }
-                else
-                {
-                    await poolService.SaveSpaLightMode(model.Mode);
-                }
-                statusText.Text = model.Mode.ToLightModeText();
+                model.Mode = await Task.Run(async () =>
+                { 
+                    return await poolService.SaveSpaLightMode(modeToSave);
+                });
             }
+            statusText.Text = model.Mode.ToLightModeText();
 
             _progressBar.Visibility = ViewStates.Gone;
             alert.Hide();
 
-            return true;
-        }
-
-        void ToggleOnOffButtonStyle(Button onButton, Button offButton, int state)
-        {
-            if (state == PinState.ON)
-            {
-                var onTextColor = ContextCompat.GetColor(
-                    Context, Resource.Color.material_blue_grey_800);
-
-                onButton.SetBackgroundResource(Resource.Drawable.rounded_corners_green_8dp);
-                onButton.SetTextColor(new Color(onTextColor));
-            }
-            else
-            {
-                var offTextColor = ContextCompat.GetColor(
-                    Context, Resource.Color.material_grey_300);
-                offButton.SetBackgroundResource(Resource.Drawable.rounded_corners_bluegray_8dp);
-                offButton.SetTextColor(new Color(offTextColor));
-            }
-        }
-
-        async Task<int> GetStatus(int pin, IPoolService poolService)
-        {
-            var result = await poolService.GetPinStatus(pin);
-            return result.State;
+            return model;
         }
 
         async Task SaveLightScheduleAsync(IPoolService poolService, EquipmentSchedule es, bool isPoolLight)

@@ -162,7 +162,10 @@ namespace eHub.Android
                     #region Pool Light Mode Events
                     lightModeCell.PoolLightSamModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.PoolLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Sam), lightModeCell.PoolLightSelectedLightModeText))
+                        var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.Sam), lightModeCell.PoolLightSelectedLightModeText);
+
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
@@ -170,7 +173,10 @@ namespace eHub.Android
                     }));
                     lightModeCell.PoolLightPartyModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.PoolLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Party), lightModeCell.PoolLightSelectedLightModeText))
+                        var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.Party), lightModeCell.PoolLightSelectedLightModeText);
+
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
@@ -178,7 +184,9 @@ namespace eHub.Android
                     }));
                     lightModeCell.PoolLightRomanceModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.PoolLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Romance), lightModeCell.PoolLightSelectedLightModeText))
+                        var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.Romance), lightModeCell.PoolLightSelectedLightModeText);
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
@@ -186,7 +194,9 @@ namespace eHub.Android
                     }));
                     lightModeCell.PoolLightCaribbeanModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.PoolLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Caribbean), lightModeCell.PoolLightSelectedLightModeText))
+                        var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.Caribbean), lightModeCell.PoolLightSelectedLightModeText);
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
@@ -194,7 +204,9 @@ namespace eHub.Android
                     }));
                     lightModeCell.PoolLightAmericanModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.PoolLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.American), lightModeCell.PoolLightSelectedLightModeText))
+                        var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.American), lightModeCell.PoolLightSelectedLightModeText);
+                        if (result != null) 
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
@@ -202,7 +214,9 @@ namespace eHub.Android
                     }));
                     lightModeCell.PoolLightCaliSunsetModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.PoolLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.CaliforniaSunset), lightModeCell.PoolLightSelectedLightModeText))
+                        var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.CaliforniaSunset), lightModeCell.PoolLightSelectedLightModeText);
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
@@ -210,7 +224,9 @@ namespace eHub.Android
                     }));
                     lightModeCell.PoolLightRoyalModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.PoolLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Royal), lightModeCell.PoolLightSelectedLightModeText))
+                        var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.Royal), lightModeCell.PoolLightSelectedLightModeText);
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
@@ -218,7 +234,9 @@ namespace eHub.Android
                     }));
                     lightModeCell.PoolLightBlueModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.PoolLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Blue), lightModeCell.PoolLightSelectedLightModeText))
+                        var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.Blue), lightModeCell.PoolLightSelectedLightModeText);
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
@@ -226,7 +244,9 @@ namespace eHub.Android
                     }));
                     lightModeCell.PoolLightGreenModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.PoolLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Green), lightModeCell.PoolLightSelectedLightModeText))
+                        var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.Green), lightModeCell.PoolLightSelectedLightModeText);
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
@@ -234,7 +254,9 @@ namespace eHub.Android
                     }));
                     lightModeCell.PoolLightRedModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.PoolLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Red), lightModeCell.PoolLightSelectedLightModeText))
+                        var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.Red), lightModeCell.PoolLightSelectedLightModeText);
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
@@ -242,7 +264,9 @@ namespace eHub.Android
                     }));
                     lightModeCell.PoolLightWhiteModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.PoolLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.White), lightModeCell.PoolLightSelectedLightModeText))
+                        var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.White), lightModeCell.PoolLightSelectedLightModeText);
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
@@ -250,7 +274,9 @@ namespace eHub.Android
                     }));
                     lightModeCell.PoolLightMagentaModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.PoolLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Magenta), lightModeCell.PoolLightSelectedLightModeText))
+                        var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.Magenta), lightModeCell.PoolLightSelectedLightModeText);
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
@@ -258,7 +284,9 @@ namespace eHub.Android
                     }));
                     lightModeCell.PoolLightHoldModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.PoolLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Hold), lightModeCell.PoolLightSelectedLightModeText))
+                        var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.Hold), lightModeCell.PoolLightSelectedLightModeText);
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
@@ -266,7 +294,9 @@ namespace eHub.Android
                     }));
                     lightModeCell.PoolLightRecallModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.PoolLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Recall), lightModeCell.PoolLightSelectedLightModeText))
+                        var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.Recall), lightModeCell.PoolLightSelectedLightModeText);
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
@@ -278,7 +308,10 @@ namespace eHub.Android
 
                     lightModeCell.SpaLightSamModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.SpaLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Sam), lightModeCell.SpaLightSelectedLightModeText))
+                        var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.Sam), lightModeCell.SpaLightSelectedLightModeText);
+
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
@@ -286,7 +319,10 @@ namespace eHub.Android
                     }));
                     lightModeCell.SpaLightPartyModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.SpaLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Party), lightModeCell.SpaLightSelectedLightModeText))
+                        var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.Party), lightModeCell.SpaLightSelectedLightModeText);
+
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
@@ -294,7 +330,9 @@ namespace eHub.Android
                     }));
                     lightModeCell.SpaLightRomanceModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.SpaLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Romance), lightModeCell.SpaLightSelectedLightModeText))
+                        var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.Romance), lightModeCell.SpaLightSelectedLightModeText);
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
@@ -302,7 +340,9 @@ namespace eHub.Android
                     }));
                     lightModeCell.SpaLightCaribbeanModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.SpaLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Caribbean), lightModeCell.SpaLightSelectedLightModeText))
+                        var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.Caribbean), lightModeCell.SpaLightSelectedLightModeText);
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
@@ -310,7 +350,9 @@ namespace eHub.Android
                     }));
                     lightModeCell.SpaLightAmericanModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.SpaLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.American), lightModeCell.SpaLightSelectedLightModeText))
+                        var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.American), lightModeCell.SpaLightSelectedLightModeText);
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
@@ -318,7 +360,9 @@ namespace eHub.Android
                     }));
                     lightModeCell.SpaLightCaliSunsetModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.SpaLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.CaliforniaSunset), lightModeCell.SpaLightSelectedLightModeText))
+                        var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.CaliforniaSunset), lightModeCell.SpaLightSelectedLightModeText);
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
@@ -326,7 +370,9 @@ namespace eHub.Android
                     }));
                     lightModeCell.SpaLightRoyalModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.SpaLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Royal), lightModeCell.SpaLightSelectedLightModeText))
+                        var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.Royal), lightModeCell.SpaLightSelectedLightModeText);
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
@@ -334,7 +380,9 @@ namespace eHub.Android
                     }));
                     lightModeCell.SpaLightBlueModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.SpaLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Blue), lightModeCell.SpaLightSelectedLightModeText))
+                        var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.Blue), lightModeCell.SpaLightSelectedLightModeText);
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
@@ -342,7 +390,9 @@ namespace eHub.Android
                     }));
                     lightModeCell.SpaLightGreenModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.SpaLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Green), lightModeCell.SpaLightSelectedLightModeText))
+                        var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.Green), lightModeCell.SpaLightSelectedLightModeText);
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
@@ -350,7 +400,9 @@ namespace eHub.Android
                     }));
                     lightModeCell.SpaLightRedModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.SpaLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Red), lightModeCell.SpaLightSelectedLightModeText))
+                        var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.Red), lightModeCell.SpaLightSelectedLightModeText);
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
@@ -358,7 +410,9 @@ namespace eHub.Android
                     }));
                     lightModeCell.SpaLightWhiteModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.SpaLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.White), lightModeCell.SpaLightSelectedLightModeText))
+                        var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.White), lightModeCell.SpaLightSelectedLightModeText);
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
@@ -366,7 +420,9 @@ namespace eHub.Android
                     }));
                     lightModeCell.SpaLightMagentaModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.SpaLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Magenta), lightModeCell.SpaLightSelectedLightModeText))
+                        var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.Magenta), lightModeCell.SpaLightSelectedLightModeText);
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
@@ -374,7 +430,10 @@ namespace eHub.Android
                     }));
                     lightModeCell.SpaLightHoldModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.SpaLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Hold), lightModeCell.SpaLightSelectedLightModeText))
+                        var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.Hold), lightModeCell.SpaLightSelectedLightModeText);
+
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
@@ -382,7 +441,10 @@ namespace eHub.Android
                     }));
                     lightModeCell.SpaLightRecallModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        if (await item.LightModesItem.SpaLightModeButtonTapped.Invoke(new PoolLightModel(PoolLightMode.Recall), lightModeCell.SpaLightSelectedLightModeText))
+                        var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
+                            new PoolLightModel(PoolLightMode.Recall), lightModeCell.SpaLightSelectedLightModeText);
+
+                        if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
                             DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
@@ -1012,6 +1074,9 @@ namespace eHub.Android
                     case PoolLightMode.White:
                         PoolLightWhiteModeButton.SetBackgroundColor(selectedColor);
                         break;
+                    case PoolLightMode.Hold:
+                        PoolLightHoldModeButton.SetBackgroundColor(selectedColor);
+                        break;
                 }
 
                 switch (item.LightModesItem.SelectedSpaLightMode)
@@ -1052,6 +1117,10 @@ namespace eHub.Android
                     case PoolLightMode.White:
                         SpaLightWhiteModeButton.SetBackgroundColor(selectedColor);
                         break;
+                    case PoolLightMode.Hold:
+                        SpaLightHoldModeButton.SetBackgroundColor(selectedColor);
+                        break;
+
                 }
             }
         }

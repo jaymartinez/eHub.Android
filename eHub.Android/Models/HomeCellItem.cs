@@ -126,8 +126,8 @@ namespace eHub.Android.Models
     {
         public EquipmentSchedule PoolLightSchedule { get; }
         public EquipmentSchedule SpaLightSchedule { get; }
-        public Func<PoolLightModel, TextView, Task<bool>> PoolLightModeButtonTapped { get; set; }
-        public Func<PoolLightModel, TextView, Task<bool>> SpaLightModeButtonTapped { get; set; }
+        public Func<PoolLightModel, TextView, Task<PoolLightModel>> PoolLightModeButtonTapped { get; set; }
+        public Func<PoolLightModel, TextView, Task<PoolLightModel>> SpaLightModeButtonTapped { get; set; }
         public PoolLightMode SelectedPoolLightMode { get; set; }
         public PoolLightMode SelectedSpaLightMode { get; set; }
 
@@ -171,7 +171,7 @@ namespace eHub.Android.Models
             Mode = mode;
         }
 
-        public PoolLightMode Mode { get; }
+        public PoolLightMode Mode { get; set; }
         public int PowerCycles => (int)Mode;
     }
 
