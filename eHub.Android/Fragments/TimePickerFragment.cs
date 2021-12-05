@@ -44,7 +44,9 @@ namespace eHub.Android.Fragments
         {
             var stringArgs = Arguments.GetString($"{nameof(TimePickerArgs)}");
             var args = JsonConvert.DeserializeObject<TimePickerArgs>(stringArgs);
-            return new TimePickerDialog(Context, this, args.Hour, args.Minute, true);
+            var dialog = new TimePickerDialog(Context, this, args.Hour, args.Minute, true);
+
+            return dialog;
         }
 
         void IOnTimeSetListener.OnTimeSet(TimePicker view, int hourOfDay, int minute)

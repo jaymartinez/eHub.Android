@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Reactive.Linq;
 using Fragment = Android.Support.V4.App.Fragment;
 using eHub.Common.Helpers;
+using eHub.Android.Listeners;
 
 namespace eHub.Android.Fragments
 {
@@ -22,21 +23,105 @@ namespace eHub.Android.Fragments
         SwipeRefreshLayout _refreshLayout;
         ProgressBar _progressBar;
         TextView _statusLabel;
+        TimePicker _poolTimer, _boosterTimer;
+        Button _poolSaveBtn, _boosterSaveBtn;
 
-        [Inject] IPoolService PoolService { get; set; }
-        [Inject] AppVersion AppVersion { get; set; }
+        [Inject] private IPoolService _poolService { get; set; }
+        [Inject] private AppVersion _appVersion { get; set; }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             EhubInjector.InjectProperties(this);
 
+            //HasOptionsMenu = true;
+
             return inflater.Inflate(Resource.Layout.fragment_home, container, false);
         }
 
+        public override void OnViewCreated(View view, Bundle savedInstanceState)
+        {
+            _statusLabel = view.FindViewById<TextView>(Resource.Id.home_status_label);
+
+            _recyclerView = view.FindViewById<RecyclerView>(Resource.Id.home_recycler_view);
+            _refreshLayout = view.FindViewById<SwipeRefreshLayout>(Resource.Id.home_refresh_layout);
+            _progressBar = view.FindViewById<ProgressBar>(Resource.Id.home_progress_bar);
+
+            _poolTimer = view.FindViewById<TimePicker>(Resource.Id.home_pool_timer);
+            _boosterTimer = view.FindViewById<TimePicker>(Resource.Id.home_booster_timer);
+
+            _boosterSaveBtn = view.FindViewById<Button>(Resource.Id.home_booster_timer_savebtn);
+            _boosterSaveBtn.SetOnClickListener(new OnClickListener(async v =>
+            {
+                // TODO save booster timer
+                /*
+                StartTapped = async (btn) =>
+                {
+                    var curSched = await poolService.GetSchedule();
+                    var picker = TimePickerFragment.CreateInstance(curSched.StartHour, curSched.StartMinute);
+
+                    picker.OnTimeSelected = async (args) =>
+                    {
+                        var time = new TimeSpan(args.Hour, args.Minute, 0);
+                        Activity.RunOnUiThread(() =>
+                        {
+                            btn.Text = time.ToString(@"%h\:mm");
+                        });
+
+                        var ps = new PoolSchedule
+                        {
+                            StartHour = args.Hour,
+                            StartMinute = args.Minute,
+                            EndHour = curSched.EndHour,
+                            EndMinute = curSched.EndMinute,
+                            IsActive = curSched.IsActive,
+                            IncludeBooster = curSched.IncludeBooster
+                        };
+
+                        await SaveScheduleAsync(poolService, ps);
+                    };
+
+                    picker.Show(ChildFragmentManager, "starttime_picker");
+                },
+                */
+                var curSched = await _poolService.GetSchedule();
+                var ps = new PoolSchedule
+                {
+                    StartHour = _boosterTimer.Hour,
+                    StartMinute = _boosterTimer.Minute,
+                    EndHour = curSched.EndHour,
+                    EndMinute = curSched.EndMinute,
+                    IsActive = curSched.IsActive,
+                    IncludeBooster = curSched.IncludeBooster
+                };
+                await SaveScheduleAsync(_poolService, ps);
+                //var time = new TimeSpan(_boosterTimer.Hour, _boosterTimer.Minute, 0);
+
+            }));
+
+            _poolSaveBtn = view.FindViewById<Button>(Resource.Id.home_pool_timer_savebtn);
+            _poolSaveBtn.SetOnClickListener(new OnClickListener(v =>
+            {
+                // TODO save pool timer
+            }));
+
+            _refreshLayout.SetOnRefreshListener(this);
+            _recyclerView.SetLayoutManager(new LinearLayoutManager(Context));
+            _recyclerView.AddItemDecoration(new DividerItemDecoration(Context, LinearLayoutManager.Vertical));
+        }
         public async void OnRefresh()
         {
             await ProcessView();
             _refreshLayout.Refreshing = false;
+        }
+
+        public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)
+        {
+            base.OnCreateOptionsMenu(menu, inflater);
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            return base.OnOptionsItemSelected(item);
         }
 
         public override async void OnResume()
@@ -45,22 +130,17 @@ namespace eHub.Android.Fragments
             await ProcessView(); 
         }
 
-        public override void OnDestroy()
-        {
-            base.OnDestroy();
-        }
-
         async Task ProcessView()
         {
             _progressBar.Visibility = ViewStates.Visible;
-            if (await PoolService.Ping())
+            if (await _poolService.Ping())
             {
                 _statusLabel.Visibility = ViewStates.Gone;
 
-                var items = await RefreshView(PoolService);
+                var items = await RefreshView(_poolService);
                 if (items != null)
                 {
-                    var adapter = new HomeRecyclerAdapter(items, PoolService);
+                    var adapter = new HomeRecyclerAdapter(items, _poolService);
                     _recyclerView.SetAdapter(adapter);
                 }
             }
@@ -79,30 +159,27 @@ namespace eHub.Android.Fragments
             _progressBar.Visibility = ViewStates.Gone;
         }
 
-        public override void OnViewCreated(View view, Bundle savedInstanceState)
-        {
-            _statusLabel = view.FindViewById<TextView>(Resource.Id.home_status_label);
-
-            _recyclerView = view.FindViewById<RecyclerView>(Resource.Id.home_recycler_view);
-            _refreshLayout = view.FindViewById<SwipeRefreshLayout>(Resource.Id.home_refresh_layout);
-            _progressBar = view.FindViewById<ProgressBar>(Resource.Id.home_progress_bar);
-
-            _refreshLayout.SetOnRefreshListener(this);
-            _recyclerView.SetLayoutManager(new LinearLayoutManager(Context));
-            _recyclerView.AddItemDecoration(new DividerItemDecoration(Context, LinearLayoutManager.Vertical));
-        }
-
         async Task<List<HomeCellItem>> RefreshView(IPoolService poolService)
         {
             //var waterTemp = await poolService.GetWaterTemp();
             var allPins = await poolService.GetAllStatuses();
-            var sched = await poolService.GetSchedule();
+            var poolSched = await poolService.GetSchedule();
+            var boosterSched = await poolService.GetBoosterSchedule();
+
+            Activity.RunOnUiThread(() =>
+            {
+                _poolTimer.Hour = poolSched.StartHour;
+                _poolTimer.Minute = poolSched.StartMinute;
+                _boosterTimer.Hour = boosterSched.StartHour;
+                _boosterTimer.Minute = boosterSched.StartMinute;
+            });
+
             var serverPoolLightMode = await poolService.GetCurrentPoolLightMode();
             var serverSpaLightMode = await poolService.GetCurrentSpaLightMode();
             var curPoolLightSched = await poolService.GetPoolLightSchedule();
             var curSpaLightSched = await poolService.GetSpaLightSchedule();
 
-            if (allPins == null || sched == null)
+            if (allPins == null || poolSched == null || boosterSched == null)
             {
                 Toast.MakeText(Context, "Failed to get pin status and schedule from server!!!", ToastLength.Long);
                 _progressBar.Visibility = ViewStates.Gone;
@@ -118,7 +195,7 @@ namespace eHub.Android.Fragments
             {
                 AboutTapped = () =>
                 {
-                    Dialogs.SimpleAlert(Context, "About", $"Version: {AppVersion.VersionName}\nBuild: {AppVersion.VersionNumber}").Show();
+                    Dialogs.SimpleAlert(Context, "About", $"Version: {_appVersion.VersionName}\nBuild: {_appVersion.VersionNumber}").Show();
                 }
             };
 
@@ -281,7 +358,7 @@ namespace eHub.Android.Fragments
                 SelectedSpaLightMode = serverSpaLightMode.CurrentPoolLightMode
             };
 
-            var schedCell = new ScheduleCellItem(sched)
+            var schedCell = new ScheduleCellItem(poolSched)
             {
                 StartTapped = async (btn) =>
                 {
