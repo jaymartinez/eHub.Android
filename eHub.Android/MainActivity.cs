@@ -35,7 +35,7 @@ namespace eHub.Android
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.activity_main);
 
-            _toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
+            _toolbar = FindViewById<Toolbar>(Resource.Id.tool_bar);
             SetSupportActionBar(_toolbar);
             _bottomNavigation = FindViewById<BottomNavigationView>(Resource.Id.bottom_navigation);
             _bottomNavigation.NavigationItemReselected += OnMenuItemSelected;
@@ -53,8 +53,6 @@ namespace eHub.Android
                     frag.Replace(Resource.Id.main_container, hf);
                     break;
                 case Resource.Id.menu_equipment_button:
-                    //NetworkFragment networkFragment = new NetworkFragment();
-                    //frag.Replace(Resource.Id.content_frame, networkFragment);
                     break;
             }
             frag.Commit();
@@ -68,7 +66,10 @@ namespace eHub.Android
 
         void OnMenuItemSelected(object sender, BottomNavigationView.NavigationItemReselectedEventArgs e)
         {
-            switch(e.Item.ItemId) { 
+            switch(e.Item.ItemId) {
+                case Resource.Id.menu_home_button:
+                    LoadFragment(Resource.Id.menu_home_button);
+                    break;
 	        }
             
         }
