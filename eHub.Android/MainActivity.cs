@@ -35,7 +35,7 @@ namespace eHub.Android
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.activity_main);
 
-            _toolbar = FindViewById<Toolbar>(Resource.Id.tool_bar);
+            _toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(_toolbar);
             _bottomNavigation = FindViewById<BottomNavigationView>(Resource.Id.bottom_navigation);
             _bottomNavigation.NavigationItemReselected += OnMenuItemSelected;
@@ -62,6 +62,18 @@ namespace eHub.Android
         {
             MenuInflater.Inflate(Resource.Menu.main_menu, menu);
             return true;
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
+            {
+                case Resource.Id.action_save:
+                    Console.WriteLine("Appbar save button tapped!!!");
+                    break;
+            }
+
+            return false;
         }
 
         void OnMenuItemSelected(object sender, BottomNavigationView.NavigationItemReselectedEventArgs e)

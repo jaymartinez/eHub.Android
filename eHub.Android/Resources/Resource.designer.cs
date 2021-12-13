@@ -3961,59 +3961,56 @@ namespace eHub.Android
 			// aapt resource value: 0x7F08010E
 			public const int title_template = 2131230990;
 			
-			// aapt resource value: 0x7F080110
-			public const int toolbar = 2131230992;
-			
 			// aapt resource value: 0x7F08010F
-			public const int tool_bar = 2131230991;
+			public const int toolbar = 2131230991;
+			
+			// aapt resource value: 0x7F080110
+			public const int top = 2131230992;
 			
 			// aapt resource value: 0x7F080111
-			public const int top = 2131230993;
+			public const int topPanel = 2131230993;
 			
 			// aapt resource value: 0x7F080112
-			public const int topPanel = 2131230994;
+			public const int touch_outside = 2131230994;
 			
 			// aapt resource value: 0x7F080113
-			public const int touch_outside = 2131230995;
+			public const int transition_current_scene = 2131230995;
 			
 			// aapt resource value: 0x7F080114
-			public const int transition_current_scene = 2131230996;
+			public const int transition_layout_save = 2131230996;
 			
 			// aapt resource value: 0x7F080115
-			public const int transition_layout_save = 2131230997;
+			public const int transition_position = 2131230997;
 			
 			// aapt resource value: 0x7F080116
-			public const int transition_position = 2131230998;
+			public const int transition_scene_layoutid_cache = 2131230998;
 			
 			// aapt resource value: 0x7F080117
-			public const int transition_scene_layoutid_cache = 2131230999;
+			public const int transition_transform = 2131230999;
 			
 			// aapt resource value: 0x7F080118
-			public const int transition_transform = 2131231000;
+			public const int uniform = 2131231000;
 			
 			// aapt resource value: 0x7F080119
-			public const int uniform = 2131231001;
+			public const int unlabeled = 2131231001;
 			
 			// aapt resource value: 0x7F08011A
-			public const int unlabeled = 2131231002;
+			public const int up = 2131231002;
 			
 			// aapt resource value: 0x7F08011B
-			public const int up = 2131231003;
+			public const int useLogo = 2131231003;
 			
 			// aapt resource value: 0x7F08011C
-			public const int useLogo = 2131231004;
+			public const int view_offset_helper = 2131231004;
 			
 			// aapt resource value: 0x7F08011D
-			public const int view_offset_helper = 2131231005;
+			public const int visible = 2131231005;
 			
 			// aapt resource value: 0x7F08011E
-			public const int visible = 2131231006;
+			public const int withText = 2131231006;
 			
 			// aapt resource value: 0x7F08011F
-			public const int withText = 2131231007;
-			
-			// aapt resource value: 0x7F080120
-			public const int wrap_content = 2131231008;
+			public const int wrap_content = 2131231007;
 			
 			static Id()
 			{

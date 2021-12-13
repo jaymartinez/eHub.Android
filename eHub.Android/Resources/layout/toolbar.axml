@@ -4,6 +4,5 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:id="@+id/toolbar"
-    android:background="@color/material_blue_grey_900"
-    app:title="Pool Control"
+    android:background="@color/material_grey_100"
     android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />

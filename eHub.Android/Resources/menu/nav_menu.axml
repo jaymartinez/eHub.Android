@@ -7,6 +7,6 @@
         app:showAsAction="always" />
   <item android:id="@+id/menu_equipment_button" 
         android:icon="@drawable/baseline_settings_suggest_black_48" 
-        android:orderInCategory="100"
+        android:orderInCategory="200"
         app:showAsAction="always" />
 </menu>
