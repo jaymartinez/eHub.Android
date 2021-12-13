@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
-  <item android:id="@+id/menu_button" 
-        android:icon="@drawable/ic_menu_grey_300_36dp" 
+  <item android:id="@+id/menu_home_button" 
+        android:icon="@drawable/ic_schedule_blue_grey_400_48dp" 
+        android:orderInCategory="100"
+        app:showAsAction="always" />
+  <item android:id="@+id/menu_equipment_button" 
+        android:icon="@drawable/ic_pool_blue_dark_48dp" 
         android:orderInCategory="100"
         app:showAsAction="always" />
 </menu>

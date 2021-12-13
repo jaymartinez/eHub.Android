@@ -1,12 +1,12 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using Android.Support.V7.App;
 using Android.Widget;
+using AndroidX.AppCompat.App;
 using eHub.Android.Fragments;
 using System;
-using static Android.Support.V4.App.FragmentManager;
-using Fragment = Android.Support.V4.App.Fragment;
+using static AndroidX.Fragment.App.FragmentManager;
+using Fragment = AndroidX.Fragment.App.Fragment;
 
 namespace eHub.Android
 {

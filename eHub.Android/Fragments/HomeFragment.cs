@@ -1,6 +1,4 @@
 ﻿using Android.OS;
-using Android.Support.V4.Widget;
-using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using eHub.Android.Models;
@@ -11,9 +9,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Reactive.Linq;
-using Fragment = Android.Support.V4.App.Fragment;
 using eHub.Common.Helpers;
 using eHub.Android.Listeners;
+using Fragment = AndroidX.Fragment.App.Fragment;
+using AndroidX.SwipeRefreshLayout.Widget;
+using AndroidX.RecyclerView.Widget;
 
 namespace eHub.Android.Fragments
 {

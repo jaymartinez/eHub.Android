@@ -4,16 +4,15 @@ using System.Threading.Tasks;
 using Android.Content;
 using Android.Graphics;
 using Android.OS;
-using Android.Support.V4.Content;
-using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using eHub.Android.Listeners;
 using eHub.Android.Models;
-using eHub.Common.Helpers;
 using eHub.Common.Models;
 using eHub.Common.Services;
-using Switch = Android.Support.V7.Widget.SwitchCompat; 
+using Switch = AndroidX.AppCompat.Widget.SwitchCompat;
+using AndroidX.RecyclerView.Widget;
+using AndroidX.Core.Content;
 
 namespace eHub.Android
 {
