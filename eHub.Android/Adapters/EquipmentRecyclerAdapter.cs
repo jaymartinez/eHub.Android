@@ -16,9 +16,8 @@ using AndroidX.Core.Content;
 
 namespace eHub.Android
 {
-    public class HomeRecyclerAdapter : RecyclerView.Adapter
+    public class EquipmentRecyclerAdapter : RecyclerView.Adapter
     {
-        const int ScheduleId = 1;
         const int AboutId = 7;
         const int DevicesId = 8;
         const int LightModesCellId = 9;
@@ -30,7 +29,7 @@ namespace eHub.Android
 
         public WeakReference ActivityRef { get; set; }
 
-        public HomeRecyclerAdapter(List<HomeCellItem> items, IPoolService poolService)
+        public EquipmentRecyclerAdapter(List<HomeCellItem> items, IPoolService poolService)
         {
             EhubInjector.InjectProperties(this);
 
@@ -47,8 +46,6 @@ namespace eHub.Android
 
             switch (item.CellTypeObj)
             {
-                case CellType.Schedule:
-                    return ScheduleId;
                 case CellType.About:
                     return AboutId;
                 case CellType.DeviceControl:
@@ -66,36 +63,6 @@ namespace eHub.Android
 
             switch (item.CellTypeObj)
             {
-                case CellType.Schedule:
-                    var schCell = holder as ScheduleCell;
-                    var startTime = new TimeSpan(item.ScheduleCellItem.Schedule.StartHour, item.ScheduleCellItem.Schedule.StartMinute, 0);
-                    var endTime = new TimeSpan(item.ScheduleCellItem.Schedule.EndHour, item.ScheduleCellItem.Schedule.EndMinute, 0);
-                    schCell.StartButton.Text = startTime.ToString(@"%h\:mm");
-                    schCell.EndButton.Text = endTime.ToString(@"%h\:mm");
-                    schCell.OnOffSwitch.Checked = item.ScheduleCellItem.Schedule.IsActive;
-                    schCell.IncludeBoosterCheckbox.Checked = item.ScheduleCellItem.Schedule.IncludeBooster;
-
-                    schCell.StartButton.SetOnClickListener(new OnClickListener(v =>
-                    {
-                        item.ScheduleCellItem.StartTapped.Invoke(v as Button);
-                    }));
-
-                    schCell.EndButton.SetOnClickListener(new OnClickListener(v =>
-                    {
-                        item.ScheduleCellItem.EndTapped.Invoke(v as Button);
-                    }));
-
-                    schCell.OnOffSwitch.SetOnClickListener(new OnClickListener(v =>
-                    {
-                        item.ScheduleCellItem.OnOffSwitchTapped.Invoke(v as Switch);
-                    }));
-
-                    schCell.IncludeBoosterCheckbox.SetOnClickListener(new OnClickListener(v =>
-                    {
-                        item.ScheduleCellItem.IncludeBoosterTapped.Invoke(v as CheckBox);
-                    }));
-                    break;
-
                 case CellType.LightModes:
                     var lightModeCell = holder as LightModesCell;
                     var poolLightStart = new TimeSpan(item.LightModesItem.PoolLightSchedule.StartHour, 
@@ -865,9 +832,6 @@ namespace eHub.Android
 
             switch (viewType)
             {
-                case ScheduleId:
-                    var schView = inflater.Inflate(Resource.Layout.item_schedule_cell, parent, false);
-                    return new ScheduleCell(schView);
                 case AboutId:
                     var aboutView = inflater.Inflate(Resource.Layout.item_about_cell, parent, false);
                     return new AboutCell(aboutView);
@@ -880,23 +844,6 @@ namespace eHub.Android
             }
 
             return null;
-        }
-
-        class ScheduleCell : RecyclerView.ViewHolder
-        {
-            public Button StartButton { get; }
-            public Button EndButton { get; }
-            public CheckBox IncludeBoosterCheckbox { get; }
-            public Switch OnOffSwitch { get; }
-
-            public ScheduleCell(View view)
-                : base(view)
-            {
-                StartButton = view.FindViewById<Button>(Resource.Id.schedule_cell_begin_btn);
-                EndButton = view.FindViewById<Button>(Resource.Id.schedule_cell_end_btn);
-                IncludeBoosterCheckbox = view.FindViewById<CheckBox>(Resource.Id.schedule_cell_include_booster_cb);
-                OnOffSwitch = view.FindViewById<Switch>(Resource.Id.schedule_onoff_switch);
-            }
         }
 
         class EquipmentCell : RecyclerView.ViewHolder

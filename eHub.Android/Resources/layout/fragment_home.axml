@@ -50,18 +50,7 @@
             android:headerBackground="@color/blue_gray_400" 
             android:timePickerMode="spinner" />
 
-        <Button
-            android:id="@+id/home_pool_timer_savebtn"
-            android:background="@drawable/rounded_corners_green_8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:textSize="18sp"
-            android:textColor="@color/colorPrimary"
-            android:text="Save"
-            android:textAllCaps="false"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        
 
         <TextView 
             android:id="@+id/home_booster_timer_text"
@@ -81,32 +70,6 @@
             android:background="@drawable/rounded_corners_8dp_lighterblue"
             android:headerBackground="@color/blue_gray_400" 
             android:timePickerMode="spinner" />
-
-
-        <Button
-            android:id="@+id/home_booster_timer_savebtn"
-            android:background="@drawable/rounded_corners_green_8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:textSize="18sp"
-            android:textColor="@color/colorPrimary"
-            android:text="Save"
-            android:textAllCaps="false"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/home_refresh_layout"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/home_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+       
     </LinearLayout>
 </ScrollView>

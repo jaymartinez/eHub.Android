@@ -17,12 +17,12 @@ using AndroidX.RecyclerView.Widget;
 
 namespace eHub.Android.Fragments
 {
-    public class HomeFragment : Fragment
+    public class EquipmentFragment : Fragment, SwipeRefreshLayout.IOnRefreshListener
     {
+        RecyclerView _recyclerView;
+        SwipeRefreshLayout _refreshLayout;
         ProgressBar _progressBar;
         TextView _statusLabel;
-        TimePicker _poolTimer, _boosterTimer;
-        Button _poolSaveBtn, _boosterSaveBtn;
 
         [Inject] private IPoolService _poolService { get; set; }
         [Inject] private AppVersion _appVersion { get; set; }
@@ -33,70 +33,25 @@ namespace eHub.Android.Fragments
 
             //HasOptionsMenu = true;
 
-            return inflater.Inflate(Resource.Layout.fragment_home, container, false);
+            return inflater.Inflate(Resource.Layout.fragment_equipment, container, false);
         }
 
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
-            _statusLabel = view.FindViewById<TextView>(Resource.Id.home_status_label);
+            _statusLabel = view.FindViewById<TextView>(Resource.Id.equipment_status_label);
 
-            _progressBar = view.FindViewById<ProgressBar>(Resource.Id.home_progress_bar);
+            _recyclerView = view.FindViewById<RecyclerView>(Resource.Id.equipment_recycler_view);
+            _refreshLayout = view.FindViewById<SwipeRefreshLayout>(Resource.Id.equipment_refresh_layout);
+            _progressBar = view.FindViewById<ProgressBar>(Resource.Id.equipment_progress_bar);
 
-            _poolTimer = view.FindViewById<TimePicker>(Resource.Id.home_pool_timer);
-            _boosterTimer = view.FindViewById<TimePicker>(Resource.Id.home_booster_timer);
-
-            _boosterSaveBtn?.SetOnClickListener(new OnClickListener(async v =>
-            {
-                // TODO save booster timer
-                /*
-                StartTapped = async (btn) =>
-                {
-                    var curSched = await poolService.GetSchedule();
-                    var picker = TimePickerFragment.CreateInstance(curSched.StartHour, curSched.StartMinute);
-
-                    picker.OnTimeSelected = async (args) =>
-                    {
-                        var time = new TimeSpan(args.Hour, args.Minute, 0);
-                        Activity.RunOnUiThread(() =>
-                        {
-                            btn.Text = time.ToString(@"%h\:mm");
-                        });
-
-                        var ps = new PoolSchedule
-                        {
-                            StartHour = args.Hour,
-                            StartMinute = args.Minute,
-                            EndHour = curSched.EndHour,
-                            EndMinute = curSched.EndMinute,
-                            IsActive = curSched.IsActive,
-                            IncludeBooster = curSched.IncludeBooster
-                        };
-
-                        await SaveScheduleAsync(poolService, ps);
-                    };
-
-                    picker.Show(ChildFragmentManager, "starttime_picker");
-                },
-                */
-                var curSched = await _poolService.GetSchedule();
-                var ps = new PoolSchedule
-                {
-                    StartHour = _boosterTimer.Hour,
-                    StartMinute = _boosterTimer.Minute,
-                    EndHour = curSched.EndHour,
-                    EndMinute = curSched.EndMinute,
-                    IsActive = curSched.IsActive,
-                    IncludeBooster = curSched.IncludeBooster
-                };
-                await SaveScheduleAsync(_poolService, ps);
-                //var time = new TimeSpan(_boosterTimer.Hour, _boosterTimer.Minute, 0);
-
-            }));
-
+            _refreshLayout.SetOnRefreshListener(this);
+            _recyclerView.SetLayoutManager(new LinearLayoutManager(Context));
+            _recyclerView.AddItemDecoration(new DividerItemDecoration(Context, LinearLayoutManager.Vertical));
         }
         public async void OnRefresh()
         {
             await ProcessView();
+            _refreshLayout.Refreshing = false;
         }
 
         public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)
@@ -112,7 +67,7 @@ namespace eHub.Android.Fragments
         public override async void OnResume()
         {
             base.OnResume();
-            await ProcessView(); 
+            await ProcessView();
         }
 
         async Task ProcessView()
@@ -125,6 +80,8 @@ namespace eHub.Android.Fragments
                 var items = await RefreshView(_poolService);
                 if (items != null)
                 {
+                    var adapter = new EquipmentRecyclerAdapter(items, _poolService);
+                    _recyclerView.SetAdapter(adapter);
                 }
             }
             else
@@ -134,6 +91,8 @@ namespace eHub.Android.Fragments
                 var mockItems = await RefreshView(mockPoolService);
                 if (mockItems != null)
                 {
+                    var adapter = new EquipmentRecyclerAdapter(mockItems, mockPoolService);
+                    _recyclerView.SetAdapter(adapter);
                 }
             }
 
@@ -144,23 +103,13 @@ namespace eHub.Android.Fragments
         {
             //var waterTemp = await poolService.GetWaterTemp();
             var allPins = await poolService.GetAllStatuses();
-            var poolSched = await poolService.GetSchedule();
-            var boosterSched = await poolService.GetBoosterSchedule();
-
-            Activity.RunOnUiThread(() =>
-            {
-                _poolTimer.Hour = poolSched.StartHour;
-                _poolTimer.Minute = poolSched.StartMinute;
-                _boosterTimer.Hour = boosterSched.StartHour;
-                _boosterTimer.Minute = boosterSched.StartMinute;
-            });
 
             var serverPoolLightMode = await poolService.GetCurrentPoolLightMode();
             var serverSpaLightMode = await poolService.GetCurrentSpaLightMode();
             var curPoolLightSched = await poolService.GetPoolLightSchedule();
             var curSpaLightSched = await poolService.GetSpaLightSchedule();
 
-            if (allPins == null || poolSched == null || boosterSched == null)
+            if (allPins == null)
             {
                 Toast.MakeText(Context, "Failed to get pin status and schedule from server!!!", ToastLength.Long);
                 _progressBar.Visibility = ViewStates.Gone;
@@ -339,81 +288,8 @@ namespace eHub.Android.Fragments
                 SelectedSpaLightMode = serverSpaLightMode.CurrentPoolLightMode
             };
 
-            var schedCell = new ScheduleCellItem(poolSched)
-            {
-                StartTapped = async (btn) =>
-                {
-                    var curSched = await poolService.GetSchedule();
-                    var picker = TimePickerFragment.CreateInstance(curSched.StartHour, curSched.StartMinute);
-
-                    picker.OnTimeSelected = async (args) =>
-                    {
-                        var time = new TimeSpan(args.Hour, args.Minute, 0);
-                        Activity.RunOnUiThread(() =>
-                        {
-                            btn.Text = time.ToString(@"%h\:mm");
-                        });
-
-                        var ps = new PoolSchedule
-                        {
-                            StartHour = args.Hour,
-                            StartMinute = args.Minute,
-                            EndHour = curSched.EndHour,
-                            EndMinute = curSched.EndMinute,
-                            IsActive = curSched.IsActive,
-                            IncludeBooster = curSched.IncludeBooster
-                        };
-
-                        await SaveScheduleAsync(poolService, ps);
-                    };
-
-                    picker.Show(ChildFragmentManager, "starttime_picker");
-                },
-                EndTapped = async (btn) =>
-                {
-                    var curSched = await poolService.GetSchedule();
-                    var picker = TimePickerFragment.CreateInstance(curSched.EndHour, curSched.EndMinute);
-
-                    picker.OnTimeSelected = async (args) =>
-                    {
-                        var time = new TimeSpan(args.Hour, args.Minute, 0);
-                        Activity.RunOnUiThread(() =>
-                        {
-                            btn.Text = time.ToString(@"%h\:mm");
-                        });
-
-                        var ps = new PoolSchedule
-                        {
-                            StartHour = curSched.StartHour,
-                            StartMinute = curSched.StartMinute,
-                            EndHour = args.Hour,
-                            EndMinute = args.Minute,
-                            IsActive = curSched.IsActive,
-                            IncludeBooster = curSched.IncludeBooster
-                        };
-
-                        await SaveScheduleAsync(poolService, ps);
-                    };
-
-                    picker.Show(ChildFragmentManager, "endtime_picker");
-                },
-                OnOffSwitchTapped = async (sw) =>
-                {
-                    var state = await poolService.ToggleMasterSwitch();
-                    sw.Checked = state == 1;
-                },
-                IncludeBoosterTapped = async (cb) =>
-                {
-                    var state = await poolService.ToggleIncludeBoosterSwitch();
-                    cb.Checked = state == 1;
-                }
-            };
-
-            var boosterCell = new BoosterCellItem(booster1, booster2);
-
             return new List<HomeCellItem>()
             {
-                new HomeCellItem(schedCell, CellType.Schedule),
                 new HomeCellItem(devicesItem, CellType.DeviceControl),
                 new HomeCellItem(lightModesItem, CellType.LightModes),
                 aboutItem
@@ -422,8 +298,8 @@ namespace eHub.Android.Fragments
 
         async Task<PoolLightModel> OnLightModeButtonTapped(
             PoolLightModel model,
-            PoolLightServerModel serverModel, 
-            TextView statusText, 
+            PoolLightServerModel serverModel,
+            TextView statusText,
             IPoolService poolService,
             int lightPin,
             LightType lightType)
@@ -475,14 +351,14 @@ namespace eHub.Android.Fragments
             if (lightType == LightType.Pool)
             {
                 model.Mode = await Task.Run(async () =>
-                { 
+                {
                     return await poolService.SavePoolLightMode(modeToSave);
                 });
             }
             else
             {
                 model.Mode = await Task.Run(async () =>
-                { 
+                {
                     return await poolService.SaveSpaLightMode(modeToSave);
                 });
             }

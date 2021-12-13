@@ -53,6 +53,8 @@ namespace eHub.Android
                     frag.Replace(Resource.Id.main_container, hf);
                     break;
                 case Resource.Id.menu_equipment_button:
+                    var ef = new EquipmentFragment();
+                    frag.Replace(Resource.Id.main_container, ef);
                     break;
             }
             frag.Commit();
@@ -78,12 +80,7 @@ namespace eHub.Android
 
         void OnMenuItemSelected(object sender, BottomNavigationView.NavigationItemReselectedEventArgs e)
         {
-            switch(e.Item.ItemId) {
-                case Resource.Id.menu_home_button:
-                    LoadFragment(Resource.Id.menu_home_button);
-                    break;
-	        }
-            
+            LoadFragment(e.Item.ItemId);
         }
 
         public override void OnBackPressed()
