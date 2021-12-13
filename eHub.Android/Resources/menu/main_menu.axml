@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
-  <item android:id="@+id/menu_home_button" 
-        android:icon="@drawable/ic_schedule_blue_grey_400_48dp" 
-        android:orderInCategory="100"
-        app:showAsAction="always" />
-  <item android:id="@+id/menu_equipment_button" 
-        android:icon="@drawable/ic_pool_blue_dark_48dp" 
-        android:orderInCategory="100"
-        app:showAsAction="always" />
-</menu>
+   <menu
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".MainActivity">
+        <item
+            android:id="@+id/action_save"
+            android:orderInCategory="100"
+            android:title="Save"
+            app:showAsAction="never" />
+    </menu>

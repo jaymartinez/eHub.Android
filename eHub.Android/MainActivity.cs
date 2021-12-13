@@ -5,8 +5,11 @@ using Android.Widget;
 using AndroidX.AppCompat.App;
 using eHub.Android.Fragments;
 using System;
+using Google.Android.Material.BottomNavigation;
 using static AndroidX.Fragment.App.FragmentManager;
 using Fragment = AndroidX.Fragment.App.Fragment;
+using Toolbar = AndroidX.AppCompat.Widget.Toolbar;
+using Android.Views;
 
 namespace eHub.Android
 {
@@ -21,6 +24,8 @@ namespace eHub.Android
         bool _doubleBackPress;
 
         public static MainActivity Instance { get; private set; }
+        static BottomNavigationView _bottomNavigation;
+        static Toolbar _toolbar;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -30,11 +35,42 @@ namespace eHub.Android
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.activity_main);
 
-            var hf = new HomeFragment();
-            SupportFragmentManager
-                .BeginTransaction()
-                .Replace(Resource.Id.main_container, hf, "home")
-                .Commit();
+            _toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
+            SetSupportActionBar(_toolbar);
+            _bottomNavigation = FindViewById<BottomNavigationView>(Resource.Id.bottom_navigation);
+            _bottomNavigation.NavigationItemReselected += OnMenuItemSelected;
+
+            LoadFragment(Resource.Id.menu_home_button);
+        }
+
+        void LoadFragment(int id)
+        {
+            var frag = SupportFragmentManager.BeginTransaction();
+            switch (id)
+            {
+                case Resource.Id.menu_home_button:
+                    var hf = new HomeFragment();
+                    frag.Replace(Resource.Id.main_container, hf);
+                    break;
+                case Resource.Id.menu_equipment_button:
+                    //NetworkFragment networkFragment = new NetworkFragment();
+                    //frag.Replace(Resource.Id.content_frame, networkFragment);
+                    break;
+            }
+            frag.Commit();
+        }
+
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            MenuInflater.Inflate(Resource.Menu.main_menu, menu);
+            return true;
+        }
+
+        void OnMenuItemSelected(object sender, BottomNavigationView.NavigationItemReselectedEventArgs e)
+        {
+            switch(e.Item.ItemId) { 
+	        }
+            
         }
 
         public override void OnBackPressed()
