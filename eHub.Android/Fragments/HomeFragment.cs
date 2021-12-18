@@ -43,6 +43,7 @@ namespace eHub.Android.Fragments
             _progressBar = view.FindViewById<ProgressBar>(Resource.Id.home_progress_bar);
 
             _poolTimer = view.FindViewById<TimePicker>(Resource.Id.home_pool_timer);
+
             _boosterTimer = view.FindViewById<TimePicker>(Resource.Id.home_booster_timer);
 
             _boosterSaveBtn?.SetOnClickListener(new OnClickListener(async v =>
@@ -93,7 +94,17 @@ namespace eHub.Android.Fragments
 
             }));
 
+            _poolTimer.ChildViewAdded += (sender, e) =>
+            {
+                Console.WriteLine($"CHILD VIEW ADDED TO POOLTIMER: {e.Child.GetType()}");
+            };
         }
+
+        private void _poolTimer_ChildViewAdded(object sender, ViewGroup.ChildViewAddedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         public async void OnRefresh()
         {
             await ProcessView();

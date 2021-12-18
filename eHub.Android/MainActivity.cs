@@ -27,6 +27,12 @@ namespace eHub.Android
         static BottomNavigationView _bottomNavigation;
         static Toolbar _toolbar;
 
+        protected override void OnStart()
+        {
+            base.OnStart();
+            ((AppCompatActivity)this).SupportActionBar?.Hide();
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             Instance = this;
@@ -38,7 +44,7 @@ namespace eHub.Android
             _toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(_toolbar);
             _bottomNavigation = FindViewById<BottomNavigationView>(Resource.Id.bottom_navigation);
-            _bottomNavigation.NavigationItemReselected += OnMenuItemSelected;
+            _bottomNavigation.ItemSelected += OnMenuItemSelected;
 
             LoadFragment(Resource.Id.menu_home_button);
         }
@@ -78,7 +84,7 @@ namespace eHub.Android
             return false;
         }
 
-        void OnMenuItemSelected(object sender, BottomNavigationView.NavigationItemReselectedEventArgs e)
+        void OnMenuItemSelected (object sender, Google.Android.Material.Navigation.NavigationBarView.ItemSelectedEventArgs e)
         {
             LoadFragment(e.Item.ItemId);
         }

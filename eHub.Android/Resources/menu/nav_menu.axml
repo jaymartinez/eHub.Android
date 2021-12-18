@@ -9,4 +9,8 @@
         android:icon="@drawable/baseline_settings_suggest_black_48" 
         android:orderInCategory="200"
         app:showAsAction="always" />
+  <item android:id="@+id/menu_save_button" 
+        android:icon="@android:drawable/ic_menu_save" 
+        android:orderInCategory="300"
+        app:showAsAction="always" />
 </menu>
