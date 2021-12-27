@@ -134,13 +134,23 @@
             android:layout_height="wrap_content" />
 	</RelativeLayout>
 
+    <FrameLayout
+        android:id="@+id/light_mode_gridview_container_pool"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pool_light_modes_label_container"
+        android:layout_marginTop="16dp"
+        android:focusable="false"
+        android:orientation="horizontal" />
+
 	<LinearLayout
 		android:id="@+id/pool_light_mode_btns_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
+        android:visibility="gone"
 		android:paddingTop="4dp"
 		android:orientation="vertical"
-        android:layout_below="@+id/pool_light_modes_label_container">
+        android:layout_below="@+id/pool_light_modes_label_container_pool">
 
 		<Button
 			android:id="@+id/pool_light_sam_mode_button"
@@ -300,7 +310,7 @@
 
     <View
         android:id="@+id/light_mode_separator"
-        android:layout_below="@id/pool_light_mode_btns_container"
+        android:layout_below="@id/light_mode_gridview_container_pool"
         android:layout_width="match_parent"
         android:layout_height="2dp" 
         android:layout_marginTop="16dp"
@@ -434,12 +444,22 @@
             android:layout_height="wrap_content" />
     </RelativeLayout>
 
+    <FrameLayout
+        android:id="@+id/light_mode_gridview_container_spa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spa_light_modes_label_container"
+        android:layout_marginTop="16dp"
+        android:focusable="false"
+        android:orientation="horizontal" />
+
     <LinearLayout
         android:id="@+id/spa_light_mode_btns_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="4dp"
         android:orientation="vertical"
+        android:visibility="gone"
         android:layout_below="@+id/spa_light_modes_label_container">
 
         <Button

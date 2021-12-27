@@ -75,11 +75,13 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adapters\LightModesAdapter.cs" />
     <Compile Include="Adapters\HomeRecyclerAdapter.cs" />
     <Compile Include="ContainerConfig.cs" />
     <Compile Include="Dialogs.cs" />
     <Compile Include="EhubModule.cs" />
     <Compile Include="Fragments\HomeFragment.cs" />
+    <Compile Include="Fragments\LightModesGridViewFragment.cs" />
     <Compile Include="Fragments\TimePickerFragment.cs" />
     <Compile Include="EhubInjector.cs" />
     <Compile Include="Listeners\OnCheckChangedListener.cs" />
@@ -91,6 +93,7 @@
     <Compile Include="Models\HomeCellItem.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\MenuType.cs" />
+    <Compile Include="Models\PoolLightGridItem.cs" />
     <Compile Include="Models\TimePickerArgs.cs" />
     <Compile Include="Models\ToggleImageType.cs" />
     <Compile Include="Observables\MainMenuHandler.cs" />
@@ -515,6 +518,11 @@
   <ItemGroup>
     <AndroidResource Include="Resources\layout\item_light_modes_cell.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\fragment_lightmodes_gridview.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

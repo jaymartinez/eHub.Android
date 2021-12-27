@@ -944,6 +944,8 @@ namespace eHub.Android
 
         class LightModesCell : RecyclerView.ViewHolder
         {
+            public FrameLayout PoolLightModesContainer { get; }
+            public FrameLayout SpaLightModesContainer { get; }
             public Switch PoolLightOnOffSwitch { get; }
             public Button PoolLightStartButton { get; }
             public Button PoolLightEndButton { get; }
@@ -989,6 +991,9 @@ namespace eHub.Android
             public LightModesCell(View view)
                 : base (view)
             {
+                PoolLightModesContainer = view.FindViewById<FrameLayout>(Resource.Id.light_mode_gridview_container_pool);
+                SpaLightModesContainer = view.FindViewById<FrameLayout>(Resource.Id.light_mode_gridview_container_spa);
+
                 PoolLightOnOffSwitch = view.FindViewById<Switch>(Resource.Id.pool_light_schedule_onoff_switch);
                 PoolLightStartButton = view.FindViewById<Button>(Resource.Id.pool_light_schedule_begin_btn);
                 PoolLightEndButton = view.FindViewById<Button>(Resource.Id.pool_light_schedule_end_btn);
