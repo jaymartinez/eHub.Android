@@ -62,7 +62,7 @@ namespace eHub.Android.Fragments
                 var items = await RefreshView();
                 if (items != null)
                 {
-                    var adapter = new HomeRecyclerAdapter(items, _poolService);
+                    var adapter = new HomeRecyclerAdapter(items, _poolService, this);
                     _recyclerView.SetAdapter(adapter);
                 }
             }
@@ -73,7 +73,7 @@ namespace eHub.Android.Fragments
                 var mockItems = await RefreshView();
                 if (mockItems != null)
                 {
-                    var adapter = new HomeRecyclerAdapter(mockItems, _poolService);
+                    var adapter = new HomeRecyclerAdapter(mockItems, _poolService, this);
                     _recyclerView.SetAdapter(adapter);
                 }
             }

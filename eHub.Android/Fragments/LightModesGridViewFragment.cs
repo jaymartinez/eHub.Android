@@ -31,22 +31,10 @@ namespace eHub.Android.Fragments
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
             var lightItems = JsonConvert.DeserializeObject<List<PoolLightModel>>(Arguments.GetString(LightModes));
-
             var recyclerView = view.FindViewById<RecyclerView>(Resource.Id.lightmodes_recycler);
-
-            /*
-            var recyclerView = view.FindViewById<RecyclerView>(Resource.Id.attachments_recycler_view);
-            var divider = new DividerItemDecoration(Context, LinearLayoutManager.Vertical)
-            {
-                Drawable = Context.GetDrawable(Resource.Drawable.attachments_grid_divider)
-            };
-            recyclerView.AddItemDecoration(divider);
-
-            var adapter = new AttachmentsGridAdapter(attachments, AttachmentTapSub, AttachmentViewTapSub, enableTapAttachmentIndividual);
-
-            recyclerView.SetLayoutManager(new GridLayoutManager(Context, GridColumns));
+            var adapter = new LightModesAdapter(lightItems);
+            recyclerView.SetLayoutManager(new GridLayoutManager(Context, 4));
             recyclerView.SetAdapter(adapter);
-            */
         }
     }
 }

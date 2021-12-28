@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.OS;
@@ -27,18 +28,18 @@ namespace eHub.Android
 
         readonly Handler _mainUiHandler;
         readonly IPoolService _poolService;
+        readonly HomeFragment _homeFragment;
 
         public List<HomeCellItem> Items { get; set; } = new List<HomeCellItem>();
 
         public WeakReference ActivityRef { get; set; }
 
-        public HomeRecyclerAdapter(List<HomeCellItem> items, IPoolService poolService)
+        public HomeRecyclerAdapter(List<HomeCellItem> items, IPoolService poolService, HomeFragment homeFragment)
         {
-            EhubInjector.InjectProperties(this);
-
             _mainUiHandler = new Handler(Looper.MainLooper);
             _poolService = poolService;
             Items = items;
+            _homeFragment = homeFragment;
         }
 
         public override int ItemCount => Items?.Count ?? 0;
@@ -160,6 +161,17 @@ namespace eHub.Android
                     }));
 
                     var poolLightFrag = LightModesGridViewFragment.CreateInstance(item.LightModesItem.PoolLightModelList);
+                    _homeFragment.ChildFragmentManager.BeginTransaction()
+                        .SetTransition((int)FragmentTransit.FragmentOpen)
+                        .Replace(Resource.Id.light_mode_gridview_container_pool, poolLightFrag, "pool_light_frag")
+                        .Commit();
+
+                    var spaLightFrag = LightModesGridViewFragment.CreateInstance(item.LightModesItem.SpaLightModelList);
+                    _homeFragment.ChildFragmentManager.BeginTransaction()
+                        .SetTransition((int)FragmentTransit.FragmentOpen)
+                        .Replace(Resource.Id.light_mode_gridview_container_spa, spaLightFrag, "spa_light_frag")
+                        .Commit();
+
 
                     // Attachments are hidden by default, so show the view now.
                     /*
