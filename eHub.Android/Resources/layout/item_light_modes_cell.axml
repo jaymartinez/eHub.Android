@@ -134,14 +134,137 @@
             android:layout_height="wrap_content" />
 	</RelativeLayout>
 
-    <FrameLayout
-        android:id="@+id/light_mode_gridview_container_pool"
+    <GridLayout
+        android:id="@+id/pool_light_grid_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/pool_light_modes_label_container"
-        android:layout_marginTop="16dp"
-        android:focusable="false"
-        android:orientation="horizontal" />
+        android:rowCount="2"
+        android:columnCount="7">
+        <Button
+            android:id="@+id/pool_light_blue_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:background="@color/blue" />
+        <Button
+            android:id="@+id/pool_light_white_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:background="@color/white"
+            />
+        <Button
+            android:id="@+id/pool_light_green_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="0"
+            android:layout_column="2"
+            android:background="@color/greenLabel"
+            />
+        <Button
+            android:id="@+id/pool_light_red_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="0"
+            android:layout_column="3"
+            android:background="@color/red_dark"
+            />
+        <Button
+            android:id="@+id/pool_light_magenta_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="0"
+            android:layout_column="4"
+            android:background="@color/magenta"
+            />
+        <ImageButton
+            android:id="@+id/pool_light_recall_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="0"
+            android:layout_column="5"
+            android:background="@android:drawable/ic_popup_sync" />
+        <ImageButton
+            android:id="@+id/pool_light_hold_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="0"
+            android:layout_column="6"
+            android:background="@android:drawable/ic_menu_save" />
+       
+        <ImageButton
+            android:id="@+id/pool_light_caribbean_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:layout_margin="8dp"
+            android:padding="1dp"
+            android:scaleType="centerCrop"
+            android:cropToPadding="true"
+            android:src="@drawable/gradient_caribbean" />
+
+        <ImageButton
+            android:id="@+id/pool_light_american_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:src="@drawable/gradient_american" />
+
+        <ImageButton
+            android:id="@+id/pool_light_party_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="1"
+            android:layout_column="2"
+            android:src="@drawable/gradient_party" />
+        <ImageButton
+            android:id="@+id/pool_light_sam_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="1"
+            android:layout_column="3"
+            android:src="@drawable/gradient_sam" />
+        <ImageButton
+            android:id="@+id/pool_light_romance_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="1"
+            android:layout_column="4"
+            android:src="@drawable/gradient_romance_2" />
+        <ImageButton
+            android:id="@+id/pool_light_royal_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="1"
+            android:layout_column="5"
+            android:src="@drawable/gradient_royal" />
+        <ImageButton
+            android:id="@+id/pool_light_sunset_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="1"
+            android:layout_column="6"
+            android:src="@drawable/gradient_sunset" />
+    </GridLayout>
+
 
 	<LinearLayout
 		android:id="@+id/pool_light_mode_btns_container"
@@ -150,7 +273,7 @@
         android:visibility="gone"
 		android:paddingTop="4dp"
 		android:orientation="vertical"
-        android:layout_below="@+id/pool_light_modes_label_container_pool">
+        android:layout_below="@id/pool_light_grid_layout">
 
 		<Button
 			android:id="@+id/pool_light_sam_mode_button"
@@ -310,7 +433,7 @@
 
     <View
         android:id="@+id/light_mode_separator"
-        android:layout_below="@id/light_mode_gridview_container_pool"
+        android:layout_below="@id/pool_light_grid_layout"
         android:layout_width="match_parent"
         android:layout_height="2dp" 
         android:layout_marginTop="16dp"
@@ -444,14 +567,136 @@
             android:layout_height="wrap_content" />
     </RelativeLayout>
 
-    <FrameLayout
-        android:id="@+id/light_mode_gridview_container_spa"
+    <GridLayout
+        android:id="@+id/spa_light_grid_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/spa_light_modes_label_container"
-        android:layout_marginTop="16dp"
-        android:focusable="false"
-        android:orientation="horizontal" />
+        android:rowCount="2"
+        android:columnCount="7">
+        <Button
+            android:id="@+id/spa_light_blue_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:background="@color/blue" />
+        <Button
+            android:id="@+id/spa_light_white_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:background="@color/white"
+            />
+        <Button
+            android:id="@+id/spa_light_green_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="0"
+            android:layout_column="2"
+            android:background="@color/greenLabel"
+            />
+        <Button
+            android:id="@+id/spa_light_red_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="0"
+            android:layout_column="3"
+            android:background="@color/red_dark"
+            />
+        <Button
+            android:id="@+id/spa_light_magenta_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="0"
+            android:layout_column="4"
+            android:background="@color/magenta"
+            />
+        <ImageButton
+            android:id="@+id/spa_light_recall_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="0"
+            android:layout_column="5"
+            android:background="@android:drawable/ic_popup_sync" />
+        <ImageButton
+            android:id="@+id/spa_light_hold_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="0"
+            android:layout_column="6"
+            android:background="@android:drawable/ic_menu_save" />
+       
+        <ImageButton
+            android:id="@+id/spa_light_caribbean_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:layout_margin="8dp"
+            android:padding="1dp"
+            android:scaleType="centerCrop"
+            android:cropToPadding="true"
+            android:src="@drawable/gradient_caribbean" />
+
+        <ImageButton
+            android:id="@+id/spa_light_american_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:src="@drawable/gradient_american" />
+
+        <ImageButton
+            android:id="@+id/spa_light_party_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="1"
+            android:layout_column="2"
+            android:src="@drawable/gradient_party" />
+        <ImageButton
+            android:id="@+id/spa_light_sam_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="1"
+            android:layout_column="3"
+            android:src="@drawable/gradient_sam" />
+        <ImageButton
+            android:id="@+id/spa_light_romance_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="1"
+            android:layout_column="4"
+            android:src="@drawable/gradient_romance_2" />
+        <ImageButton
+            android:id="@+id/spa_light_royal_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="1"
+            android:layout_column="5"
+            android:src="@drawable/gradient_royal" />
+        <ImageButton
+            android:id="@+id/spa_light_sunset_btn"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_margin="8dp"
+            android:layout_row="1"
+            android:layout_column="6"
+            android:src="@drawable/gradient_sunset" />
+    </GridLayout>
 
     <LinearLayout
         android:id="@+id/spa_light_mode_btns_container"
