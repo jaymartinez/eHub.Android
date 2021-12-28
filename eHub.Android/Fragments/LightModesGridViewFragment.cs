@@ -1,37 +1,52 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Util;
+﻿using Android.OS;
+using Android.Support.V7.Widget;
 using Android.Views;
-using Android.Widget;
 using eHub.Android.Models;
-using System;
+using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Fragment = Android.Support.V4.App.Fragment;
 
 namespace eHub.Android.Fragments
 {
     public class LightModesGridViewFragment : Fragment
     {
+        const string LightModes = "LightModes";
 
-        public static LightModesGridViewFragment CreateInstance(List<PoolLightGridItem> items)
+        public static LightModesGridViewFragment CreateInstance(List<PoolLightModel> items)
         {
-            return new LightModesGridViewFragment();
-        }
+            var args = new Bundle();
+            args.PutString(LightModes, JsonConvert.SerializeObject(items));
 
-        public override void OnCreate(Bundle savedInstanceState)
-        {
+            return new LightModesGridViewFragment()
+            {
+                Arguments = args
+            };
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            // Use this to return your custom view for this Fragment
-            // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
+            return inflater.Inflate(Resource.Layout.fragment_lightmodes_gridview, container, false);
+        }
 
-            return base.OnCreateView(inflater, container, savedInstanceState);
+        public override void OnViewCreated(View view, Bundle savedInstanceState)
+        {
+            var lightItems = JsonConvert.DeserializeObject<List<PoolLightModel>>(Arguments.GetString(LightModes));
+
+            var recyclerView = view.FindViewById<RecyclerView>(Resource.Id.lightmodes_recycler);
+
+            /*
+            var recyclerView = view.FindViewById<RecyclerView>(Resource.Id.attachments_recycler_view);
+            var divider = new DividerItemDecoration(Context, LinearLayoutManager.Vertical)
+            {
+                Drawable = Context.GetDrawable(Resource.Drawable.attachments_grid_divider)
+            };
+            recyclerView.AddItemDecoration(divider);
+
+            var adapter = new AttachmentsGridAdapter(attachments, AttachmentTapSub, AttachmentViewTapSub, enableTapAttachmentIndividual);
+
+            recyclerView.SetLayoutManager(new GridLayoutManager(Context, GridColumns));
+            recyclerView.SetAdapter(adapter);
+            */
         }
     }
 }

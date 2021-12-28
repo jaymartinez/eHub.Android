@@ -90,10 +90,17 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="Models\AppVersion.cs" />
+    <Compile Include="Models\BoosterCellItem.cs" />
+    <Compile Include="Models\CellType.cs" />
+    <Compile Include="Models\DeviceCellItem.cs" />
     <Compile Include="Models\HomeCellItem.cs" />
+    <Compile Include="Models\LightModesCellItem.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\MenuType.cs" />
-    <Compile Include="Models\PoolLightGridItem.cs" />
+    <Compile Include="Models\PoolCellItem.cs" />
+    <Compile Include="Models\PoolLightModel.cs" />
+    <Compile Include="Models\ScheduleCellItem.cs" />
+    <Compile Include="Models\SpaCellItem.cs" />
     <Compile Include="Models\TimePickerArgs.cs" />
     <Compile Include="Models\ToggleImageType.cs" />
     <Compile Include="Observables\MainMenuHandler.cs" />
@@ -523,6 +530,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\fragment_lightmodes_gridview.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\item_light_gridview_cell.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

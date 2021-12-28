@@ -8,6 +8,7 @@ using Android.Support.V4.Content;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
+using eHub.Android.Fragments;
 using eHub.Android.Listeners;
 using eHub.Android.Models;
 using eHub.Common.Helpers;
@@ -158,6 +159,20 @@ namespace eHub.Android
                         item.LightModesItem.SpaLightScheduleOnOffSwitchTapped.Invoke(v as Switch);
                     }));
 
+                    var poolLightFrag = LightModesGridViewFragment.CreateInstance(item.LightModesItem.PoolLightModelList);
+
+                    // Attachments are hidden by default, so show the view now.
+                    /*
+                    _attachmentContainer.Visibility = ViewStates.Visible;
+                    attachmentsFrag.AttachmentViewTapSub = _onAttachmentViewTapped;
+
+                    ChildFragmentManager.BeginTransaction()
+                        .SetTransition((int)FragmentTransit.FragmentOpen)
+                        .Replace(Resource.Id.timeclock_attachments_container, attachmentsFrag, AttachmentTag)
+                        .Commit();
+                    */
+
+                    /*
                     var selectedColor = new Color(ContextCompat.GetColor(lightModeCell.ItemView.Context, Resource.Color.orangeHolo));
                     #region Pool Light Mode Events
                     lightModeCell.PoolLightSamModeButton.SetOnClickListener(new OnClickListener(async v =>
@@ -451,6 +466,7 @@ namespace eHub.Android
                         }
                     }));
                     #endregion
+                    */
 
                     break;
 
