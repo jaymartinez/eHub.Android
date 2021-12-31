@@ -2,6 +2,7 @@
 using eHub.Common.Models;
 using System;
 using System.Threading.Tasks;
+using Switch = AndroidX.AppCompat.Widget.SwitchCompat;
 
 namespace eHub.Android.Models
 {

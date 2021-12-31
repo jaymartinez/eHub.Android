@@ -1,6 +1,4 @@
 ﻿using Android.OS;
-using Android.Support.V4.Widget;
-using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using eHub.Android.Models;
@@ -11,9 +9,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Reactive.Linq;
-using Fragment = Android.Support.V4.App.Fragment;
+using Fragment = AndroidX.Fragment.App.Fragment;
 using eHub.Common.Helpers;
-using Android.Support.Design.Widget;
+using AndroidX.RecyclerView.Widget;
+using AndroidX.SwipeRefreshLayout.Widget;
+using Google.Android.Material.BottomSheet;
 
 namespace eHub.Android.Fragments
 {
@@ -378,29 +378,6 @@ namespace eHub.Android.Fragments
                 aboutItem
             };
         }
-
-        /*
-        List<PoolLightModel> BuildLightModels(PoolLightServerModel serverModel)
-        {
-            return new List<PoolLightModel>
-            {
-                new PoolLightModel(PoolLightMode.Sam, serverModel.CurrentPoolLightMode == PoolLightMode.Sam, serverModel.LightType, OnLightModeButtonTapped),
-                new PoolLightModel(PoolLightMode.Party, serverModel.CurrentPoolLightMode == PoolLightMode.Party, serverModel.LightType, OnLightModeButtonTapped),
-                new PoolLightModel(PoolLightMode.Romance, serverModel.CurrentPoolLightMode == PoolLightMode.Romance, serverModel.LightType, OnLightModeButtonTapped),
-                new PoolLightModel(PoolLightMode.Caribbean, serverModel.CurrentPoolLightMode == PoolLightMode.Caribbean, serverModel.LightType, OnLightModeButtonTapped),
-                new PoolLightModel(PoolLightMode.American, serverModel.CurrentPoolLightMode == PoolLightMode.American, serverModel.LightType, OnLightModeButtonTapped),
-                new PoolLightModel(PoolLightMode.CaliforniaSunset, serverModel.CurrentPoolLightMode == PoolLightMode.CaliforniaSunset, serverModel.LightType, OnLightModeButtonTapped),
-                new PoolLightModel(PoolLightMode.Royal, serverModel.CurrentPoolLightMode == PoolLightMode.Royal, serverModel.LightType, OnLightModeButtonTapped),
-                new PoolLightModel(PoolLightMode.Blue, serverModel.CurrentPoolLightMode == PoolLightMode.Blue, serverModel.LightType, OnLightModeButtonTapped),
-                new PoolLightModel(PoolLightMode.Green, serverModel.CurrentPoolLightMode == PoolLightMode.Green, serverModel.LightType, OnLightModeButtonTapped),
-                new PoolLightModel(PoolLightMode.Red, serverModel.CurrentPoolLightMode == PoolLightMode.Red, serverModel.LightType, OnLightModeButtonTapped),
-                new PoolLightModel(PoolLightMode.White, serverModel.CurrentPoolLightMode == PoolLightMode.White, serverModel.LightType, OnLightModeButtonTapped),
-                new PoolLightModel(PoolLightMode.Magenta, serverModel.CurrentPoolLightMode == PoolLightMode.Magenta, serverModel.LightType, OnLightModeButtonTapped),
-                new PoolLightModel(PoolLightMode.Hold, false, serverModel.LightType, OnLightModeButtonTapped),
-                new PoolLightModel(PoolLightMode.Recall, false, serverModel.LightType, OnLightModeButtonTapped)
-            };
-        }
-        */
 
         async Task<PoolLightModel> OnLightModeButtonTapped(
             PoolLightModel model, 

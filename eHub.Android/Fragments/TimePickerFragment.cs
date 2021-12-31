@@ -1,18 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 
-using DialogFragment = Android.Support.V4.App.DialogFragment;
+using DialogFragment = AndroidX.AppCompat.App.AppCompatDialogFragment;
 using static Android.App.TimePickerDialog;
-using eHub.Common.Models;
 using Newtonsoft.Json;
 using eHub.Android.Models;
 

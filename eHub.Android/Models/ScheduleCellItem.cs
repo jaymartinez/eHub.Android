@@ -1,7 +1,7 @@
 ﻿using Android.Widget;
 using eHub.Common.Models;
 using System;
-using Switch = Android.Support.V7.Widget.SwitchCompat; 
+using Switch = AndroidX.AppCompat.Widget.SwitchCompat;
 
 namespace eHub.Android.Models
 {

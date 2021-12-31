@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.OS;
-using Android.Support.V4.Content;
-using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
+using AndroidX.RecyclerView.Widget;
 using eHub.Android.Fragments;
 using eHub.Android.Listeners;
 using eHub.Android.Models;
-using eHub.Common.Helpers;
 using eHub.Common.Models;
 using eHub.Common.Services;
-using Switch = Android.Support.V7.Widget.SwitchCompat; 
+using Switch = AndroidX.AppCompat.Widget.SwitchCompat;
 
 namespace eHub.Android
 {
