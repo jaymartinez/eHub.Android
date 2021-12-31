@@ -120,17 +120,13 @@ namespace eHub.Android
 
                     lightModeCell.Bind(item);
 
-                    lightModeCell.PoolLightExpandCollapseLabel.SetOnClickListener(new OnClickListener(v =>
+                    lightModeCell.PoolLightLegendImageView.SetOnClickListener(new OnClickListener(v =>
                     {
-                        var curVisibility = lightModeCell.PoolLightModeBtnContainer.Visibility;
-                        lightModeCell.PoolLightModeBtnContainer.Visibility =
-                            curVisibility == ViewStates.Visible ? ViewStates.Gone : ViewStates.Visible;
+                        item.LightModesItem.LightLegendTapped.Invoke();
                     }));
-                    lightModeCell.SpaLightExpandCollapseLabel.SetOnClickListener(new OnClickListener(v =>
+                    lightModeCell.SpaLightLegendImageView.SetOnClickListener(new OnClickListener(v =>
                     {
-                        var curVisibility = lightModeCell.SpaLightModeBtnContainer.Visibility;
-                        lightModeCell.SpaLightModeBtnContainer.Visibility =
-                            curVisibility == ViewStates.Visible ? ViewStates.Gone : ViewStates.Visible;
+                        item.LightModesItem.LightLegendTapped.Invoke();
                     }));
 
                     lightModeCell.PoolLightStartButton.SetOnClickListener(new OnClickListener(v =>
@@ -173,160 +169,148 @@ namespace eHub.Android
                     //    .Commit();
 
 
-                    // Attachments are hidden by default, so show the view now.
-                    /*
-                    _attachmentContainer.Visibility = ViewStates.Visible;
-                    attachmentsFrag.AttachmentViewTapSub = _onAttachmentViewTapped;
-
-                    ChildFragmentManager.BeginTransaction()
-                        .SetTransition((int)FragmentTransit.FragmentOpen)
-                        .Replace(Resource.Id.timeclock_attachments_container, attachmentsFrag, AttachmentTag)
-                        .Commit();
-                    */
-
-                    /*
                     var selectedColor = new Color(ContextCompat.GetColor(lightModeCell.ItemView.Context, Resource.Color.orangeHolo));
                     #region Pool Light Mode Events
                     lightModeCell.PoolLightSamModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.Sam), lightModeCell.PoolLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.Sam, LightType.Pool), lightModeCell.PoolLightSelectedLightModeText);
 
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.PoolLightPartyModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.Party), lightModeCell.PoolLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.Party, LightType.Pool), lightModeCell.PoolLightSelectedLightModeText);
 
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.PoolLightRomanceModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.Romance), lightModeCell.PoolLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.Romance, LightType.Pool), lightModeCell.PoolLightSelectedLightModeText);
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.PoolLightCaribbeanModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.Caribbean), lightModeCell.PoolLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.Caribbean, LightType.Pool), lightModeCell.PoolLightSelectedLightModeText);
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.PoolLightAmericanModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.American), lightModeCell.PoolLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.American, LightType.Pool), lightModeCell.PoolLightSelectedLightModeText);
                         if (result != null) 
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.PoolLightCaliSunsetModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.CaliforniaSunset), lightModeCell.PoolLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.CaliforniaSunset, LightType.Pool), lightModeCell.PoolLightSelectedLightModeText);
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.PoolLightRoyalModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.Royal), lightModeCell.PoolLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.Royal, LightType.Pool), lightModeCell.PoolLightSelectedLightModeText);
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.PoolLightBlueModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.Blue), lightModeCell.PoolLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.Blue, LightType.Pool), lightModeCell.PoolLightSelectedLightModeText);
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.PoolLightGreenModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.Green), lightModeCell.PoolLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.Green, LightType.Pool), lightModeCell.PoolLightSelectedLightModeText);
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.PoolLightRedModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.Red), lightModeCell.PoolLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.Red, LightType.Pool), lightModeCell.PoolLightSelectedLightModeText);
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.PoolLightWhiteModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.White), lightModeCell.PoolLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.White, LightType.Pool), lightModeCell.PoolLightSelectedLightModeText);
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.PoolLightMagentaModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.Magenta), lightModeCell.PoolLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.Magenta, LightType.Pool), lightModeCell.PoolLightSelectedLightModeText);
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.PoolLightHoldModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.Hold), lightModeCell.PoolLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.Hold, LightType.Pool), lightModeCell.PoolLightSelectedLightModeText);
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.PoolLightRecallModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.PoolLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.Recall), lightModeCell.PoolLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.Recall, LightType.Pool), lightModeCell.PoolLightSelectedLightModeText);
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.PoolLightModeGrid, v.Id);
                         }
                     }));
                     #endregion
@@ -336,149 +320,148 @@ namespace eHub.Android
                     lightModeCell.SpaLightSamModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.Sam), lightModeCell.SpaLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.Sam, LightType.Spa), lightModeCell.SpaLightSelectedLightModeText);
 
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.SpaLightPartyModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.Party), lightModeCell.SpaLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.Party, LightType.Spa), lightModeCell.SpaLightSelectedLightModeText);
 
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.SpaLightRomanceModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.Romance), lightModeCell.SpaLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.Romance, LightType.Spa), lightModeCell.SpaLightSelectedLightModeText);
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.SpaLightCaribbeanModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.Caribbean), lightModeCell.SpaLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.Caribbean, LightType.Spa), lightModeCell.SpaLightSelectedLightModeText);
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.SpaLightAmericanModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.American), lightModeCell.SpaLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.American, LightType.Spa), lightModeCell.SpaLightSelectedLightModeText);
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.SpaLightCaliSunsetModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.CaliforniaSunset), lightModeCell.SpaLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.CaliforniaSunset, LightType.Spa), lightModeCell.SpaLightSelectedLightModeText);
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.SpaLightRoyalModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.Royal), lightModeCell.SpaLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.Royal, LightType.Spa), lightModeCell.SpaLightSelectedLightModeText);
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.SpaLightBlueModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.Blue), lightModeCell.SpaLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.Blue, LightType.Spa), lightModeCell.SpaLightSelectedLightModeText);
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.SpaLightGreenModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.Green), lightModeCell.SpaLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.Green, LightType.Spa), lightModeCell.SpaLightSelectedLightModeText);
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.SpaLightRedModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.Red), lightModeCell.SpaLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.Red, LightType.Spa), lightModeCell.SpaLightSelectedLightModeText);
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.SpaLightWhiteModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.White), lightModeCell.SpaLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.White, LightType.Spa), lightModeCell.SpaLightSelectedLightModeText);
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.SpaLightMagentaModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.Magenta), lightModeCell.SpaLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.Magenta, LightType.Spa), lightModeCell.SpaLightSelectedLightModeText);
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.SpaLightHoldModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.Hold), lightModeCell.SpaLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.Hold, LightType.Spa), lightModeCell.SpaLightSelectedLightModeText);
 
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeGrid, v.Id);
                         }
                     }));
                     lightModeCell.SpaLightRecallModeButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var result = await item.LightModesItem.SpaLightModeButtonTapped.Invoke(
-                            new PoolLightModel(PoolLightMode.Recall), lightModeCell.SpaLightSelectedLightModeText);
+                            new PoolLightModel(PoolLightMode.Recall, LightType.Spa), lightModeCell.SpaLightSelectedLightModeText);
 
                         if (result != null)
                         {
                             v.SetBackgroundColor(selectedColor);
-                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeBtnContainer, v.Id);
+                            DeactivateOtherLightButtons(lightModeCell.ItemView.Context, lightModeCell.SpaLightModeGrid, v.Id);
                         }
                     }));
                     #endregion
-                    */
 
                     break;
 
@@ -814,14 +797,14 @@ namespace eHub.Android
         /// Deactivate all buttons except currently selected light button
         /// </summary>
         /// <param name="currentButton"></param>
-        void DeactivateOtherLightButtons(Context context, LinearLayout lightBtnContainer, int currentButtonId)
+        void DeactivateOtherLightButtons(Context context, GridLayout grid, int currentButtonId)
         {
-            var defaultColor = new Color(ContextCompat.GetColor(context, Resource.Color.blue_gray_400));
-            if (lightBtnContainer.ChildCount > 0)
+            var defaultColor = new Color(ContextCompat.GetColor(context, Resource.Color.orangeHolo));
+            if (grid.ChildCount > 0)
             {
-                for (var i = 0; i < lightBtnContainer.ChildCount; i++)
+                for (var i = 0; i < grid.ChildCount; i++)
                 {
-                    var child = lightBtnContainer.GetChildAt(i);
+                    var child = grid.GetChildAt(i);
                     if (child is Button button && button.Id != currentButtonId)
                     {
                         button.SetBackgroundColor(defaultColor);
@@ -990,8 +973,8 @@ namespace eHub.Android
             public Button PoolLightHoldModeButton { get; }
             public Button PoolLightRecallModeButton { get; }
             public TextView PoolLightSelectedLightModeText { get; }
-            public LinearLayout PoolLightModeBtnContainer { get; }
-            public TextView PoolLightExpandCollapseLabel { get; }
+            public GridLayout PoolLightModeGrid { get; }
+            public ImageView PoolLightLegendImageView { get; }
 
             public Switch SpaLightOnOffSwitch { get; }
             public Button SpaLightStartButton { get; }
@@ -1011,53 +994,53 @@ namespace eHub.Android
             public Button SpaLightHoldModeButton { get; }
             public Button SpaLightRecallModeButton { get; }
             public TextView SpaLightSelectedLightModeText { get; }
-            public LinearLayout SpaLightModeBtnContainer { get; }
-            public TextView SpaLightExpandCollapseLabel { get; }
+            public GridLayout SpaLightModeGrid { get; }
+            public ImageView SpaLightLegendImageView { get; }
 
             public LightModesCell(View view)
                 : base (view)
             {
+                PoolLightLegendImageView = view.FindViewById<ImageView>(Resource.Id.pool_light_modes_legend);
+                PoolLightModeGrid = view.FindViewById<GridLayout>(Resource.Id.pool_light_grid_layout);
                 PoolLightOnOffSwitch = view.FindViewById<Switch>(Resource.Id.pool_light_schedule_onoff_switch);
                 PoolLightStartButton = view.FindViewById<Button>(Resource.Id.pool_light_schedule_begin_btn);
                 PoolLightEndButton = view.FindViewById<Button>(Resource.Id.pool_light_schedule_end_btn);
-                PoolLightSamModeButton = view.FindViewById<Button>(Resource.Id.pool_light_sam_mode_button);
-                PoolLightPartyModeButton = view.FindViewById<Button>(Resource.Id.pool_light_party_mode_button);
-                PoolLightRomanceModeButton = view.FindViewById<Button>(Resource.Id.pool_light_romance_mode_button);
-                PoolLightCaribbeanModeButton = view.FindViewById<Button>(Resource.Id.pool_light_caribbean_mode_button);
-                PoolLightAmericanModeButton = view.FindViewById<Button>(Resource.Id.pool_light_american_mode_button);
-                PoolLightCaliSunsetModeButton = view.FindViewById<Button>(Resource.Id.pool_light_cali_sunset_mode_button);
-                PoolLightRoyalModeButton = view.FindViewById<Button>(Resource.Id.pool_light_royal_mode_button);
-                PoolLightBlueModeButton = view.FindViewById<Button>(Resource.Id.pool_light_blue_fixed_mode_button);
-                PoolLightGreenModeButton = view.FindViewById<Button>(Resource.Id.pool_light_green_fixed_mode_button);
-                PoolLightRedModeButton = view.FindViewById<Button>(Resource.Id.pool_light_red_fixed_mode_button);
-                PoolLightWhiteModeButton = view.FindViewById<Button>(Resource.Id.pool_light_white_fixed_mode_button);
-                PoolLightMagentaModeButton = view.FindViewById<Button>(Resource.Id.pool_light_magenta_fixed_mode_button);
-                PoolLightHoldModeButton = view.FindViewById<Button>(Resource.Id.pool_light_hold_mode_button);
-                PoolLightRecallModeButton = view.FindViewById<Button>(Resource.Id.pool_light_recall_mode_button);
+                PoolLightSamModeButton = view.FindViewById<Button>(Resource.Id.pool_light_sam_btn);
+                PoolLightPartyModeButton = view.FindViewById<Button>(Resource.Id.pool_light_party_btn);
+                PoolLightRomanceModeButton = view.FindViewById<Button>(Resource.Id.pool_light_romance_btn);
+                PoolLightCaribbeanModeButton = view.FindViewById<Button>(Resource.Id.pool_light_caribbean_btn);
+                PoolLightAmericanModeButton = view.FindViewById<Button>(Resource.Id.pool_light_american_btn);
+                PoolLightCaliSunsetModeButton = view.FindViewById<Button>(Resource.Id.pool_light_sunset_btn);
+                PoolLightRoyalModeButton = view.FindViewById<Button>(Resource.Id.pool_light_royal_btn);
+                PoolLightBlueModeButton = view.FindViewById<Button>(Resource.Id.pool_light_blue_btn);
+                PoolLightGreenModeButton = view.FindViewById<Button>(Resource.Id.pool_light_green_btn);
+                PoolLightRedModeButton = view.FindViewById<Button>(Resource.Id.pool_light_red_btn);
+                PoolLightWhiteModeButton = view.FindViewById<Button>(Resource.Id.pool_light_white_btn);
+                PoolLightMagentaModeButton = view.FindViewById<Button>(Resource.Id.pool_light_magenta_btn);
+                PoolLightHoldModeButton = view.FindViewById<Button>(Resource.Id.pool_light_hold_btn);
+                PoolLightRecallModeButton = view.FindViewById<Button>(Resource.Id.pool_light_recall_btn);
                 PoolLightSelectedLightModeText = view.FindViewById<TextView>(Resource.Id.pool_light_selected_light_mode_label);
-                PoolLightModeBtnContainer = view.FindViewById<LinearLayout>(Resource.Id.pool_light_mode_btns_container);
-                PoolLightExpandCollapseLabel = view.FindViewById<TextView>(Resource.Id.pool_light_modes_expand_textview);
 
+                SpaLightLegendImageView = view.FindViewById<ImageView>(Resource.Id.spa_light_modes_legend);
+                SpaLightModeGrid = view.FindViewById<GridLayout>(Resource.Id.spa_light_grid_layout);
                 SpaLightOnOffSwitch = view.FindViewById<Switch>(Resource.Id.spa_light_schedule_onoff_switch);
                 SpaLightStartButton = view.FindViewById<Button>(Resource.Id.spa_light_schedule_begin_btn);
                 SpaLightEndButton = view.FindViewById<Button>(Resource.Id.spa_light_schedule_end_btn);
-                SpaLightSamModeButton = view.FindViewById<Button>(Resource.Id.spa_light_sam_mode_button);
-                SpaLightPartyModeButton = view.FindViewById<Button>(Resource.Id.spa_light_party_mode_button);
-                SpaLightRomanceModeButton = view.FindViewById<Button>(Resource.Id.spa_light_romance_mode_button);
-                SpaLightCaribbeanModeButton = view.FindViewById<Button>(Resource.Id.spa_light_caribbean_mode_button);
-                SpaLightAmericanModeButton = view.FindViewById<Button>(Resource.Id.spa_light_american_mode_button);
-                SpaLightCaliSunsetModeButton = view.FindViewById<Button>(Resource.Id.spa_light_cali_sunset_mode_button);
-                SpaLightRoyalModeButton = view.FindViewById<Button>(Resource.Id.spa_light_royal_mode_button);
-                SpaLightBlueModeButton = view.FindViewById<Button>(Resource.Id.spa_light_blue_fixed_mode_button);
-                SpaLightGreenModeButton = view.FindViewById<Button>(Resource.Id.spa_light_green_fixed_mode_button);
-                SpaLightRedModeButton = view.FindViewById<Button>(Resource.Id.spa_light_red_fixed_mode_button);
-                SpaLightWhiteModeButton = view.FindViewById<Button>(Resource.Id.spa_light_white_fixed_mode_button);
-                SpaLightMagentaModeButton = view.FindViewById<Button>(Resource.Id.spa_light_magenta_fixed_mode_button);
-                SpaLightHoldModeButton = view.FindViewById<Button>(Resource.Id.spa_light_hold_mode_button);
-                SpaLightRecallModeButton = view.FindViewById<Button>(Resource.Id.spa_light_recall_mode_button);
+                SpaLightSamModeButton = view.FindViewById<Button>(Resource.Id.spa_light_sam_btn);
+                SpaLightPartyModeButton = view.FindViewById<Button>(Resource.Id.spa_light_party_btn);
+                SpaLightRomanceModeButton = view.FindViewById<Button>(Resource.Id.spa_light_romance_btn);
+                SpaLightCaribbeanModeButton = view.FindViewById<Button>(Resource.Id.spa_light_caribbean_btn);
+                SpaLightAmericanModeButton = view.FindViewById<Button>(Resource.Id.spa_light_american_btn);
+                SpaLightCaliSunsetModeButton = view.FindViewById<Button>(Resource.Id.spa_light_sunset_btn);
+                SpaLightRoyalModeButton = view.FindViewById<Button>(Resource.Id.spa_light_royal_btn);
+                SpaLightBlueModeButton = view.FindViewById<Button>(Resource.Id.spa_light_blue_btn);
+                SpaLightGreenModeButton = view.FindViewById<Button>(Resource.Id.spa_light_green_btn);
+                SpaLightRedModeButton = view.FindViewById<Button>(Resource.Id.spa_light_red_btn);
+                SpaLightWhiteModeButton = view.FindViewById<Button>(Resource.Id.spa_light_white_btn);
+                SpaLightMagentaModeButton = view.FindViewById<Button>(Resource.Id.spa_light_magenta_btn);
+                SpaLightHoldModeButton = view.FindViewById<Button>(Resource.Id.spa_light_hold_btn);
+                SpaLightRecallModeButton = view.FindViewById<Button>(Resource.Id.spa_light_recall_btn);
                 SpaLightSelectedLightModeText = view.FindViewById<TextView>(Resource.Id.spa_light_selected_light_mode_label);
-                SpaLightModeBtnContainer = view.FindViewById<LinearLayout>(Resource.Id.spa_light_mode_btns_container);
-                SpaLightExpandCollapseLabel = view.FindViewById<TextView>(Resource.Id.spa_light_modes_expand_textview);
             }
 
             internal void Bind(HomeCellItem item)

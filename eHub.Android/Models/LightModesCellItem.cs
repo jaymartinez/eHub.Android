@@ -18,6 +18,7 @@ namespace eHub.Android.Models
         public PoolLightMode SelectedPoolLightMode { get; set; }
         public PoolLightMode SelectedSpaLightMode { get; set; }
 
+        public Action LightLegendTapped { get; set; }
         public Action<Button> PoolLightScheduleStartTapped { get; set; }
         public Action<Button> PoolLightScheduleEndTapped { get; set; }
         public Action<Button> SpaLightScheduleStartTapped { get; set; }

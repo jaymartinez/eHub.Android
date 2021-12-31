@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Reactive.Linq;
 using Fragment = Android.Support.V4.App.Fragment;
 using eHub.Common.Helpers;
+using Android.Support.Design.Widget;
 
 namespace eHub.Android.Fragments
 {
@@ -22,6 +23,7 @@ namespace eHub.Android.Fragments
         SwipeRefreshLayout _refreshLayout;
         ProgressBar _progressBar;
         TextView _statusLabel;
+        BottomSheetDialog _bottomSheet;
         IPoolService _poolService;
 
         [Inject] IPoolService PoolService { get; set; }
@@ -92,6 +94,11 @@ namespace eHub.Android.Fragments
             _refreshLayout.SetOnRefreshListener(this);
             _recyclerView.SetLayoutManager(new LinearLayoutManager(Context));
             _recyclerView.AddItemDecoration(new DividerItemDecoration(Context, LinearLayoutManager.Vertical));
+
+
+            var bs = LayoutInflater.Inflate(Resource.Layout.bottomsheet_light_color_legend, null);
+            _bottomSheet = new BottomSheetDialog(Context);
+            _bottomSheet.SetContentView(bs);
         }
 
         async Task<List<HomeCellItem>> RefreshView()
@@ -126,22 +133,26 @@ namespace eHub.Android.Fragments
 
             var lightModesItem = new LightModesCellItem(curPoolLightSched, curSpaLightSched)
             {
-                /*
+                LightLegendTapped = () =>
+                {
+                    if (!_bottomSheet.IsShowing)
+                    {
+                        _bottomSheet.Create();
+                        _bottomSheet.Show();
+                    }
+                },
                 PoolLightModeButtonTapped = async (model, selectedModeLabel) =>
                 {
                     // Get the state again
                     var currentPoolLightMode = await _poolService.GetCurrentPoolLightMode();
-                    return await OnLightModeButtonTapped(model, currentPoolLightMode, selectedModeLabel, _poolService, Pin.PoolLight, LightType.Pool);
+                    return await OnLightModeButtonTapped(model, currentPoolLightMode, selectedModeLabel);
                 },
                 SpaLightModeButtonTapped = async (model, selectedModeLabel) =>
                 {
                     // Get the state again
                     var currentSpaLightMode = await _poolService.GetCurrentSpaLightMode();
-                    return await OnLightModeButtonTapped(model, currentSpaLightMode, selectedModeLabel, _poolService, Pin.SpaLight, LightType.Spa);
+                    return await OnLightModeButtonTapped(model, currentSpaLightMode, selectedModeLabel);
                 },
-                */
-                PoolLightModelList = BuildLightModels(serverPoolLightMode),
-                SpaLightModelList = BuildLightModels(serverSpaLightMode),
                 PoolLightScheduleStartTapped = async (btn) =>
                 {
                     var curSched = await _poolService.GetPoolLightSchedule();
@@ -368,6 +379,7 @@ namespace eHub.Android.Fragments
             };
         }
 
+        /*
         List<PoolLightModel> BuildLightModels(PoolLightServerModel serverModel)
         {
             return new List<PoolLightModel>
@@ -388,8 +400,12 @@ namespace eHub.Android.Fragments
                 new PoolLightModel(PoolLightMode.Recall, false, serverModel.LightType, OnLightModeButtonTapped)
             };
         }
+        */
 
-        async Task<PoolLightModel> OnLightModeButtonTapped(PoolLightModel model, PoolLightServerModel serverModel) 
+        async Task<PoolLightModel> OnLightModeButtonTapped(
+            PoolLightModel model, 
+            PoolLightServerModel serverModel,
+            TextView statusText) 
         {
             var state = (await _poolService.GetPinStatus(model.PinNumber))?.State ?? PinState.OFF;
             if (state == PinState.OFF)
@@ -449,6 +465,7 @@ namespace eHub.Android.Fragments
                     return await _poolService.SaveSpaLightMode(modeToSave);
                 });
             }
+            statusText.Text = model.Mode.ToLightModeText();
 
             _progressBar.Visibility = ViewStates.Gone;
             alert.Hide();

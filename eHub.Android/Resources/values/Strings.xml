@@ -4,4 +4,19 @@
   <string name="openDrawer">open_drawer</string>
   <string name="closeDrawer">close_drawer</string>
   <string name="degree">\u00B0</string>
+  <string name="light_sam">SAM: Cycles through white, magenta, blue and green colors (emulates the Pentair SAM color changing light)</string>
+  <string name="light_caribbean">Caribbean: Transitions between a variety of blues and greens</string>
+  <string name="light_romance">Romance: Slow color transitions creating a mesmerizing and calming effect</string>
+  <string name="light_cali_sunset">California Sunset: Dramatic transitions of orange, red and magenta tones</string>
+  <string name="light_american">American: Patriotic red, white and blue transition</string>
+  <string name="light_royal">Royal: Richer, deeper color tones</string>
+  <string name="light_party">Party: Rapid color changing building energy and excitement</string>
+  <string name="light_recall">Recall: Activate the last saved color effect</string>
+  <string name="light_hold">Hold: Save the current color effect during a color light show</string>
+  <string name="light_blue">Blue fixed color</string>
+  <string name="light_red">Red fixed color</string>
+  <string name="light_white">White fixed color</string>
+  <string name="light_green">Green fixed color</string>
+  <string name="light_magenta">Magenta fixed color</string>
+  <string name="light_modes">Light Modes</string>
 </resources>

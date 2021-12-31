@@ -112,324 +112,166 @@
 
             <TextView
                 android:id="@+id/pool_light_selected_light_mode_label"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" 
                 android:textSize="12dp"
                 android:textColor="@color/orangeHolo"
                 android:gravity="center_horizontal"
                 android:visibility="gone"
-                tools:text="Party Mode" />
+                tools:text="Party Mode"  
+                tools:visibility="visible"
+                />
 		</LinearLayout>
 
-		<TextView
-			android:id="@+id/pool_light_modes_expand_textview"
-			android:text="show/hide >>"
-            android:textColor="@color/lightblue"
-			android:layout_alignParentEnd="true"
-			android:layout_centerInParent="true"
-            android:visibility="gone"
-			android:paddingEnd="16dp"
-			android:paddingStart="0dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 	</RelativeLayout>
 
     <GridLayout
         android:id="@+id/pool_light_grid_layout"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/pool_light_modes_label_container"
-        android:rowCount="2"
-        android:columnCount="7">
-        <Button
-            android:id="@+id/pool_light_blue_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
+        android:layout_centerInParent="true"
+        android:rowCount="3"
+        android:columnCount="5">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_row="0"
-            android:layout_column="0"
-            android:background="@color/blue" />
+            android:layout_column="0">
+            <Button
+                android:id="@+id/pool_light_blue_btn"
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@color/blue" />
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/homepage_pool_icon"
+                />
+
+        </RelativeLayout>
         <Button
             android:id="@+id/pool_light_white_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
-            android:layout_margin="8dp"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
             android:layout_row="0"
             android:layout_column="1"
-            android:background="@color/white"
-            />
+            android:layout_margin="8dp"
+            android:background="@color/white" />
         <Button
             android:id="@+id/pool_light_green_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
-            android:layout_margin="8dp"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
             android:layout_row="0"
             android:layout_column="2"
-            android:background="@color/greenLabel"
-            />
+            android:layout_margin="8dp"
+            android:background="@color/greenLabel" />
         <Button
             android:id="@+id/pool_light_red_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
-            android:layout_margin="8dp"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
             android:layout_row="0"
             android:layout_column="3"
-            android:background="@color/red_dark"
-            />
+            android:layout_margin="8dp"
+            android:background="@color/red_dark" />
+
         <Button
             android:id="@+id/pool_light_magenta_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
-            android:layout_margin="8dp"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
             android:layout_row="0"
             android:layout_column="4"
-            android:background="@color/magenta"
-            />
-        <ImageButton
-            android:id="@+id/pool_light_recall_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
             android:layout_margin="8dp"
-            android:layout_row="0"
-            android:layout_column="5"
-            android:background="@android:drawable/ic_popup_sync" />
-        <ImageButton
-            android:id="@+id/pool_light_hold_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
-            android:layout_margin="8dp"
-            android:layout_row="0"
-            android:layout_column="6"
-            android:background="@android:drawable/ic_menu_save" />
+            android:background="@color/magenta" />
        
-        <ImageButton
+       
+        <Button
             android:id="@+id/pool_light_caribbean_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
+            android:layout_margin="8dp"
             android:layout_row="1"
             android:layout_column="0"
-            android:layout_margin="8dp"
-            android:padding="1dp"
-            android:scaleType="centerCrop"
-            android:cropToPadding="true"
-            android:src="@drawable/gradient_caribbean" />
+            android:background="@drawable/gradient_caribbean" />
 
-        <ImageButton
+        <Button
             android:id="@+id/pool_light_american_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
             android:layout_margin="8dp"
             android:layout_row="1"
             android:layout_column="1"
-            android:src="@drawable/gradient_american" />
+            android:background="@drawable/gradient_american" />
 
-        <ImageButton
+        <Button
             android:id="@+id/pool_light_party_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
             android:layout_margin="8dp"
             android:layout_row="1"
             android:layout_column="2"
-            android:src="@drawable/gradient_party" />
-        <ImageButton
+            android:background="@drawable/gradient_party" />
+        <Button
             android:id="@+id/pool_light_sam_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
             android:layout_margin="8dp"
             android:layout_row="1"
             android:layout_column="3"
-            android:src="@drawable/gradient_sam" />
-        <ImageButton
+            android:background="@drawable/gradient_sam" />
+        <Button
             android:id="@+id/pool_light_romance_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
             android:layout_margin="8dp"
             android:layout_row="1"
             android:layout_column="4"
-            android:src="@drawable/gradient_romance_2" />
-        <ImageButton
+            android:background="@drawable/gradient_romance_2" />
+        <Button
             android:id="@+id/pool_light_royal_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
             android:layout_margin="8dp"
-            android:layout_row="1"
-            android:layout_column="5"
-            android:src="@drawable/gradient_royal" />
-        <ImageButton
+            android:layout_row="2"
+            android:layout_column="0"
+            android:background="@drawable/gradient_royal" />
+        <Button
             android:id="@+id/pool_light_sunset_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
             android:layout_margin="8dp"
-            android:layout_row="1"
-            android:layout_column="6"
-            android:src="@drawable/gradient_sunset" />
+            android:layout_row="2"
+            android:layout_column="1"
+            android:background="@drawable/gradient_sunset" />
+         <Button
+            android:id="@+id/pool_light_recall_btn"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
+            android:layout_row="2"
+            android:layout_column="2"
+            android:layout_margin="8dp"
+            android:background="@android:drawable/ic_popup_sync" />
+
+        <Button
+            android:id="@+id/pool_light_hold_btn"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
+            android:layout_row="2"
+            android:layout_column="3"
+            android:layout_margin="8dp"
+            android:background="@android:drawable/ic_menu_save" />
+        <ImageView
+			android:id="@+id/pool_light_modes_legend"
+            android:layout_row="2"
+            android:layout_column="4"
+            android:layout_gravity="center"
+            android:src="@android:drawable/ic_menu_info_details"
+            android:layout_width="@dimen/light_tiles_width"
+            android:layout_height="@dimen/light_tiles_height" />
     </GridLayout>
 
-
-	<LinearLayout
-		android:id="@+id/pool_light_mode_btns_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:visibility="gone"
-		android:paddingTop="4dp"
-		android:orientation="vertical"
-        android:layout_below="@id/pool_light_grid_layout">
-
-		<Button
-			android:id="@+id/pool_light_sam_mode_button"
-			android:background="@drawable/rounded_corners_bluegray_8dp"
-			android:textAllCaps="false"
-			android:layout_marginTop="8dp"
-			android:textColor="@color/material_grey_300"
-			android:textSize="16sp"
-			android:text="SAM: Cycles through white, magenta, blue and green colors (emulates the Pentair SAM color changing light)"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-		<Button
-			android:id="@+id/pool_light_party_mode_button"
-			android:background="@drawable/rounded_corners_bluegray_8dp"
-			android:textAllCaps="false"
-			android:layout_marginTop="8dp"
-			android:textColor="@color/material_grey_300"
-			android:textSize="16sp"
-			android:text="Party Mode: Rapid color changing building energy and excitement. "
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-		<Button
-			android:id="@+id/pool_light_romance_mode_button"
-			android:background="@drawable/rounded_corners_bluegray_8dp"
-			android:textAllCaps="false"
-			android:layout_marginTop="8dp"
-			android:textColor="@color/material_grey_300"
-			android:textSize="16sp"
-			android:text="Romance Mode: Slow color transitions creating a mesmerizing and calming effect"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-		<Button
-			android:id="@+id/pool_light_caribbean_mode_button"
-			android:background="@drawable/rounded_corners_bluegray_8dp"
-			android:textAllCaps="false"
-			android:textColor="@color/material_grey_300"
-			android:textSize="16sp"
-			android:text="Caribbean Mode: Transitions between a variety of blues and greens"
-			android:layout_marginTop="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-		<Button
-			android:id="@+id/pool_light_american_mode_button"
-			android:background="@drawable/rounded_corners_bluegray_8dp"
-			android:layout_marginTop="8dp"
-			android:textAllCaps="false"
-			android:textColor="@color/material_grey_300"
-			android:textSize="16sp"
-			android:text="American Mode: Patriotic red, white and blue transition"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-		<Button
-			android:id="@+id/pool_light_cali_sunset_mode_button"
-			android:background="@drawable/rounded_corners_bluegray_8dp"
-			android:textAllCaps="false"
-			android:layout_marginTop="8dp"
-			android:textColor="@color/material_grey_300"
-			android:textSize="16sp"
-			android:text="California Sunset: Dramatic transitions of orange, red and magenta tones"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-		<Button
-			android:id="@+id/pool_light_royal_mode_button"
-			android:background="@drawable/rounded_corners_bluegray_8dp"
-			android:textAllCaps="false"
-			android:layout_marginTop="8dp"
-			android:textColor="@color/material_grey_300"
-			android:textSize="16sp"
-			android:text="Royal Mode: Richer, deeper color tones"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-		<Button
-			android:id="@+id/pool_light_blue_fixed_mode_button"
-			android:background="@drawable/rounded_corners_bluegray_8dp"
-			android:layout_marginTop="8dp"
-			android:textAllCaps="false"
-			android:textColor="@color/material_grey_300"
-			android:textSize="16sp"
-			android:text="Blue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-		<Button
-			android:id="@+id/pool_light_green_fixed_mode_button"
-			android:layout_marginTop="8dp"
-			android:background="@drawable/rounded_corners_bluegray_8dp"
-			android:textAllCaps="false"
-			android:textColor="@color/material_grey_300"
-			android:textSize="16sp"
-			android:text="Green"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-		<Button
-			android:id="@+id/pool_light_red_fixed_mode_button"
-			android:layout_marginTop="8dp"
-			android:background="@drawable/rounded_corners_bluegray_8dp"
-			android:textAllCaps="false"
-			android:textColor="@color/material_grey_300"
-			android:textSize="16sp"
-			android:text="Red"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-		<Button
-			android:id="@+id/pool_light_white_fixed_mode_button"
-			android:layout_marginTop="8dp"
-			android:background="@drawable/rounded_corners_bluegray_8dp"
-			android:textAllCaps="false"
-			android:textColor="@color/material_grey_300"
-			android:textSize="16sp"
-			android:text="White"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-		<Button
-			android:id="@+id/pool_light_magenta_fixed_mode_button"
-			android:background="@drawable/rounded_corners_bluegray_8dp"
-			android:textAllCaps="false"
-			android:layout_marginTop="8dp"
-			android:textColor="@color/material_grey_300"
-			android:textSize="16sp"
-			android:text="Magenta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-		<Button
-			android:id="@+id/pool_light_hold_mode_button"
-			android:background="@drawable/rounded_corners_bluegray_8dp"
-			android:textAllCaps="false"
-			android:textColor="@color/material_grey_300"
-			android:layout_marginTop="8dp"
-			android:textSize="16sp"
-			android:text="Hold: Save the current color effect during a color light show"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-		<Button
-			android:id="@+id/pool_light_recall_mode_button"
-			android:background="@drawable/rounded_corners_bluegray_8dp"
-			android:textAllCaps="false"
-			android:textColor="@color/material_grey_300"
-			android:textSize="16sp"
-			android:layout_marginTop="8dp"
-			android:text="Recall: Activate the last saved color effect"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-	</LinearLayout>
 
     <View
         android:id="@+id/light_mode_separator"
@@ -553,39 +395,28 @@
                 android:gravity="center_horizontal"
                 tools:text="Party Mode" />
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/spa_light_modes_expand_textview"
-            android:text="show/hide >>"
-            android:textColor="@color/lightblue"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
-            android:visibility="gone"
-            android:paddingEnd="16dp"
-            android:paddingStart="0dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
     </RelativeLayout>
 
     <GridLayout
         android:id="@+id/spa_light_grid_layout"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:layout_below="@id/spa_light_modes_label_container"
-        android:rowCount="2"
-        android:columnCount="7">
+        android:rowCount="3"
+        android:columnCount="5">
         <Button
             android:id="@+id/spa_light_blue_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
             android:layout_margin="8dp"
             android:layout_row="0"
             android:layout_column="0"
             android:background="@color/blue" />
         <Button
             android:id="@+id/spa_light_white_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
             android:layout_margin="8dp"
             android:layout_row="0"
             android:layout_column="1"
@@ -593,8 +424,8 @@
             />
         <Button
             android:id="@+id/spa_light_green_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
             android:layout_margin="8dp"
             android:layout_row="0"
             android:layout_column="2"
@@ -602,8 +433,8 @@
             />
         <Button
             android:id="@+id/spa_light_red_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
             android:layout_margin="8dp"
             android:layout_row="0"
             android:layout_column="3"
@@ -611,255 +442,98 @@
             />
         <Button
             android:id="@+id/spa_light_magenta_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
             android:layout_margin="8dp"
             android:layout_row="0"
             android:layout_column="4"
             android:background="@color/magenta"
             />
-        <ImageButton
-            android:id="@+id/spa_light_recall_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
-            android:layout_margin="8dp"
-            android:layout_row="0"
-            android:layout_column="5"
-            android:background="@android:drawable/ic_popup_sync" />
-        <ImageButton
-            android:id="@+id/spa_light_hold_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
-            android:layout_margin="8dp"
-            android:layout_row="0"
-            android:layout_column="6"
-            android:background="@android:drawable/ic_menu_save" />
        
-        <ImageButton
+        <Button
             android:id="@+id/spa_light_caribbean_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
             android:layout_row="1"
             android:layout_column="0"
             android:layout_margin="8dp"
             android:padding="1dp"
             android:scaleType="centerCrop"
             android:cropToPadding="true"
-            android:src="@drawable/gradient_caribbean" />
+            android:background="@drawable/gradient_caribbean" />
 
-        <ImageButton
+        <Button
             android:id="@+id/spa_light_american_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
             android:layout_margin="8dp"
             android:layout_row="1"
             android:layout_column="1"
-            android:src="@drawable/gradient_american" />
+            android:background="@drawable/gradient_american" />
 
-        <ImageButton
+        <Button
             android:id="@+id/spa_light_party_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
             android:layout_margin="8dp"
             android:layout_row="1"
             android:layout_column="2"
-            android:src="@drawable/gradient_party" />
-        <ImageButton
+            android:background="@drawable/gradient_party" />
+        <Button
             android:id="@+id/spa_light_sam_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
             android:layout_margin="8dp"
             android:layout_row="1"
             android:layout_column="3"
-            android:src="@drawable/gradient_sam" />
-        <ImageButton
+            android:background="@drawable/gradient_sam" />
+        <Button
             android:id="@+id/spa_light_romance_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
             android:layout_margin="8dp"
             android:layout_row="1"
             android:layout_column="4"
-            android:src="@drawable/gradient_romance_2" />
-        <ImageButton
+            android:background="@drawable/gradient_romance_2" />
+        <Button
             android:id="@+id/spa_light_royal_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
             android:layout_margin="8dp"
-            android:layout_row="1"
-            android:layout_column="5"
-            android:src="@drawable/gradient_royal" />
-        <ImageButton
+            android:layout_row="2"
+            android:layout_column="0"
+            android:background="@drawable/gradient_royal" />
+        <Button
             android:id="@+id/spa_light_sunset_btn"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
             android:layout_margin="8dp"
-            android:layout_row="1"
-            android:layout_column="6"
-            android:src="@drawable/gradient_sunset" />
+            android:layout_row="2"
+            android:layout_column="1"
+            android:background="@drawable/gradient_sunset" />
+        <Button
+            android:id="@+id/spa_light_recall_btn"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
+            android:layout_margin="8dp"
+            android:layout_row="2"
+            android:layout_column="2"
+            android:background="@android:drawable/ic_popup_sync" />
+        <Button
+            android:id="@+id/spa_light_hold_btn"
+            android:layout_height="@dimen/light_tiles_height"
+            android:layout_width="@dimen/light_tiles_width"
+            android:layout_margin="8dp"
+            android:layout_row="2"
+            android:layout_column="3"
+            android:background="@android:drawable/ic_menu_save" />
+        <ImageView
+			android:id="@+id/spa_light_modes_legend"
+            android:layout_row="2"
+            android:layout_column="4"
+            android:layout_gravity="center"
+            android:src="@android:drawable/ic_menu_info_details"
+            android:layout_width="@dimen/light_tiles_width"
+            android:layout_height="@dimen/light_tiles_height" />
     </GridLayout>
-
-    <LinearLayout
-        android:id="@+id/spa_light_mode_btns_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="4dp"
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:layout_below="@+id/spa_light_modes_label_container">
-
-        <Button
-            android:id="@+id/spa_light_sam_mode_button"
-            android:background="@drawable/rounded_corners_bluegray_8dp"
-            android:textAllCaps="false"
-            android:layout_marginTop="8dp"
-            android:textColor="@color/material_grey_300"
-            android:textSize="16sp"
-            android:text="SAM: Cycles through white, magenta, blue and green colors (emulates the Pentair SAM color changing light)"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:id="@+id/spa_light_party_mode_button"
-            android:background="@drawable/rounded_corners_bluegray_8dp"
-            android:textAllCaps="false"
-            android:layout_marginTop="8dp"
-            android:textColor="@color/material_grey_300"
-            android:textSize="16sp"
-            android:text="Party Mode: Rapid color changing building energy and excitement. "
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:id="@+id/spa_light_romance_mode_button"
-            android:background="@drawable/rounded_corners_bluegray_8dp"
-            android:textAllCaps="false"
-            android:layout_marginTop="8dp"
-            android:textColor="@color/material_grey_300"
-            android:textSize="16sp"
-            android:text="Romance Mode: Slow color transitions creating a mesmerizing and calming effect"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:id="@+id/spa_light_caribbean_mode_button"
-            android:background="@drawable/rounded_corners_bluegray_8dp"
-            android:textAllCaps="false"
-            android:textColor="@color/material_grey_300"
-            android:textSize="16sp"
-            android:text="Caribbean Mode: Transitions between a variety of blues and greens"
-            android:layout_marginTop="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:id="@+id/spa_light_american_mode_button"
-            android:background="@drawable/rounded_corners_bluegray_8dp"
-            android:layout_marginTop="8dp"
-            android:textAllCaps="false"
-            android:textColor="@color/material_grey_300"
-            android:textSize="16sp"
-            android:text="American Mode: Patriotic red, white and blue transition"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:id="@+id/spa_light_cali_sunset_mode_button"
-            android:background="@drawable/rounded_corners_bluegray_8dp"
-            android:textAllCaps="false"
-            android:layout_marginTop="8dp"
-            android:textColor="@color/material_grey_300"
-            android:textSize="16sp"
-            android:text="California Sunset: Dramatic transitions of orange, red and magenta tones"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:id="@+id/spa_light_royal_mode_button"
-            android:background="@drawable/rounded_corners_bluegray_8dp"
-            android:textAllCaps="false"
-            android:layout_marginTop="8dp"
-            android:textColor="@color/material_grey_300"
-            android:textSize="16sp"
-            android:text="Royal Mode: Richer, deeper color tones"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:id="@+id/spa_light_blue_fixed_mode_button"
-            android:background="@drawable/rounded_corners_bluegray_8dp"
-            android:layout_marginTop="8dp"
-            android:textAllCaps="false"
-            android:textColor="@color/material_grey_300"
-            android:textSize="16sp"
-            android:text="Blue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:id="@+id/spa_light_green_fixed_mode_button"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/rounded_corners_bluegray_8dp"
-            android:textAllCaps="false"
-            android:textColor="@color/material_grey_300"
-            android:textSize="16sp"
-            android:text="Green"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:id="@+id/spa_light_red_fixed_mode_button"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/rounded_corners_bluegray_8dp"
-            android:textAllCaps="false"
-            android:textColor="@color/material_grey_300"
-            android:textSize="16sp"
-            android:text="Red"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:id="@+id/spa_light_white_fixed_mode_button"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/rounded_corners_bluegray_8dp"
-            android:textAllCaps="false"
-            android:textColor="@color/material_grey_300"
-            android:textSize="16sp"
-            android:text="White"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:id="@+id/spa_light_magenta_fixed_mode_button"
-            android:background="@drawable/rounded_corners_bluegray_8dp"
-            android:textAllCaps="false"
-            android:layout_marginTop="8dp"
-            android:textColor="@color/material_grey_300"
-            android:textSize="16sp"
-            android:text="Magenta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:id="@+id/spa_light_hold_mode_button"
-            android:background="@drawable/rounded_corners_bluegray_8dp"
-            android:textAllCaps="false"
-            android:textColor="@color/material_grey_300"
-            android:layout_marginTop="8dp"
-            android:textSize="16sp"
-            android:text="Hold: Save the current color effect during a color light show"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:id="@+id/spa_light_recall_mode_button"
-            android:background="@drawable/rounded_corners_bluegray_8dp"
-            android:textAllCaps="false"
-            android:textColor="@color/material_grey_300"
-            android:textSize="16sp"
-            android:layout_marginTop="8dp"
-            android:text="Recall: Activate the last saved color effect"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-    </LinearLayout>
 </RelativeLayout>
