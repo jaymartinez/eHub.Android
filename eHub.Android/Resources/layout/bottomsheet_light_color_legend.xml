@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="8dp"
+    android:background="@color/grayish"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout 
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+      <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="52dp">
+            <ImageView
+                android:layout_width="44dp"
+                android:layout_height="44dp" 
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/gradient_caribbean" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textSize="14sp"
+                android:paddingLeft="8dp"
+                android:text="@string/light_caribbean"
+                />
+      </LinearLayout>
+
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="4dp"
+        android:background="@color/primary_material_light" />
+
+      <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="52dp">
+            <ImageView
+                android:layout_width="44dp"
+                android:layout_height="44dp" 
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/gradient_american" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="14sp"
+                android:paddingLeft="8dp"
+                android:gravity="center_vertical"
+                android:text="@string/light_american"
+                />
+      </LinearLayout>
+
+     <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="4dp"
+        android:background="@color/primary_material_light" />
+
+      <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="52dp">
+            <ImageView
+                android:layout_width="44dp"
+                android:layout_height="44dp" 
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/gradient_party" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textSize="14sp"
+                android:paddingLeft="8dp"
+                android:text="@string/light_party"
+                />
+      </LinearLayout>
+
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="4dp"
+        android:background="@color/primary_material_light" />
+
+     <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="52dp">
+            <ImageView
+                android:layout_width="44dp"
+                android:layout_height="44dp" 
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/gradient_sam" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textSize="14sp"
+                android:paddingLeft="8dp"
+                android:text="@string/light_sam"
+                />
+      </LinearLayout>
+
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="4dp"
+        android:background="@color/primary_material_light" />
+
+      <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="52dp">
+            <ImageView
+                android:layout_width="44dp"
+                android:layout_height="44dp" 
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/gradient_romance_2" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textSize="14sp"
+                android:paddingLeft="8dp"
+                android:text="@string/light_romance"
+                />
+      </LinearLayout>
+
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="4dp"
+        android:background="@color/primary_material_light" />
+
+     <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="52dp">
+            <ImageView
+                android:layout_width="44dp"
+                android:layout_height="44dp" 
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/gradient_royal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textSize="14sp"
+                android:paddingLeft="8dp"
+                android:text="@string/light_royal"
+                />
+      </LinearLayout>
+
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="4dp"
+        android:background="@color/primary_material_light" />
+
+      <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="52dp">
+            <ImageView
+                android:layout_width="44dp"
+                android:layout_height="44dp" 
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/gradient_sunset" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textSize="14sp"
+                android:paddingLeft="8dp"
+                android:text="@string/light_cali_sunset"
+                />
+      </LinearLayout>
+
+     <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="4dp"
+        android:background="@color/primary_material_light" />
+
+      <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="52dp">
+            <View
+                android:layout_width="44dp"
+                android:layout_height="44dp" 
+                android:layout_gravity="center_vertical"
+                android:background="@color/blue" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textSize="14sp"
+                android:paddingStart="8dp"
+                android:text="@string/light_blue"
+                />
+      </LinearLayout>
+
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="4dp"
+        android:background="@color/primary_material_light" />
+
+      <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="52dp">
+            <View
+                android:layout_width="44dp"
+                android:layout_height="44dp" 
+                android:layout_gravity="center_vertical"
+                android:background="@color/red_dark" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textSize="14sp"
+                android:paddingLeft="8dp"
+                android:text="@string/light_red"
+                />
+      </LinearLayout>
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="4dp"
+        android:background="@color/primary_material_light" />
+      <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="52dp">
+            <View
+                android:layout_width="44dp"
+                android:layout_height="44dp" 
+                android:layout_gravity="center_vertical"
+                android:background="@color/white" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textSize="14sp"
+                android:paddingLeft="8dp"
+                android:text="@string/light_white"
+                />
+      </LinearLayout>
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="4dp"
+        android:background="@color/primary_material_light" />
+      <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="52dp">
+            <View
+                android:layout_width="44dp"
+                android:layout_height="44dp" 
+                android:layout_gravity="center_vertical"
+                android:background="@color/greenLabel" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textSize="14sp"
+                android:paddingLeft="8dp"
+                android:text="@string/light_green"
+                />
+      </LinearLayout>
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="4dp"
+        android:background="@color/primary_material_light" />
+      <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="52dp">
+            <View
+                android:layout_width="44dp"
+                android:layout_height="44dp" 
+                android:layout_gravity="center_vertical"
+                android:background="@color/magenta" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textSize="14sp"
+                android:paddingLeft="8dp"
+                android:text="@string/light_magenta"
+                />
+      </LinearLayout>
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="4dp"
+        android:background="@color/primary_material_light" />
+      <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="52dp">
+            <ImageView
+                android:layout_width="44dp"
+                android:layout_height="44dp" 
+                android:layout_gravity="center_vertical"
+                android:src="@android:drawable/ic_popup_sync" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textSize="14sp"
+                android:paddingLeft="8dp"
+                android:text="@string/light_recall" />
+      </LinearLayout>
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="4dp"
+        android:background="@color/primary_material_light" />
+      <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="52dp">
+            <ImageView
+                android:layout_width="44dp"
+                android:layout_height="44dp" 
+                android:layout_gravity="center_vertical"
+                android:src="@android:drawable/ic_menu_save" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textSize="14sp"
+                android:paddingLeft="8dp"
+                android:text="@string/light_hold"
+                />
+      </LinearLayout>
+    </LinearLayout>
+</ScrollView>

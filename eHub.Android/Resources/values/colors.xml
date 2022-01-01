@@ -12,4 +12,7 @@
     <color name="silver">#768f9c</color>
     <color name="white">#ffffff</color>
     <color name="blue_gray_400">#FF78909C</color>
+    <color name="blue">#0b1fd4</color>
+    <color name="red_dark">#6b0f0f</color>
+    <color name="magenta">#FF00FF</color>
 </resources>
