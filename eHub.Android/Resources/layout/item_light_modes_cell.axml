@@ -134,134 +134,376 @@
         android:rowCount="3"
         android:columnCount="5">
         <RelativeLayout
+            android:id="@+id/pool_light_blue_btn_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:tag="8"
+            android:clickable="true"
             android:layout_margin="8dp"
             android:layout_row="0"
             android:layout_column="0">
             <Button
-                android:id="@+id/pool_light_blue_btn"
                 android:layout_height="@dimen/light_tiles_height"
                 android:layout_width="@dimen/light_tiles_width"
                 android:background="@color/blue" />
-            <ImageView
+            <androidx.cardview.widget.CardView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerInParent="true"
-                android:src="@drawable/homepage_pool_icon"
-                />
+                android:visibility="gone"
+                tools:visibility="visible"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/outline_check_circle_outline_24" />
+            </androidx.cardview.widget.CardView>
 
         </RelativeLayout>
-        <Button
-            android:id="@+id/pool_light_white_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
+        <RelativeLayout
+            android:id="@+id/pool_light_white_btn_container"
+            android:layout_width="wrap_content"
+            android:clickable="true"
+            android:layout_height="wrap_content"
             android:layout_row="0"
             android:layout_column="1"
-            android:layout_margin="8dp"
-            android:background="@color/white" />
-        <Button
-            android:id="@+id/pool_light_green_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
+            android:tag="11"
+            android:layout_margin="8dp">
+            <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@color/white" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                tools:visibility="visible">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/outline_check_circle_outline_24" />
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/pool_light_green_btn_container"
+            android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_row="0"
             android:layout_column="2"
-            android:layout_margin="8dp"
-            android:background="@color/greenLabel" />
-        <Button
-            android:id="@+id/pool_light_red_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
+            android:tag="9"
+            android:layout_margin="8dp">
+            <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@color/greenLabel" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                tools:visibility="visible">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/outline_check_circle_outline_24" />
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+        
+        <RelativeLayout
+            android:id="@+id/pool_light_red_btn_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_row="0"
             android:layout_column="3"
-            android:layout_margin="8dp"
-            android:background="@color/red_dark" />
-
-        <Button
-            android:id="@+id/pool_light_magenta_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
+            android:tag="10"
+            android:layout_margin="8dp">
+            <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@color/red_dark" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                tools:visibility="visible">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/outline_check_circle_outline_24" />
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+        
+        <RelativeLayout
+            android:id="@+id/pool_light_magenta_btn_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_row="0"
             android:layout_column="4"
-            android:layout_margin="8dp"
-            android:background="@color/magenta" />
+            android:tag="12"
+            android:layout_margin="8dp">
+           <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@color/magenta" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                tools:visibility="visible">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/outline_check_circle_outline_24" />
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
        
-       
-        <Button
-            android:id="@+id/pool_light_caribbean_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
-            android:layout_margin="8dp"
+        <RelativeLayout
+            android:id="@+id/pool_light_caribbean_btn_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_row="1"
             android:layout_column="0"
-            android:background="@drawable/gradient_caribbean" />
-
-        <Button
-            android:id="@+id/pool_light_american_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
-            android:layout_margin="8dp"
+            android:tag="4"
+            android:layout_margin="8dp">
+          <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@drawable/gradient_caribbean" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                tools:visibility="visible">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/outline_check_circle_outline_24" />
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+       
+       <RelativeLayout
+            android:id="@+id/pool_light_american_btn_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_row="1"
             android:layout_column="1"
-            android:background="@drawable/gradient_american" />
+            android:tag="5"
+            android:layout_margin="8dp">
+            <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@drawable/gradient_american" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                tools:visibility="visible">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/outline_check_circle_outline_24" />
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout> 
 
-        <Button
-            android:id="@+id/pool_light_party_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
-            android:layout_margin="8dp"
+         <RelativeLayout
+            android:id="@+id/pool_light_party_btn_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_row="1"
             android:layout_column="2"
-            android:background="@drawable/gradient_party" />
-        <Button
-            android:id="@+id/pool_light_sam_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
-            android:layout_margin="8dp"
+            android:tag="2"
+            android:layout_margin="8dp">
+            <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@drawable/gradient_party" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                tools:visibility="visible">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/outline_check_circle_outline_24" />
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+        
+        <RelativeLayout
+            android:id="@+id/pool_light_sam_btn_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_row="1"
             android:layout_column="3"
-            android:background="@drawable/gradient_sam" />
-        <Button
-            android:id="@+id/pool_light_romance_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
-            android:layout_margin="8dp"
+            android:tag="1"
+            android:layout_margin="8dp">
+            <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@drawable/gradient_sam" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                tools:visibility="visible">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/outline_check_circle_outline_24" />
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/pool_light_romance_btn_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_row="1"
             android:layout_column="4"
-            android:background="@drawable/gradient_romance_2" />
-        <Button
-            android:id="@+id/pool_light_royal_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
-            android:layout_margin="8dp"
+            android:tag="3"
+            android:layout_margin="8dp">
+            <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@drawable/gradient_romance_2" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                tools:visibility="visible">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/outline_check_circle_outline_24" />
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/pool_light_royal_btn_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_row="2"
             android:layout_column="0"
-            android:background="@drawable/gradient_royal" />
-        <Button
-            android:id="@+id/pool_light_sunset_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
-            android:layout_margin="8dp"
+            android:tag="7"
+            android:layout_margin="8dp">
+            <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@drawable/gradient_royal" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                tools:visibility="visible">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/outline_check_circle_outline_24" />
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+        
+        <RelativeLayout
+            android:id="@+id/pool_light_sunset_btn_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_row="2"
             android:layout_column="1"
-            android:background="@drawable/gradient_sunset" />
-         <Button
-            android:id="@+id/pool_light_recall_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
+            android:tag="6"
+            android:layout_margin="8dp">
+           <Button
+                android:id="@+id/pool_light_sunset_btn"
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@drawable/gradient_sunset" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                tools:visibility="visible">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/outline_check_circle_outline_24" />
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+        
+        <RelativeLayout
+            android:id="@+id/pool_light_recall_btn_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_row="2"
             android:layout_column="2"
-            android:layout_margin="8dp"
-            android:background="@android:drawable/ic_popup_sync" />
+            android:tag="14"
+            android:layout_margin="8dp">
 
-        <Button
-            android:id="@+id/pool_light_hold_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
+          <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@android:drawable/ic_popup_sync" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/pool_light_hold_btn_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_row="2"
             android:layout_column="3"
-            android:layout_margin="8dp"
-            android:background="@android:drawable/ic_menu_save" />
+            android:tag="13"
+            android:layout_margin="8dp">
+
+            <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@android:drawable/ic_menu_save" />
+        </RelativeLayout>
+
+        
         <ImageView
 			android:id="@+id/pool_light_modes_legend"
             android:layout_row="2"
@@ -405,128 +647,358 @@
         android:layout_below="@id/spa_light_modes_label_container"
         android:rowCount="3"
         android:columnCount="5">
-        <Button
-            android:id="@+id/spa_light_blue_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="8"
             android:layout_margin="8dp"
+            android:clickable="true"
             android:layout_row="0"
-            android:layout_column="0"
-            android:background="@color/blue" />
-        <Button
-            android:id="@+id/spa_light_white_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
-            android:layout_margin="8dp"
+            android:layout_column="0">
+            <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@color/blue" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                tools:visibility="visible"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/outline_check_circle_outline_24" />
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_row="0"
             android:layout_column="1"
-            android:background="@color/white"
-            />
-        <Button
-            android:id="@+id/spa_light_green_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
-            android:layout_margin="8dp"
+            android:tag="11"
+            android:layout_margin="8dp">
+            <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@color/white" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                tools:visibility="visible">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/outline_check_circle_outline_24" />
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_row="0"
             android:layout_column="2"
-            android:background="@color/greenLabel"
-            />
-        <Button
-            android:id="@+id/spa_light_red_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
-            android:layout_margin="8dp"
+            android:tag="9"
+            android:layout_margin="8dp">
+            <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@color/greenLabel" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                tools:visibility="visible">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/outline_check_circle_outline_24" />
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+        
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_row="0"
             android:layout_column="3"
-            android:background="@color/red_dark"
-            />
-        <Button
-            android:id="@+id/spa_light_magenta_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
-            android:layout_margin="8dp"
+            android:tag="10"
+            android:layout_margin="8dp">
+            <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@color/red_dark" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                tools:visibility="visible">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/outline_check_circle_outline_24" />
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+        
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_row="0"
             android:layout_column="4"
-            android:background="@color/magenta"
-            />
+            android:tag="12"
+            android:layout_margin="8dp">
+           <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@color/magenta" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                tools:visibility="visible">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/outline_check_circle_outline_24" />
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
        
-        <Button
-            android:id="@+id/spa_light_caribbean_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_row="1"
             android:layout_column="0"
-            android:layout_margin="8dp"
-            android:padding="1dp"
-            android:scaleType="centerCrop"
-            android:cropToPadding="true"
-            android:background="@drawable/gradient_caribbean" />
-
-        <Button
-            android:id="@+id/spa_light_american_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
-            android:layout_margin="8dp"
+            android:tag="4"
+            android:layout_margin="8dp">
+          <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@drawable/gradient_caribbean" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                tools:visibility="visible">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/outline_check_circle_outline_24" />
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+       
+       <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_row="1"
             android:layout_column="1"
-            android:background="@drawable/gradient_american" />
+            android:tag="5"
+            android:layout_margin="8dp">
+            <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@drawable/gradient_american" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                tools:visibility="visible">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/outline_check_circle_outline_24" />
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout> 
 
-        <Button
-            android:id="@+id/spa_light_party_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
-            android:layout_margin="8dp"
+         <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_row="1"
             android:layout_column="2"
-            android:background="@drawable/gradient_party" />
-        <Button
-            android:id="@+id/spa_light_sam_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
-            android:layout_margin="8dp"
+            android:tag="2"
+            android:layout_margin="8dp">
+            <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@drawable/gradient_party" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                tools:visibility="visible">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/outline_check_circle_outline_24" />
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+        
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_row="1"
             android:layout_column="3"
-            android:background="@drawable/gradient_sam" />
-        <Button
-            android:id="@+id/spa_light_romance_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
-            android:layout_margin="8dp"
+            android:tag="1"
+            android:layout_margin="8dp">
+            <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@drawable/gradient_sam" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                tools:visibility="visible">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/outline_check_circle_outline_24" />
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_row="1"
             android:layout_column="4"
-            android:background="@drawable/gradient_romance_2" />
-        <Button
-            android:id="@+id/spa_light_royal_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
-            android:layout_margin="8dp"
+            android:tag="3"
+            android:layout_margin="8dp">
+            <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@drawable/gradient_romance_2" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                tools:visibility="visible">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/outline_check_circle_outline_24" />
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_row="2"
             android:layout_column="0"
-            android:background="@drawable/gradient_royal" />
-        <Button
-            android:id="@+id/spa_light_sunset_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
-            android:layout_margin="8dp"
+            android:tag="7"
+            android:layout_margin="8dp">
+            <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@drawable/gradient_royal" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                tools:visibility="visible">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/outline_check_circle_outline_24" />
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+        
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_row="2"
             android:layout_column="1"
-            android:background="@drawable/gradient_sunset" />
-        <Button
-            android:id="@+id/spa_light_recall_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
-            android:layout_margin="8dp"
+            android:tag="6"
+            android:layout_margin="8dp">
+           <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@drawable/gradient_sunset" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                tools:visibility="visible">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/outline_check_circle_outline_24" />
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+        
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_row="2"
             android:layout_column="2"
-            android:background="@android:drawable/ic_popup_sync" />
-        <Button
-            android:id="@+id/spa_light_hold_btn"
-            android:layout_height="@dimen/light_tiles_height"
-            android:layout_width="@dimen/light_tiles_width"
-            android:layout_margin="8dp"
+            android:tag="14"
+            android:layout_margin="8dp">
+
+          <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@android:drawable/ic_popup_sync" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_row="2"
             android:layout_column="3"
-            android:background="@android:drawable/ic_menu_save" />
+            android:tag="13"
+            android:layout_margin="8dp">
+
+            <Button
+                android:layout_height="@dimen/light_tiles_height"
+                android:layout_width="@dimen/light_tiles_width"
+                android:background="@android:drawable/ic_menu_save" />
+        </RelativeLayout>
         <ImageView
 			android:id="@+id/spa_light_modes_legend"
             android:layout_row="2"

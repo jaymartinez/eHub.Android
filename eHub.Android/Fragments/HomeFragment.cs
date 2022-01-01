@@ -141,17 +141,17 @@ namespace eHub.Android.Fragments
                         _bottomSheet.Show();
                     }
                 },
-                PoolLightModeButtonTapped = async (model, selectedModeLabel) =>
+                PoolLightModeButtonTapped = async (mode) =>
                 {
                     // Get the state again
                     var currentPoolLightMode = await _poolService.GetCurrentPoolLightMode();
-                    return await OnLightModeButtonTapped(model, currentPoolLightMode, selectedModeLabel);
+                    return await OnLightModeButtonTapped(mode, LightType.Pool, currentPoolLightMode);
                 },
-                SpaLightModeButtonTapped = async (model, selectedModeLabel) =>
+                SpaLightModeButtonTapped = async (mode) =>
                 {
                     // Get the state again
                     var currentSpaLightMode = await _poolService.GetCurrentSpaLightMode();
-                    return await OnLightModeButtonTapped(model, currentSpaLightMode, selectedModeLabel);
+                    return await OnLightModeButtonTapped(mode, LightType.Spa, currentSpaLightMode);
                 },
                 PoolLightScheduleStartTapped = async (btn) =>
                 {
@@ -379,11 +379,10 @@ namespace eHub.Android.Fragments
             };
         }
 
-        async Task<PoolLightModel> OnLightModeButtonTapped(
-            PoolLightModel model, 
-            PoolLightServerModel serverModel,
-            TextView statusText) 
+        async Task<PoolLightModel> OnLightModeButtonTapped(PoolLightMode lightMode, LightType lightType, PoolLightServerModel serverModel) 
         {
+            var model = new PoolLightModel(lightMode, lightType);
+
             var state = (await _poolService.GetPinStatus(model.PinNumber))?.State ?? PinState.OFF;
             if (state == PinState.OFF)
             {
@@ -430,19 +429,18 @@ namespace eHub.Android.Fragments
 
             if (model.LightType == LightType.Pool)
             {
-                model.Mode = await Task.Run(async () =>
+                model.Mode = (await Task.Run(async () =>
                 { 
                     return await _poolService.SavePoolLightMode(modeToSave);
-                });
+                })).CurrentPoolLightMode;
             }
             else
             {
-                model.Mode = await Task.Run(async () =>
+                model.Mode = (await Task.Run(async () =>
                 { 
                     return await _poolService.SaveSpaLightMode(modeToSave);
-                });
+                })).CurrentPoolLightMode;
             }
-            statusText.Text = model.Mode.ToLightModeText();
 
             _progressBar.Visibility = ViewStates.Gone;
             alert.Hide();
