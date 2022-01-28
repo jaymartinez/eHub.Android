@@ -4,13 +4,11 @@ namespace eHub.Android.Models
 {
     public class BoosterCellItem
     {
-        public PiPin BoosterPin1 { get; }
-        public PiPin BoosterPin2 { get; }
+        public PiPin BoosterPin { get; }
 
-        public BoosterCellItem(PiPin pin1, PiPin pin2)
+        public BoosterCellItem(PiPin boosterPin)
         {
-            BoosterPin1 = pin1;
-            BoosterPin2 = pin2;
+            BoosterPin = boosterPin;
         }
     }
 }

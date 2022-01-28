@@ -1,94 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout 
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:padding="8dp"
 	android:background="@drawable/rounded_corners_8dp_lighterblue"
 	android:orientation="vertical"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content">
 
-	<RelativeLayout 
-		android:id="@+id/schedule_cell_label_container"
-		android:padding="16dp"
-		android:layout_width="wrap_content" 
-		android:layout_height="match_parent">
-
-		<ImageView 
-			android:id="@+id/schedule_cell_image"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:src="@drawable/ic_schedule_blue_grey_400_48dp" />
-
-		<LinearLayout 
-			android:layout_toRightOf="@id/schedule_cell_image"
-			android:layout_centerInParent="true"
-			android:paddingLeft="8dp"
-			android:orientation="vertical"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
-
-			<TextView 
-				android:id="@+id/schedule_cell_label"
-				android:text="Pool Timer"
-				android:textSize="32dp"
-				android:textColor="@color/material_grey_300"
-				android:layout_width="wrap_content" 
-				android:layout_height="wrap_content" />
-
-			<androidx.appcompat.widget.SwitchCompat
-				android:id="@+id/schedule_onoff_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" 
-				android:textColor="@color/white"
-				app:switchPadding="8dp"
-				android:text="On/Off" />
-
-            <CheckBox 
-                android:id="@+id/schedule_cell_include_booster_cb"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/schedule_pool_timer_label"
+            android:text="Pool Timer"
+            android:textSize="16sp"
+            android:textColor="@color/material_grey_300"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true">
+            <Button
+                android:id="@+id/schedule_cell_pool_on_btn"
                 android:textColor="@color/material_grey_300"
-                android:layout_marginTop="16dp"
-                android:text="Run Booster Pump With Timer"
-                android:layout_width="wrap_content" 
-                android:layout_height="wrap_content" />
+                android:background="@color/blue_gray_400"
+                android:text="On"
+                tools:background="@color/greenLabel"
+                tools:textColor="@color/material_blue_grey_800"
+                android:layout_width="48dp"
+                android:layout_height="32dp" />
 
-		</LinearLayout>
+            <Button
+                android:id="@+id/schedule_cell_pool_off_btn"
+                android:textColor="@color/material_grey_300"
+                android:background="@color/blue_gray_400"
+                android:text="Off"
+                android:layout_width="48dp"
+                android:layout_height="32dp" />
+        </LinearLayout>
+    </RelativeLayout>
 
-	</RelativeLayout>
-	<RelativeLayout
-		android:padding="16dp"
-		android:gravity="center_horizontal"
-		android:layout_width="match_parent" 
-		android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-		<Button
-			android:id="@+id/schedule_cell_begin_btn"
+        <Button
+            android:id="@+id/schedule_cell_pool_begin_btn"
+            android:text="8:30 am"
+            android:textSize="16dp"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/material_grey_300"
+            android:background="@drawable/rounded_corners_32dp"
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:textColor="@color/material_grey_300"
+            android:layout_centerVertical="true"
+            android:text=" to "
+            android:textSize="14dp"
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/schedule_cell_pool_end_btn"
+            android:padding="8dp"
+            android:text="2:30 pm"
+            android:textSize="16dp"
+            android:background="@drawable/rounded_corners_32dp"
+            android:textColor="@color/material_grey_300"
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_width="match_parent"
+        android:background="@color/material_grey_300"
+        android:layout_height="1dp"/>
+
+     <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/schedule_booster_timer_label"
+            android:text="Booster Timer"
+            android:textSize="16sp"
+            android:textColor="@color/material_grey_300"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true">
+            <Button
+                android:id="@+id/schedule_cell_booster_on_btn"
+                android:textColor="@color/material_grey_300"
+                android:background="@color/blue_gray_400"
+                android:text="On"
+                tools:background="@color/greenLabel"
+                tools:textColor="@color/material_blue_grey_800"
+                android:layout_width="48dp"
+                android:layout_height="32dp" />
+
+            <Button
+                android:id="@+id/schedule_cell_booster_off_btn"
+                android:textColor="@color/material_grey_300"
+                android:background="@color/blue_gray_400"
+                android:text="Off"
+                android:layout_width="48dp"
+                android:layout_height="32dp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+         <Button
+			android:id="@+id/schedule_cell_booster_begin_btn"
 			android:text="8:30 am"
-			android:padding="8dp"
-			android:textSize="28dp"
+			android:textSize="16dp"
+            android:background="@drawable/rounded_corners_32dp"
+            android:textColor="@color/material_grey_300"
+            android:layout_marginStart="8dp"
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content" />
 
 		<TextView
-			android:id="@+id/schedule_cell_dash"
-			android:layout_toRightOf="@id/schedule_cell_begin_btn"
 			android:textColor="@color/material_grey_300"
 			android:layout_centerVertical="true"
-			android:layout_marginLeft="8dp"
-			android:layout_marginRight="8dp"
 			android:text=" to "
-			android:textSize="24dp"
+			android:textSize="14dp"
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content" />
 
 		<Button
-			android:id="@+id/schedule_cell_end_btn"
-			android:layout_toRightOf="@id/schedule_cell_dash"
+			android:id="@+id/schedule_cell_booster_end_btn"
 			android:padding="8dp"
+			android:textSize="16dp"
+            android:background="@drawable/rounded_corners_32dp"
+            android:textColor="@color/material_grey_300"
 			android:text="2:30 pm"
-			android:textSize="28dp"
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content" />
-
-	</RelativeLayout>
+    </LinearLayout>
 </LinearLayout>

@@ -15,9 +15,9 @@ namespace eHub.Android
 
         const string CurrentPoolLightModeKey = "pool_light_mode";
 
-        public static PoolLightMode CurrentPoolLightMode
+        public static LightModeType CurrentPoolLightMode
         {
-            get => (PoolLightMode)AppSettings.GetValueOrDefault(CurrentPoolLightModeKey, (int)PoolLightMode.NotSet);
+            get => (LightModeType)AppSettings.GetValueOrDefault(CurrentPoolLightModeKey, (int)LightModeType.NotSet);
             set => AppSettings.AddOrUpdateValue(CurrentPoolLightModeKey, (int)value);
         }
     }

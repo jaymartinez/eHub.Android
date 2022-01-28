@@ -5,15 +5,16 @@ using System.Threading.Tasks;
 
 namespace eHub.Android.Models
 {
-    public class PoolLightModel
+    public class LightModel
     {
         public bool IsActive { get; }
-        public PoolLightMode Mode { get; set; }
+        public LightModeType Mode { get; set; }
         public int PowerCycles => (int)Mode;
         public LightType LightType { get; }
-        public int PinNumber => LightType == LightType.Pool ? Pin.PoolLight : Pin.SpaLight; 
+        public int PinNumber => LightType == LightType.Pool ? Pin.PoolLight : Pin.SpaLight;
+        public PinType PinType => LightType == LightType.Pool ? PinType.PoolLight : PinType.SpaLight;
 
-        public PoolLightModel( PoolLightMode mode, LightType lightType)
+        public LightModel(LightModeType mode, LightType lightType)
         {
             Mode = mode;
             LightType = lightType;

@@ -12,9 +12,9 @@ namespace eHub.Android.Models
         public PiPin SpaPin2 { get; }
         public PiPin SpaLight { get; }
         public Action<Switch> LightOnOffSwitchTapped { get; set; }
-        public PoolLightMode SelectedLightMode { get; set; }
+        public LightModeType SelectedLightMode { get; set; }
 
-        public Func<PoolLightModel, TextView, Task<bool>> LightModeButtonTapped { get; set; }
+        public Func<LightModel, TextView, Task<bool>> LightModeButtonTapped { get; set; }
 
         public SpaCellItem(PiPin spaPin1, PiPin spaPin2, PiPin spaLight)
         {

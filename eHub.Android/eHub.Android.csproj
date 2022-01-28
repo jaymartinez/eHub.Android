@@ -77,6 +77,7 @@
   <ItemGroup>
     <Compile Include="Adapters\HomeRecyclerAdapter.cs" />
     <Compile Include="ContainerConfig.cs" />
+    <Compile Include="Controls\SegmentedSwitch.cs" />
     <Compile Include="Dialogs.cs" />
     <Compile Include="EhubModule.cs" />
     <Compile Include="Fragments\HomeFragment.cs" />
@@ -96,7 +97,7 @@
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\MenuType.cs" />
     <Compile Include="Models\PoolCellItem.cs" />
-    <Compile Include="Models\PoolLightModel.cs" />
+    <Compile Include="Models\LightModel.cs" />
     <Compile Include="Models\ScheduleCellItem.cs" />
     <Compile Include="Models\SpaCellItem.cs" />
     <Compile Include="Models\TimePickerArgs.cs" />
@@ -599,6 +600,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\outline_check_circle_outline_24.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\values\attrs.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

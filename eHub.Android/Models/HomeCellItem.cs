@@ -29,7 +29,7 @@ namespace eHub.Android.Models
 
         public HomeCellItem(BoosterCellItem boosterCellItem, CellType cellType)
         {
-            SingleSwitchItem = boosterCellItem.BoosterPin1;
+            SingleSwitchItem = boosterCellItem.BoosterPin;
             BoosterItem = boosterCellItem;
             CellTypeObj = cellType;
         }

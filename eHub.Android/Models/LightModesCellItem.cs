@@ -11,12 +11,12 @@ namespace eHub.Android.Models
     {
         public EquipmentSchedule PoolLightSchedule { get; }
         public EquipmentSchedule SpaLightSchedule { get; }
-        public List<PoolLightModel> PoolLightModelList { get; set; }
-        public List<PoolLightModel> SpaLightModelList { get; set; }
-        public Func<PoolLightMode, Task<PoolLightModel>> PoolLightModeButtonTapped { get; set; }
-        public Func<PoolLightMode, Task<PoolLightModel>> SpaLightModeButtonTapped { get; set; }
-        public PoolLightMode SelectedPoolLightMode { get; set; }
-        public PoolLightMode SelectedSpaLightMode { get; set; }
+        public List<LightModel> PoolLightModelList { get; set; }
+        public List<LightModel> SpaLightModelList { get; set; }
+        public Func<LightModeType, Task<LightModel>> PoolLightModeButtonTapped { get; set; }
+        public Func<LightModeType, Task<LightModel>> SpaLightModeButtonTapped { get; set; }
+        public LightModeType SelectedPoolLightMode { get; set; }
+        public LightModeType SelectedSpaLightMode { get; set; }
 
         public Action LightLegendTapped { get; set; }
         public Action<Button> PoolLightScheduleStartTapped { get; set; }
