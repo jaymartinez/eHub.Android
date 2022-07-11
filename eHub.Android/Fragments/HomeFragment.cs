@@ -104,21 +104,18 @@ namespace eHub.Android.Fragments
         async Task<List<HomeCellItem>> RefreshView()
         {
             //var waterTemp = await poolService.GetWaterTemp();
-            var allPins = await _poolService.GetAllStatuses();
-            var sched = await _poolService.GetSchedule(ScheduleType.Pool);
-            var serverPoolLightMode = await _poolService.GetCurrentLightMode(LightType.Pool);
-            var serverSpaLightMode = await _poolService.GetCurrentLightMode(LightType.Spa);
-            var curPoolLightSched = await _poolService.GetSchedule(ScheduleType.PoolLight);
-            var curSpaLightSched = await _poolService.GetSchedule(ScheduleType.SpaLight);
+            //var allPins = await _poolService.GetAllStatuses();
+            var poolModel = await _poolService.GetPool(); //allPins.FirstOrDefault(_ => _.PinType == PinType.PoolPump) as PoolSpaModel;
+            var spaModel = await _poolService.GetSpa(); //allPins.FirstOrDefault(_ => _.PinType == PinType.SpaPump) as PoolSpaModel;
+            var boosterModel = await _poolService.GetBoosterPump(); //allPins.FirstOrDefault(_ => _.PinType == PinType.BoosterPump) as BoosterPumpModel;
+            var heaterModel = await _poolService.GetHeater();
+            var serverPoolLightMode = poolModel.Light.CurrentMode;  //await _poolService.GetCurrentLightMode(LightType.Pool);
+            var serverSpaLightMode = spaModel.Light.CurrentMode;
+            var curPoolLightSched = poolModel.Light.Schedule;
+            var curSpaLightSched = spaModel.Light.Schedule;
 
-            if (allPins == null || sched == null)
-            {
-                Toast.MakeText(Context, "Failed to get pin status and schedule from server!!!", ToastLength.Long);
-                _progressBar.Visibility = ViewStates.Gone;
-                return null;
-            }
 
-            var devicesItem = new DeviceCellItem(allPins.ToList());
+            var devicesItem = new DeviceCellItem(poolModel, spaModel, boosterModel, heaterModel);//allPins.ToList());
 
             var aboutItem = new HomeCellItem(CellType.About)
             {
@@ -142,66 +139,60 @@ namespace eHub.Android.Fragments
                 {
                     // Get the state again
                     var currentPoolLightMode = await _poolService.GetCurrentLightMode(LightType.Pool);
-                    return await OnLightModeButtonTapped(mode, LightType.Pool, currentPoolLightMode);
+                    var pool = await _poolService.GetPool();
+                    var lightModel = new LightModel(mode, LightType.Pool);
+                    return await OnLightModeButtonTapped(lightModel, currentPoolLightMode, pool.Light.State);
                 },
                 SpaLightModeButtonTapped = async (mode) =>
                 {
                     // Get the state again
                     var currentSpaLightMode = await _poolService.GetCurrentLightMode(LightType.Spa);
-                    return await OnLightModeButtonTapped(mode, LightType.Spa, currentSpaLightMode);
+                    var lightModel = new LightModel(mode, LightType.Spa);
+                    var spa = await _poolService.GetSpa();
+                    return await OnLightModeButtonTapped(lightModel, currentSpaLightMode, spa.Light.State);
                 },
                 PoolLightScheduleStartTapped = async (btn) =>
                 {
-                    var curSched = await _poolService.GetSchedule(ScheduleType.PoolLight);
-                    var picker = TimePickerFragment.CreateInstance(curSched.StartHour, curSched.StartMinute);
+                    // Get the current schedule from the server
+                    var pool = await _poolService.GetPool();
+                    var picker = TimePickerFragment.CreateInstance(pool.Schedule.StartTime.Hours, pool.Schedule.StartTime.Minutes);
 
                     picker.OnTimeSelected = async (args) =>
                     {
-                        var time = new TimeSpan(args.Hour, args.Minute, 0);
+                        var selectedTime = new TimeSpan(args.Hour, args.Minute, 0);
+
+                        // update the new start time
+                        pool.Schedule.StartTime = selectedTime;
+
                         Activity.RunOnUiThread(() =>
                         {
-                            btn.Text = time.ToString(@"%h\:mm");
+                            btn.Text = pool.Schedule.StartTime.ToString(@"%h\:mm");
                         });
 
-                        var es = new EquipmentSchedule
-                        {
-                            StartHour = args.Hour,
-                            StartMinute = args.Minute,
-                            EndHour = curSched.EndHour,
-                            EndMinute = curSched.EndMinute,
-                            IsActive = curSched.IsActive,
-                            Type = ScheduleType.PoolLight
-                        };
-
-                        await SaveLightScheduleAsync(_poolService, es);
+                        await _poolService.SavePool(pool); //SaveScheduleAsync(_poolService, pool.Schedule);
                     };
 
                     picker.Show(ChildFragmentManager, "starttime_picker");
                 },
                 PoolLightScheduleEndTapped = async (btn) =>
                 {
-                    var curSched = await _poolService.GetSchedule(ScheduleType.PoolLight);
-                    var picker = TimePickerFragment.CreateInstance(curSched.EndHour, curSched.EndMinute);
+                    var pool = await _poolService.GetPool();
+                    var picker = TimePickerFragment.CreateInstance(pool.Light.Schedule.EndTime.Hours, pool.Light.Schedule.EndTime.Minutes);
 
                     picker.OnTimeSelected = async (args) =>
                     {
-                        var time = new TimeSpan(args.Hour, args.Minute, 0);
+                        var selectedTime = new TimeSpan(args.Hour, args.Minute, 0);
+
+                        // update the new end time
+                        pool.Light.Schedule.EndTime = selectedTime;
+
                         Activity.RunOnUiThread(() =>
                         {
-                            btn.Text = time.ToString(@"%h\:mm");
+                            btn.Text = pool.Light.Schedule.EndTime.ToString(@"%h\:mm");
                         });
 
-                        var es = new EquipmentSchedule
-                        {
-                            StartHour = curSched.StartHour,
-                            StartMinute = curSched.StartMinute,
-                            EndHour = args.Hour,
-                            EndMinute = args.Minute,
-                            IsActive = curSched.IsActive,
-                            Type = ScheduleType.PoolLight
-                        };
-
-                        await SaveLightScheduleAsync(_poolService, es);
+                        await _poolService.SavePool(pool); //SaveScheduleAsync(_poolService, pool.Light.Schedule);
+                        Toast.MakeText(Context, "Schedule Saved", ToastLength.Short).Show();
                     };
 
                     picker.Show(ChildFragmentManager, "endtime_picker");
@@ -209,36 +200,29 @@ namespace eHub.Android.Fragments
 
                 SpaLightScheduleStartTapped = async (btn) =>
                 {
-                    var curSched = await _poolService.GetSchedule(ScheduleType.SpaLight);
-                    var picker = TimePickerFragment.CreateInstance(curSched.StartHour, curSched.StartMinute);
+                    var spa = await _poolService.GetSpa();
+                    var picker = TimePickerFragment.CreateInstance(spa.Light.Schedule.StartTime.Hours, spa.Light.Schedule.StartTime.Minutes);
 
                     picker.OnTimeSelected = async (args) =>
                     {
-                        var time = new TimeSpan(args.Hour, args.Minute, 0);
+                        var selectedTime = new TimeSpan(args.Hour, args.Minute, 0);
                         Activity.RunOnUiThread(() =>
                         {
-                            btn.Text = time.ToString(@"%h\:mm");
+                            btn.Text = selectedTime.ToString(@"%h\:mm");
                         });
 
-                        var es = new EquipmentSchedule
-                        {
-                            StartHour = args.Hour,
-                            StartMinute = args.Minute,
-                            EndHour = curSched.EndHour,
-                            EndMinute = curSched.EndMinute,
-                            IsActive = curSched.IsActive,
-                            Type = ScheduleType.SpaLight
-                        };
+                        spa.Light.Schedule.StartTime = selectedTime;
 
-                        await SaveLightScheduleAsync(_poolService, es);
+                        await _poolService.SaveSpa(spa); //SaveScheduleAsync(_poolService, spa.Light.Schedule);
+                        Toast.MakeText(Context, "Schedule Saved", ToastLength.Short).Show();
                     };
 
                     picker.Show(ChildFragmentManager, "starttime_picker");
                 },
                 SpaLightScheduleEndTapped = async (btn) =>
                 {
-                    var curSched = await _poolService.GetSchedule(ScheduleType.SpaLight);
-                    var picker = TimePickerFragment.CreateInstance(curSched.EndHour, curSched.EndMinute);
+                    var spa = await _poolService.GetSpa();
+                    var picker = TimePickerFragment.CreateInstance(spa.Light.Schedule.EndTime.Hours, spa.Light.Schedule.EndTime.Minutes);
 
                     picker.OnTimeSelected = async (args) =>
                     {
@@ -248,126 +232,161 @@ namespace eHub.Android.Fragments
                             btn.Text = time.ToString(@"%h\:mm");
                         });
 
-                        var es = new EquipmentSchedule
-                        {
-                            StartHour = curSched.StartHour,
-                            StartMinute = curSched.StartMinute,
-                            EndHour = args.Hour,
-                            EndMinute = args.Minute,
-                            IsActive = curSched.IsActive,
-                            Type = ScheduleType.SpaLight
-                        };
+                        spa.Light.Schedule.EndTime = time;
 
-                        await SaveLightScheduleAsync(_poolService, es);
+                        await _poolService.SaveSpa(spa); //SaveScheduleAsync(_poolService, pool.Light.Schedule);
+                        Toast.MakeText(Context, "Schedule Saved", ToastLength.Short).Show();
+                        //await SaveScheduleAsync(_poolService, spa.Light.Schedule);
                     };
 
                     picker.Show(ChildFragmentManager, "endtime_picker");
                 },
                 PoolLightScheduleOnOffSwitchTapped = async sw =>
                 {
-                    var curSched = await _poolService.GetSchedule(ScheduleType.PoolLight);
+                    var pool = await _poolService.GetPool();
+                    pool.Light.Schedule.IsActive = !pool.Light.Schedule.IsActive;
 
-                    await SaveLightScheduleAsync(_poolService, new EquipmentSchedule
-                    {
-                        StartHour = curSched.StartHour,
-                        EndHour = curSched.EndHour,
-                        StartMinute = curSched.StartMinute,
-                        EndMinute = curSched.EndMinute,
-                        IsActive = !curSched.IsActive,
-                        Type = ScheduleType.PoolLight
-                    });
+                    await _poolService.SavePool(pool); //SaveScheduleAsync(_poolService, pool.Light.Schedule);
 
-                    curSched = await _poolService.GetSchedule(ScheduleType.PoolLight);
-                    sw.Checked = curSched.IsActive;
+                    pool = await _poolService.GetPool();
+                    sw.Checked = pool.Light.Schedule.IsActive;
                 },
                 SpaLightScheduleOnOffSwitchTapped = async sw =>
                 {
-                    var curSched = await _poolService.GetSchedule(ScheduleType.SpaLight);
+                    var spa = await _poolService.GetSpa();
+                    spa.Light.Schedule.IsActive = !spa.Light.Schedule.IsActive;
 
-                    await SaveLightScheduleAsync(_poolService, new EquipmentSchedule
-                    {
-                        StartHour = curSched.StartHour,
-                        EndHour = curSched.EndHour,
-                        StartMinute = curSched.StartMinute,
-                        EndMinute = curSched.EndMinute,
-                        IsActive = !curSched.IsActive,
-                        Type = ScheduleType.SpaLight
-                    });
+                    await _poolService.SaveSpa(spa);
+                    //await SaveScheduleAsync(_poolService, spa.Light.Schedule);
 
-                    curSched = await _poolService.GetSchedule(ScheduleType.SpaLight);
-                    sw.Checked = curSched.IsActive;
+                    spa = await _poolService.GetSpa();
+                    sw.Checked = spa.Light.Schedule.IsActive;
                 },
-                SelectedPoolLightMode = serverPoolLightMode.CurrentMode,
-                SelectedSpaLightMode = serverSpaLightMode.CurrentMode
+                SelectedPoolLightMode = serverPoolLightMode,
+                SelectedSpaLightMode = serverSpaLightMode
             };
 
-            var schedCell = new ScheduleCellItem(sched)
+            var schedCell = new ScheduleCellItem(poolModel.Schedule, boosterModel.Schedule)
             {
-                StartTapped = async (btn) =>
+                StartTapped = (btn, curSched) =>
                 {
-                    var curSched = await _poolService.GetSchedule(ScheduleType.Pool);
-                    var picker = TimePickerFragment.CreateInstance(curSched.StartHour, curSched.StartMinute);
+                    var picker = TimePickerFragment.CreateInstance(curSched.StartTime.Hours, curSched.StartTime.Minutes);
 
                     picker.OnTimeSelected = async (args) =>
                     {
                         var time = new TimeSpan(args.Hour, args.Minute, 0);
+
+                        switch (curSched.Type)
+                        {
+                            case ScheduleType.Pool:
+                                var pool = await _poolService.GetPool();
+                                pool.Light.Schedule.StartTime = time;
+                                await _poolService.SavePool(pool);
+                                break;
+                            case ScheduleType.Booster:
+                                var booster = await _poolService.GetBoosterPump();
+                                booster.Schedule.StartTime = time;
+                                await _poolService.SaveBoosterPump(booster);
+                                break;
+                        }
+
                         Activity.RunOnUiThread(() =>
                         {
                             btn.Text = time.ToString(@"%h\:mm");
                         });
 
-                        var ps = new EquipmentSchedule
-                        {
-                            StartHour = args.Hour,
-                            StartMinute = args.Minute,
-                            EndHour = curSched.EndHour,
-                            EndMinute = curSched.EndMinute,
-                            IsActive = curSched.IsActive,
-                            Type = ScheduleType.Pool
-                        };
-
-                        await SaveScheduleAsync(_poolService, ps);
+                        Toast.MakeText(Context, "Schedule Saved", ToastLength.Short).Show();
                     };
 
                     picker.Show(ChildFragmentManager, "starttime_picker");
                 },
-                EndTapped = async (btn) =>
+                EndTapped = (btn, curSched) =>
                 {
-                    var curSched = await _poolService.GetSchedule(ScheduleType.Pool);
-                    var picker = TimePickerFragment.CreateInstance(curSched.EndHour, curSched.EndMinute);
+                    var picker = TimePickerFragment.CreateInstance(curSched.EndTime.Hours, curSched.EndTime.Minutes);
 
                     picker.OnTimeSelected = async (args) =>
                     {
                         var time = new TimeSpan(args.Hour, args.Minute, 0);
+
+                        switch (curSched.Type)
+                        {
+                            case ScheduleType.Pool:
+                                var pool = await _poolService.GetPool();
+                                pool.Light.Schedule.EndTime = time;
+                                await _poolService.SavePool(pool);
+                                break;
+                            case ScheduleType.Booster:
+                                var booster = await _poolService.GetBoosterPump();
+                                booster.Schedule.EndTime = time;
+                                await _poolService.SaveBoosterPump(booster);
+                                break;
+                        }
                         Activity.RunOnUiThread(() =>
                         {
                             btn.Text = time.ToString(@"%h\:mm");
                         });
 
-                        var ps = new EquipmentSchedule
-                        {
-                            StartHour = curSched.StartHour,
-                            StartMinute = curSched.StartMinute,
-                            EndHour = args.Hour,
-                            EndMinute = args.Minute,
-                            IsActive = curSched.IsActive,
-                            Type = ScheduleType.Pool
-                        };
-
-                        await SaveScheduleAsync(_poolService, ps);
+                        Toast.MakeText(Context, "Schedule Saved", ToastLength.Short).Show();
                     };
 
                     picker.Show(ChildFragmentManager, "endtime_picker");
                 },
-                OnOffSwitchTapped = async (sw) =>
+                
+                OnButtonTapped = async (onBtn, offBtn, curSched) =>
                 {
-                    var state = await _poolService.ToggleMasterSwitch();
-                    sw.Checked = state == 1;
+                    if (curSched.IsActive)
+                    {
+                        // Already on so bail out
+                        return;
+                    }
+
+                    switch (curSched.Type)
+                    {
+                        case ScheduleType.Pool:
+                            var pool = await _poolService.GetPool();
+                            pool.Schedule.IsActive = true;
+                            await _poolService.SavePool(pool);
+                            break;
+                        case ScheduleType.Booster:
+                            var booster = await _poolService.GetBoosterPump();
+                            booster.Schedule.IsActive = true;
+                            await _poolService.SaveBoosterPump(booster);
+                            break;
+                    }
+
+                    ButtonHelper.ToggleOnOffButtonStyle(
+                        onBtn, 
+                        offBtn, 
+                        PinState.ON,
+                        Context);
                 },
-                IncludeBoosterTapped = async (cb) =>
+                OffButtonTapped = async (onBtn, offBtn, curSched) =>
                 {
-                    var state = await _poolService.ToggleIncludeBoosterSwitch();
-                    cb.Checked = state == 1;
+                    if (!curSched.IsActive)
+                    {
+                        // Already off so bail out
+                        return;
+                    }
+
+                    switch (curSched.Type)
+                    {
+                        case ScheduleType.Pool:
+                            var pool = await _poolService.GetPool();
+                            pool.Schedule.IsActive = false;
+                            await _poolService.SavePool(pool);
+                            break;
+                        case ScheduleType.Booster:
+                            var booster = await _poolService.GetBoosterPump();
+                            booster.Schedule.IsActive = false;
+                            await _poolService.SaveBoosterPump(booster);
+                            break;
+                    }
+
+                    ButtonHelper.ToggleOnOffButtonStyle(
+                        onBtn, 
+                        offBtn, 
+                        PinState.OFF,
+                        Context);
                 }
             };
 
@@ -380,12 +399,9 @@ namespace eHub.Android.Fragments
             };
         }
 
-        async Task<LightModel> OnLightModeButtonTapped(LightModeType lightMode, LightType lightType, LightServerModel serverModel) 
+        async Task<LightModel> OnLightModeButtonTapped(LightModel model, LightServerModel serverModel, PinState curState) 
         {
-            var model = new LightModel(lightMode, lightType);
-
-            var state = (await _poolService.GetPinStatus(model.PinType))?.State ?? PinState.OFF;
-            if (state == PinState.OFF)
+            if (curState == PinState.OFF)
             {
                 Toast.MakeText(Context, "Turn the light on before changing light modes", ToastLength.Long).Show();
                 return null;
@@ -409,7 +425,7 @@ namespace eHub.Android.Fragments
             var numCycles = model.PowerCycles * 2;
             if (model.Mode == LightModeType.Recall)
             {
-                alert = Dialogs.SimpleAlert(Context, "Applying last theme", serverModel.PreviousMode.ToLightModeText(), "");
+                alert = Dialogs.SimpleAlert(Context, "Applying last theme", serverModel.PreviousMode?.ToLightModeText(), "");
                 numCycles = (int)serverModel.PreviousMode * 2;
             }
 
@@ -430,7 +446,7 @@ namespace eHub.Android.Fragments
 
             model.Mode = (await Task.Run(async () =>
             { 
-                return await _poolService.SaveLightMode(modeToSave, model.LightType);
+                return await _poolService.SaveLightMode(modeToSave.Value, model.LightType);
             })).CurrentMode;
 
             _progressBar.Visibility = ViewStates.Gone;
@@ -439,27 +455,15 @@ namespace eHub.Android.Fragments
             return model;
         }
 
-        async Task SaveLightScheduleAsync(IPoolService poolService, EquipmentSchedule es)
+        /*
+        async Task SaveScheduleAsync(IPoolService poolService, EquipmentSchedule es)
         {
-            var startDateTime = new DateTime(
-                DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, es.StartHour, es.StartMinute, 0);
-            var endDateTime = new DateTime(
-                DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, es.EndHour, es.EndMinute, 0);
-
             var result = await poolService.SetSchedule(es);
             if (result != null)
             {
                 Toast.MakeText(Context, "Schedule Saved", ToastLength.Short).Show();
             }
         }
-
-        async Task SaveScheduleAsync(IPoolService poolService, EquipmentSchedule ps)
-        {
-            var result = await poolService.SetSchedule(ps);
-            if (result != null)
-            {
-                Toast.MakeText(Context, "Schedule Saved", ToastLength.Short).Show();
-            }
-        }
+        */
     }
 }

@@ -109,6 +109,7 @@
     <Compile Include="ServicePropertySelector.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="StringConstants.cs" />
+    <Compile Include="UIExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="appsettings.json" />

@@ -71,46 +71,15 @@ namespace eHub.Android
             {
                 case CellType.Schedule:
                     var schCell = holder as ScheduleCell;
-                    var startTime = new TimeSpan(item.ScheduleCellItem.Schedule.StartHour, item.ScheduleCellItem.Schedule.StartMinute, 0);
-                    var endTime = new TimeSpan(item.ScheduleCellItem.Schedule.EndHour, item.ScheduleCellItem.Schedule.EndMinute, 0);
-                    /*
-                    schCell.StartButton.Text = startTime.ToString(@"%h\:mm");
-                    schCell.EndButton.Text = endTime.ToString(@"%h\:mm");
-                    schCell.OnOffSwitch.Checked = item.ScheduleCellItem.Schedule.IsActive;
-                    schCell.IncludeBoosterCheckbox.Checked = item.ScheduleCellItem.Schedule.IncludeBooster;
-
-                    schCell.StartButton.SetOnClickListener(new OnClickListener(v =>
-                    {
-                        item.ScheduleCellItem.StartTapped.Invoke(v as Button);
-                    }));
-
-                    schCell.EndButton.SetOnClickListener(new OnClickListener(v =>
-                    {
-                        item.ScheduleCellItem.EndTapped.Invoke(v as Button);
-                    }));
-
-                    schCell.OnOffSwitch.SetOnClickListener(new OnClickListener(v =>
-                    {
-                        item.ScheduleCellItem.OnOffSwitchTapped.Invoke(v as Switch);
-                    }));
-
-                    schCell.IncludeBoosterCheckbox.SetOnClickListener(new OnClickListener(v =>
-                    {
-                        item.ScheduleCellItem.IncludeBoosterTapped.Invoke(v as CheckBox);
-                    }));
-                    */
+                    schCell.Bind(item.ScheduleCellItem, _mainUiHandler, _poolService);
                     break;
 
                 case CellType.LightModes:
                     var lightModeCell = holder as LightModesCell;
-                    var poolLightStart = new TimeSpan(item.LightModesItem.PoolLightSchedule.StartHour, 
-                        item.LightModesItem.PoolLightSchedule.StartMinute, 0);
-                    var poolLightEnd = new TimeSpan(item.LightModesItem.PoolLightSchedule.EndHour, 
-                        item.LightModesItem.PoolLightSchedule.EndMinute, 0);
-                    var spaLightStart = new TimeSpan(item.LightModesItem.SpaLightSchedule.StartHour, 
-                        item.LightModesItem.SpaLightSchedule.StartMinute, 0);
-                    var spaLightEnd = new TimeSpan(item.LightModesItem.SpaLightSchedule.EndHour, 
-                        item.LightModesItem.SpaLightSchedule.EndMinute, 0);
+                    var poolLightStart = item.LightModesItem.PoolLightSchedule.StartTime;
+                    var poolLightEnd = item.LightModesItem.PoolLightSchedule.EndTime;
+                    var spaLightStart = item.LightModesItem.SpaLightSchedule.StartTime;
+                    var spaLightEnd = item.LightModesItem.SpaLightSchedule.EndTime;
 
                     lightModeCell.PoolLightStartButton.Text = poolLightStart.ToString(@"%h\:mm");
                     lightModeCell.PoolLightEndButton.Text = poolLightEnd.ToString(@"%h\:mm");
@@ -250,26 +219,24 @@ namespace eHub.Android
                     var devicesCell = holder as DevicesCell;
 
                     // Set initial states
-                    var pool = item.DevicesItem.DevicePins.Find(_ => _.PinType == PinType.PoolPump);
-                    var spa = item.DevicesItem.DevicePins.Find(_ => _.PinType == PinType.SpaPump);
-                    var booster = item.DevicesItem.DevicePins.Find(_ => _.PinType == PinType.BoosterPump);
-                    var heater = item.DevicesItem.DevicePins.Find(_ => _.PinType == PinType.Heater);
-                    var poolLight = item.DevicesItem.DevicePins.Find(_ => _.PinType == PinType.PoolLight);
-                    var spaLight = item.DevicesItem.DevicePins.Find(_ => _.PinType == PinType.SpaLight);
+                    var pool = item.DevicesItem.PoolModel;
+                    var spa = item.DevicesItem.SpaModel;
+                    var booster = item.DevicesItem.BoosterModel;
+                    var heater = item.DevicesItem.HeaterModel;
 
-                    ToggleOnOffButtonStyle(devicesCell.PoolOnButton, devicesCell.PoolOffButton, pool.State, devicesCell.ItemView.Context);
-                    ToggleOnOffButtonStyle(devicesCell.SpaOnButton, devicesCell.SpaOffButton, spa.State, devicesCell.ItemView.Context);
-                    ToggleOnOffButtonStyle(devicesCell.BoosterOnButton, devicesCell.BoosterOffButton, booster.State, devicesCell.ItemView.Context);
-                    ToggleOnOffButtonStyle(devicesCell.HeaterOnButton, devicesCell.HeaterOffButton, heater.State, devicesCell.ItemView.Context);
-                    ToggleOnOffButtonStyle(devicesCell.PoolLightOnButton, devicesCell.PoolLightOffButton, poolLight.State, devicesCell.ItemView.Context);
-                    ToggleOnOffButtonStyle(devicesCell.SpaLightOnButton, devicesCell.SpaLightOffButton, spaLight.State, devicesCell.ItemView.Context);
+                    ButtonHelper.ToggleOnOffButtonStyle(devicesCell.PoolOnButton, devicesCell.PoolOffButton, pool.State, devicesCell.ItemView.Context);
+                    ButtonHelper.ToggleOnOffButtonStyle(devicesCell.SpaOnButton, devicesCell.SpaOffButton, spa.State, devicesCell.ItemView.Context);
+                    ButtonHelper.ToggleOnOffButtonStyle(devicesCell.BoosterOnButton, devicesCell.BoosterOffButton, booster.State, devicesCell.ItemView.Context);
+                    ButtonHelper.ToggleOnOffButtonStyle(devicesCell.HeaterOnButton, devicesCell.HeaterOffButton, heater.State, devicesCell.ItemView.Context);
+                    ButtonHelper.ToggleOnOffButtonStyle(devicesCell.PoolLightOnButton, devicesCell.PoolLightOffButton, pool.Light.State, devicesCell.ItemView.Context);
+                    ButtonHelper.ToggleOnOffButtonStyle(devicesCell.SpaLightOnButton, devicesCell.SpaLightOffButton, spa.Light.State, devicesCell.ItemView.Context);
 
                     devicesCell.PoolOnButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        var curPoolState = await GetStatus(PinType.PoolPump);
+                        var pool = await _poolService.GetPool();
 
                         // if already on bail out
-                        if (curPoolState == PinState.ON)
+                        if (pool.State == PinState.ON)
                         {
                             return;
                         }
@@ -286,7 +253,8 @@ namespace eHub.Android
                                     var poolToggle = await _poolService.Toggle(PinType.PoolPump);
                                     if (poolToggle != null)
                                     {
-                                        ToggleOnOffButtonStyle(onButton,
+                                        ButtonHelper.ToggleOnOffButtonStyle(
+                                            onButton,
                                             devicesCell.PoolOffButton,
                                             poolToggle.State,
                                             devicesCell.ItemView.Context);
@@ -297,20 +265,20 @@ namespace eHub.Android
 
                     devicesCell.PoolOffButton.SetOnClickListener(new OnClickListener(async v =>
                     {
-                        var curPoolState = await GetStatus(PinType.PoolPump);
+                        var pool = await _poolService.GetPool();
 
                         // if already off bail out
-                        if (curPoolState == PinState.OFF)
+                        if (pool.State == PinState.OFF)
                         {
                             return;
                         }
 
                         var offButton = v as Button;
-                        var heaterStatus = await GetStatus(PinType.Heater);
-                        var boosterStatus = await GetStatus(PinType.BoosterPump);
+                        var heater = await _poolService.GetHeater();
+                        var booster = await _poolService.GetBoosterPump();
 
-                        if (curPoolState == PinState.ON
-                            && (heaterStatus == PinState.ON || boosterStatus == PinState.ON))
+                        if (pool.State == PinState.ON
+                            && (heater.State == PinState.ON || booster.State == PinState.ON))
                         {
                             Toast.MakeText(v.Context, "Make sure the heater and the booster pump are off first!",
                                 ToastLength.Short).Show();
@@ -328,7 +296,8 @@ namespace eHub.Android
                                     var poolToggle = await _poolService.Toggle(PinType.PoolPump);
                                     if (poolToggle != null)
                                     {
-                                        ToggleOnOffButtonStyle(devicesCell.PoolOnButton,
+                                        ButtonHelper.ToggleOnOffButtonStyle(
+                                            devicesCell.PoolOnButton,
                                             offButton,
                                             poolToggle.State,
                                             devicesCell.ItemView.Context);
@@ -340,16 +309,16 @@ namespace eHub.Android
                     devicesCell.BoosterOnButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var onButton = v as Button;
-                        var curStatus = await GetStatus(PinType.BoosterPump);
+                        var booster = await _poolService.GetBoosterPump();
 
-                        if (curStatus == PinState.ON)
+                        if (booster.State == PinState.ON)
                         {
                             return;
                         }
 
                         // Make sure the pool pump is on first!
-                        var poolPumpStatus = await GetStatus(PinType.PoolPump);
-                        if (poolPumpStatus == PinState.OFF)
+                        var pool = await _poolService.GetPool();
+                        if (pool.State == PinState.OFF)
                         {
                             Toast.MakeText(v.Context, "Wait! The pool pump needs to be on first!",
                                 ToastLength.Short).Show();
@@ -359,7 +328,8 @@ namespace eHub.Android
                         var toggle = await _poolService.Toggle(PinType.BoosterPump);
                         if (toggle != null)
                         {
-                            ToggleOnOffButtonStyle(onButton,
+                            ButtonHelper.ToggleOnOffButtonStyle(
+                                onButton,
                                 devicesCell.BoosterOffButton,
                                 toggle.State,
                                 devicesCell.ItemView.Context);
@@ -369,9 +339,9 @@ namespace eHub.Android
                     devicesCell.BoosterOffButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var offButton = v as Button;
-                        var curStatus = await GetStatus(PinType.BoosterPump);
+                        var booster = await _poolService.GetBoosterPump();
 
-                        if (curStatus == PinState.OFF)
+                        if (booster.State == PinState.OFF)
                         {
                             return;
                         }
@@ -379,7 +349,8 @@ namespace eHub.Android
                         var toggle = await _poolService.Toggle(PinType.BoosterPump);
                         if (toggle != null)
                         {
-                            ToggleOnOffButtonStyle(devicesCell.BoosterOnButton,
+                            ButtonHelper.ToggleOnOffButtonStyle(
+                                devicesCell.BoosterOnButton,
                                 offButton,
                                 toggle.State,
                                 devicesCell.ItemView.Context);
@@ -389,16 +360,16 @@ namespace eHub.Android
                     devicesCell.HeaterOnButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var onButton = v as Button;
-                        var curStatus = await GetStatus(PinType.Heater);
+                        var heater = await _poolService.GetHeater();
 
-                        if (curStatus == PinState.ON)
+                        if (heater.State == PinState.ON)
                         {
                             return;
                         }
 
                         // Make sure the pool pump is on first!
-                        var poolPumpStatus = await GetStatus(PinType.PoolPump);
-                        if (poolPumpStatus == PinState.OFF)
+                        var pool = await _poolService.GetPool();
+                        if (pool.State == PinState.OFF)
                         {
                             Toast.MakeText(v.Context, "Wait! The pool pump needs to be on first!",
                                 ToastLength.Short).Show();
@@ -408,7 +379,8 @@ namespace eHub.Android
                         var toggle = await _poolService.Toggle(PinType.Heater);
                         if (toggle != null)
                         {
-                            ToggleOnOffButtonStyle(onButton,
+                            ButtonHelper.ToggleOnOffButtonStyle(
+                                onButton,
                                 devicesCell.HeaterOffButton,
                                 toggle.State,
                                 devicesCell.ItemView.Context);
@@ -418,9 +390,9 @@ namespace eHub.Android
                     devicesCell.HeaterOffButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var offButton = v as Button;
-                        var curStatus = await GetStatus(PinType.Heater);
+                        var heater = await _poolService.GetHeater();
 
-                        if (curStatus == PinState.OFF)
+                        if (heater.State == PinState.OFF)
                         {
                             return;
                         }
@@ -428,7 +400,8 @@ namespace eHub.Android
                         var toggle = await _poolService.Toggle(PinType.Heater);
                         if (toggle != null)
                         {
-                            ToggleOnOffButtonStyle(devicesCell.HeaterOnButton,
+                            ButtonHelper.ToggleOnOffButtonStyle(
+                                devicesCell.HeaterOnButton,
                                 offButton,
                                 toggle.State,
                                 devicesCell.ItemView.Context);
@@ -438,9 +411,9 @@ namespace eHub.Android
                     devicesCell.SpaOnButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var onButton = v as Button;
-                        var curStatus = await GetStatus(PinType.SpaPump);
+                        var spa = await _poolService.GetSpa();
 
-                        if (curStatus == PinState.ON)
+                        if (spa.State == PinState.ON)
                         {
                             return;
                         }
@@ -448,7 +421,8 @@ namespace eHub.Android
                         var spaToggle = await _poolService.Toggle(PinType.SpaPump);
                         if (spaToggle != null)
                         {
-                            ToggleOnOffButtonStyle(onButton,
+                            ButtonHelper.ToggleOnOffButtonStyle(
+                                onButton,
                                 devicesCell.SpaOffButton,
                                 spaToggle.State,
                                 devicesCell.ItemView.Context);
@@ -458,9 +432,9 @@ namespace eHub.Android
                     devicesCell.SpaOffButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var offButton = v as Button;
-                        var curStatus = await GetStatus(PinType.SpaPump);
+                        var spa = await _poolService.GetSpa();
 
-                        if (curStatus == PinState.OFF)
+                        if (spa.State == PinState.OFF)
                         {
                             return;
                         }
@@ -468,7 +442,8 @@ namespace eHub.Android
                         var spaToggle = await _poolService.Toggle(PinType.SpaPump);
                         if (spaToggle != null)
                         {
-                            ToggleOnOffButtonStyle(devicesCell.SpaOnButton,
+                            ButtonHelper.ToggleOnOffButtonStyle(
+                                devicesCell.SpaOnButton,
                                 offButton,
                                 spaToggle.State,
                                 devicesCell.ItemView.Context);
@@ -478,9 +453,9 @@ namespace eHub.Android
                     devicesCell.PoolLightOnButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var onButton = v as Button;
-                        var curStatus = await GetStatus(PinType.PoolLight);
+                        var poolLight = (await _poolService.GetPool()).Light;
 
-                        if (curStatus == PinState.ON)
+                        if (poolLight.State == PinState.ON)
                         {
                             return;
                         }
@@ -488,7 +463,8 @@ namespace eHub.Android
                         var toggle = await _poolService.Toggle(PinType.PoolLight);
                         if (toggle != null)
                         {
-                            ToggleOnOffButtonStyle(onButton,
+                            ButtonHelper.ToggleOnOffButtonStyle(
+                                onButton,
                                 devicesCell.PoolLightOffButton,
                                 toggle.State,
                                 devicesCell.ItemView.Context);
@@ -498,9 +474,9 @@ namespace eHub.Android
                     devicesCell.PoolLightOffButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var offButton = v as Button;
-                        var curStatus = await GetStatus(PinType.PoolLight);
+                        var poolLight = (await _poolService.GetPool()).Light;
 
-                        if (curStatus == PinState.OFF)
+                        if (poolLight.State == PinState.OFF)
                         {
                             return;
                         }
@@ -508,7 +484,8 @@ namespace eHub.Android
                         var toggle = await _poolService.Toggle(PinType.PoolLight);
                         if (toggle != null)
                         {
-                            ToggleOnOffButtonStyle(devicesCell.PoolLightOnButton,
+                            ButtonHelper.ToggleOnOffButtonStyle(
+                                devicesCell.PoolLightOnButton,
                                 offButton,
                                 toggle.State,
                                 devicesCell.ItemView.Context);
@@ -518,9 +495,9 @@ namespace eHub.Android
                     devicesCell.SpaLightOnButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var onButton = v as Button;
-                        var curStatus = await GetStatus(PinType.SpaLight);
+                        var spaLight = (await _poolService.GetSpa()).Light;
 
-                        if (curStatus == PinState.ON)
+                        if (spaLight.State == PinState.ON)
                         {
                             return;
                         }
@@ -528,7 +505,8 @@ namespace eHub.Android
                         var toggle = await _poolService.Toggle(PinType.SpaLight);
                         if (toggle != null)
                         {
-                            ToggleOnOffButtonStyle(onButton,
+                            ButtonHelper.ToggleOnOffButtonStyle(
+                                onButton,
                                 devicesCell.SpaLightOffButton,
                                 toggle.State,
                                 devicesCell.ItemView.Context);
@@ -538,9 +516,9 @@ namespace eHub.Android
                     devicesCell.SpaLightOffButton.SetOnClickListener(new OnClickListener(async v =>
                     {
                         var offButton = v as Button;
-                        var curStatus = await GetStatus(PinType.SpaLight);
+                        var spaLight = (await _poolService.GetSpa()).Light;
 
-                        if (curStatus == PinState.OFF)
+                        if (spaLight.State == PinState.OFF)
                         {
                             return;
                         }
@@ -548,7 +526,8 @@ namespace eHub.Android
                         var toggle = await _poolService.Toggle(PinType.SpaLight);
                         if (toggle != null)
                         {
-                            ToggleOnOffButtonStyle(devicesCell.SpaLightOnButton,
+                            ButtonHelper.ToggleOnOffButtonStyle(
+                                devicesCell.SpaLightOnButton,
                                 offButton,
                                 toggle.State,
                                 devicesCell.ItemView.Context);
@@ -590,46 +569,7 @@ namespace eHub.Android
             }
         }
 
-        async Task<int> GetStatus(PinType pinType)
-        {
-            var result = await _poolService.GetPinStatus(pinType);
-            return result.State;
-        }
-
-        void ToggleOnOffButtonStyle(
-            Button onButton, 
-            Button offButton, 
-            int state, 
-            Context context)
-        {
-            _mainUiHandler.Post(() =>
-            {
-                var onTextColor = ContextCompat.GetColor(
-                    context, Resource.Color.material_blue_grey_800);
-
-                var offTextColor = ContextCompat.GetColor(
-                    context, Resource.Color.material_grey_300);
-
-                if (state == PinState.ON)
-                {
-                    onButton.SetBackgroundResource(Resource.Color.greenLabel);
-                    onButton.SetTextColor(new Color(onTextColor));
-
-                    offButton.SetBackgroundResource(Resource.Color.blue_gray_400);
-                    offButton.SetTextColor(new Color(offTextColor));
-                }
-                else
-                {
-                    offButton.SetBackgroundResource(Resource.Color.redLabel);
-                    offButton.SetTextColor(new Color(offTextColor));
-
-                    onButton.SetBackgroundResource(Resource.Color.blue_gray_400);
-                    onButton.SetTextColor(new Color(offTextColor));
-                }
-            });
-        }
-
-        void SetButtonBackground(Button b, int state, CellType? cellType = null)
+        void SetButtonBackground(Button b, PinState state, CellType? cellType = null)
         {
             _mainUiHandler.Post(() =>
             {
@@ -673,18 +613,108 @@ namespace eHub.Android
 
         class ScheduleCell : RecyclerView.ViewHolder
         {
-            public Button StartButton { get; }
-            public Button EndButton { get; }
-            public CheckBox IncludeBoosterCheckbox { get; }
-            public Switch OnOffSwitch { get; }
+            public Button PoolOnButton { get; }
+            public Button PoolOffButton { get; }
+            public Button PoolStartButton { get; }
+            public Button PoolEndButton { get; }
+
+            public Button BoosterOnButton { get; }
+            public Button BoosterOffButton { get; }
+            public Button BoosterStartButton { get; }
+            public Button BoosterEndButton { get; }
 
             public ScheduleCell(View view)
                 : base(view)
             {
-                //StartButton = view.FindViewById<Button>(Resource.Id.schedule_cell_begin_btn);
-                //EndButton = view.FindViewById<Button>(Resource.Id.schedule_cell_end_btn);
-                //IncludeBoosterCheckbox = view.FindViewById<CheckBox>(Resource.Id.schedule_cell_include_booster_cb);
-                //OnOffSwitch = view.FindViewById<Switch>(Resource.Id.schedule_onoff_switch);
+                PoolStartButton = view.FindViewById<Button>(Resource.Id.schedule_cell_pool_begin_btn);
+                PoolEndButton = view.FindViewById<Button>(Resource.Id.schedule_cell_pool_end_btn);
+                PoolOnButton = view.FindViewById<Button>(Resource.Id.schedule_cell_pool_on_btn);
+                PoolOffButton = view.FindViewById<Button>(Resource.Id.schedule_cell_pool_off_btn);
+
+                BoosterStartButton = view.FindViewById<Button>(Resource.Id.schedule_cell_booster_begin_btn);
+                BoosterEndButton = view.FindViewById<Button>(Resource.Id.schedule_cell_booster_end_btn);
+                BoosterOnButton = view.FindViewById<Button>(Resource.Id.schedule_cell_booster_on_btn);
+                BoosterOffButton = view.FindViewById<Button>(Resource.Id.schedule_cell_booster_off_btn);
+            }
+
+            internal void Bind(ScheduleCellItem item, Handler handler, IPoolService poolService)
+            {
+                var poolStartTime = new TimeSpan(item.PoolSchedule.StartTime.Hours, item.PoolSchedule.StartTime.Minutes, 0);
+                var poolEndTime = new TimeSpan(item.PoolSchedule.EndTime.Hours, item.PoolSchedule.EndTime.Minutes, 0);
+                var boosterStartTime = new TimeSpan(item.BoosterSchedule.StartTime.Hours, item.BoosterSchedule.StartTime.Minutes, 0);
+                var boosterEndTime = new TimeSpan(item.BoosterSchedule.EndTime.Hours, item.BoosterSchedule.EndTime.Minutes, 0);
+
+                PoolStartButton.Text = poolStartTime.ToString(@"%h\:mm");
+                PoolEndButton.Text = poolEndTime.ToString(@"%h\:mm");
+
+                BoosterStartButton.Text = boosterStartTime.ToString(@"%h\:mm");
+                BoosterEndButton.Text = boosterEndTime.ToString(@"%h\:mm");
+
+                // initial pool timer on/off button states
+                ButtonHelper.ToggleOnOffButtonStyle(
+                    PoolOnButton, 
+                    PoolOffButton, 
+                    item.PoolSchedule.IsActive ? PinState.ON : PinState.OFF, 
+                    ItemView.Context);
+
+                // initial booster timer on/off button states
+                ButtonHelper.ToggleOnOffButtonStyle(
+                    BoosterOnButton, 
+                    BoosterOffButton, 
+                    item.BoosterSchedule.IsActive ? PinState.ON : PinState.OFF, 
+                    ItemView.Context);
+                
+                // Set up click handlers for the on/off buttons
+                PoolStartButton.SetOnClickListener(new OnClickListener(async v =>
+                {
+                    var pool = await poolService.GetPool();
+                    pool.Schedule.Type = ScheduleType.Pool;
+                    item.StartTapped.Invoke(v as Button, pool.Schedule);
+                }));
+                PoolEndButton.SetOnClickListener(new OnClickListener(async v =>
+                {
+                    var pool = await poolService.GetPool();
+                    pool.Schedule.Type = ScheduleType.Pool;
+                    item.EndTapped.Invoke(v as Button, pool.Schedule);
+                }));
+
+                BoosterStartButton.SetOnClickListener(new OnClickListener(async v =>
+                {
+                    var booster = await poolService.GetBoosterPump();
+                    booster.Schedule.Type = ScheduleType.Booster;
+                    item.StartTapped.Invoke(v as Button, booster.Schedule);
+                }));
+                BoosterEndButton.SetOnClickListener(new OnClickListener(async v =>
+                {
+                    var booster = await poolService.GetBoosterPump();
+                    booster.Schedule.Type = ScheduleType.Booster;
+                    item.EndTapped.Invoke(v as Button, booster.Schedule);
+                }));
+
+                PoolOnButton.SetOnClickListener(new OnClickListener(async onButton =>
+                {
+                    var pool = await poolService.GetPool();
+                    pool.Schedule.Type = ScheduleType.Pool;
+                    item.OnButtonTapped.Invoke(onButton as Button, PoolOffButton, pool.Schedule);
+                }));
+                PoolOffButton.SetOnClickListener(new OnClickListener(async offButton =>
+                {
+                    var pool = await poolService.GetPool();
+                    pool.Schedule.Type = ScheduleType.Pool;
+                    item.OffButtonTapped.Invoke(PoolOnButton, offButton as Button, pool.Schedule);
+                }));
+                BoosterOnButton.SetOnClickListener(new OnClickListener(async onButton =>
+                {
+                    var booster = await poolService.GetBoosterPump();
+                    booster.Schedule.Type = ScheduleType.Booster;
+                    item.OnButtonTapped.Invoke(onButton as Button, BoosterOffButton, booster.Schedule);
+                }));
+                BoosterOffButton.SetOnClickListener(new OnClickListener(async offButton =>
+                {
+                    var booster = await poolService.GetBoosterPump();
+                    booster.Schedule.Type = ScheduleType.Booster;
+                    item.OffButtonTapped.Invoke(BoosterOnButton, offButton as Button, booster.Schedule);
+                }));
             }
         }
 
@@ -797,6 +827,42 @@ namespace eHub.Android
                 : base(view)
             {
             }
+        }
+    }
+
+    internal static class ButtonHelper
+    {
+        public static void ToggleOnOffButtonStyle(
+            Button onButton,
+            Button offButton,
+            PinState state,
+            Context context)
+        {
+            new Handler(Looper.MainLooper).Post(() =>
+            {
+                var onTextColor = ContextCompat.GetColor(
+                    context, Resource.Color.material_blue_grey_800);
+
+                var offTextColor = ContextCompat.GetColor(
+                    context, Resource.Color.material_grey_300);
+
+                if (state == PinState.ON)
+                {
+                    onButton.SetBackgroundResource(Resource.Color.greenLabel);
+                    onButton.SetTextColor(new Color(onTextColor));
+
+                    offButton.SetBackgroundResource(Resource.Color.blue_gray_400);
+                    offButton.SetTextColor(new Color(offTextColor));
+                }
+                else
+                {
+                    offButton.SetBackgroundResource(Resource.Color.redLabel);
+                    offButton.SetTextColor(new Color(offTextColor));
+
+                    onButton.SetBackgroundResource(Resource.Color.blue_gray_400);
+                    onButton.SetTextColor(new Color(offTextColor));
+                }
+            });
         }
     }
 

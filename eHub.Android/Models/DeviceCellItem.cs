@@ -5,11 +5,20 @@ namespace eHub.Android.Models
 {
     public class DeviceCellItem
     {
-        public List<PiPin> DevicePins { get; }
+        public PoolSpaModel PoolModel { get; }
+        public PoolSpaModel SpaModel { get; }
+        public BoosterPumpModel BoosterModel { get; }
+        public HeaterModel HeaterModel { get; }
 
-        public DeviceCellItem(List<PiPin> devicePins)
+        public DeviceCellItem(PoolSpaModel poolModel,
+            PoolSpaModel spaModel,
+            BoosterPumpModel boosterModel, 
+            HeaterModel heaterModel)
         {
-            DevicePins = devicePins;
+            PoolModel = poolModel;
+            SpaModel = spaModel;
+            BoosterModel = boosterModel;
+            HeaterModel = heaterModel;
         }
     }
 }

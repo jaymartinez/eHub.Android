@@ -33,6 +33,7 @@ namespace eHub.Android.Models
             BoosterItem = boosterCellItem;
             CellTypeObj = cellType;
         }
+
         public HomeCellItem(LightModesCellItem item, CellType cellType)
         {
             LightModesItem = item;
